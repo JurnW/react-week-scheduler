@@ -303,9 +303,6 @@
   will-change: transform;
   z-index: var(--z-index-header);
   background: var(--color-header-background);
-  .day-column:first-of-type {
-    border-left: 1px solid var(--color-cell-border);
-  }
 }
 
 .day-column.first {
