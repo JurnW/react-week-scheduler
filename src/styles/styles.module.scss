@@ -3,7 +3,8 @@
 }
 
 .theme {
-  --color-cell-border: hsl(204, 11%, 83%);
+  --color-cell-border: hsla(0, 0%, 0%, 0.1);
+  --color-cell-border-dark: hsla(0, 0%, 0%, 0.25);
   --color-drag-box-border: hsla(209, 97%, 50%, 0.5);
   --color-drag-box-background: hsla(209, 97%, 65%, 0.5);
   --color-handle-wrapper-text: hsla(209, 100%, 80%, 0.5);
@@ -39,6 +40,7 @@
   margin-top: 24px;
   background: var(--color-grid-background, white);
   border: 1px solid var(--color-cell-border);
+  border-top: none;
 
   &,
   * {
@@ -238,6 +240,9 @@
 .day-column {
   flex: 1 1 var(--cell-width, 250px);
   min-width: var(--cell-min-width, 150px);
+  &:first-child .day-hours {
+    border-left: 1px solid var(--color-cell-border);
+  }
 
   .day-hours {
     display: flex;
@@ -260,10 +265,6 @@
 
   .title {
     padding: 10px 10px;
-    font-size: 20px;
-
-    justify-content: center;
-    align-items: center;
   }
 }
 
@@ -290,6 +291,7 @@
 .sticky-top {
   position: sticky;
   top: 0;
+  border-bottom: 1px solid var(--color-cell-border-dark);
 }
 
 .sticky-left {
@@ -301,8 +303,9 @@
   will-change: transform;
   z-index: var(--z-index-header);
   background: var(--color-header-background);
-  box-shadow: 0 1px 5px var(--color-header-shadow-1),
-    0 1px 10px var(--color-header-shadow-2);
+  .day-column:first-of-type {
+    border-left: 1px solid var(--color-cell-border);
+  }
 }
 
 .day-column.first {

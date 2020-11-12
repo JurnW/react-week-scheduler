@@ -165,7 +165,7 @@ function App() {
   const [
     visualGridVerticalPrecision,
     setVisualGridVerticalPrecision,
-  ] = useState(60);
+  ] = useState(30);
   const [cellClickPrecision, setCellClickPrecision] = useState(
     visualGridVerticalPrecision,
   );
