@@ -1660,7 +1660,10 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
           className: classes['day-column'] }, /*#__PURE__*/
 
         React__default.createElement("div", { className: classcat([classes.cell, classes.title]) },
-        format(addDays(originDate, i), 'ddd', { locale: locale }))));}))), /*#__PURE__*/
+        format(addDays(originDate, i), 'ddd', { locale: locale }), /*#__PURE__*/
+        React__default.createElement("span", { style: { fontWeight: 'bold', marginLeft: '3px' } },
+        format(addDays(originDate, i), ' D', { locale: locale })))));}))), /*#__PURE__*/
+
 
 
 
