@@ -1108,13 +1108,11 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
 
 
       ref: ref,
-      style: { width: width - 20, height: height } }, /*#__PURE__*/
+      style: { width: width, height: height } }, /*#__PURE__*/
 
     React__default.createElement(Resizable, {
-      size: _objectSpread2(_objectSpread2({}, originalRect), {}, { width: originalRect.width - 20 }),
-      key: "".concat(rangeIndex, ".").concat(cellIndex, ".").concat(cellArray.length, ".").concat(
-      originalRect.top, ".").concat(
-      originalRect.left),
+      size: _objectSpread2(_objectSpread2({}, originalRect), {}, { width: originalRect.width }),
+      key: "".concat(rangeIndex, ".").concat(cellIndex, ".").concat(cellArray.length, ".").concat(originalRect.top, ".").concat(originalRect.left),
       onResize: handleResize,
       onResizeStop: handleStop,
       handleWrapperClass: classes['handle-wrapper'],
@@ -1280,7 +1278,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 30 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 15] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled;var _useContext =
+{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled;var _useContext =
   React.useContext(SchedulerContext),locale = _useContext.locale;
   var originDate = React.useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
   var numVerticalCells = MINS_IN_DAY / verticalPrecision;
@@ -1305,9 +1303,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
     cellInfoToDateRanges(cell),_cellInfoToDateRanges2 = _toArray(_cellInfoToDateRanges),first = _cellInfoToDateRanges2[0],rest = _cellInfoToDateRanges2.slice(1);
     invariant(
     rest.length === 0, "Expected \"cellInfoToSingleDateRange\" to return a single date range, found ".concat(
-
     rest.length, " additional ranges instead. This is a bug in @remotelock/react-week-scheduler"));
-
 
 
     return first;

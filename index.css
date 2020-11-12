@@ -8,7 +8,7 @@
   --color-drag-box-background: hsla(209, 97%, 65%, 0.5);
   --color-handle-wrapper-text: hsla(209, 100%, 80%, 0.5);
   --color-timeline-text: hsl(0, 0%, 48%);
-  --color-header-background: hsla(0, 0%, 97%, 1);
+  --color-header-background: white;
   --color-event-text: white;
   --color-event-background: hsl(202, 100%, 20%);
   --color-event-active-background: hsl(212, 85%, 44%);
@@ -40,6 +40,9 @@
   .styles-module_root__2iNXQ,
   .styles-module_root__2iNXQ * {
     box-sizing: border-box; }
+  .styles-module_root__2iNXQ ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; }
 
 .styles-module_grid-root__2ktzS {
   position: relative;
@@ -243,7 +246,7 @@
   left: 0; }
 
 .styles-module_range-boxes__ib1Nb .styles-module_event-content__3sakH {
-  padding: 5px 10px;
+  padding: 8px 10px;
   font-weight: bold;
   font-size: 13px;
   width: 100%;

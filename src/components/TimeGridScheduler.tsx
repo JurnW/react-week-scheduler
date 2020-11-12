@@ -47,13 +47,13 @@ const toX = (days: number): number => days / horizontalPrecision;
 const DELETE_KEYS = ['del', 'backspace'];
 
 export const TimeGridScheduler = React.memo(function TimeGridScheduler({
-  verticalPrecision = 30,
+  verticalPrecision = 15,
   visualGridVerticalPrecision = 30,
   cellClickPrecision = visualGridVerticalPrecision,
   style,
   schedule,
   originDate: _originDate = new Date(),
-  defaultHours = [9, 15],
+  defaultHours = [9, 18],
   classes,
   className,
   onChange,
@@ -66,7 +66,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
 
   /**
    * The minimum number of minutes a created range can span
-   * @default 30
+   * @default 15
    */
   verticalPrecision?: number;
 
@@ -132,9 +132,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
       const [first, ...rest] = cellInfoToDateRanges(cell);
       invariant(
         rest.length === 0,
-        `Expected "cellInfoToSingleDateRange" to return a single date range, found ${
-          rest.length
-        } additional ranges instead. This is a bug in @remotelock/react-week-scheduler`,
+        `Expected "cellInfoToSingleDateRange" to return a single date range, found ${rest.length} additional ranges instead. This is a bug in @remotelock/react-week-scheduler`,
       );
 
       return first;

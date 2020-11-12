@@ -8,7 +8,7 @@
   --color-drag-box-background: hsla(209, 97%, 65%, 0.5);
   --color-handle-wrapper-text: hsla(209, 100%, 80%, 0.5);
   --color-timeline-text: hsl(0, 0%, 48%);
-  --color-header-background: hsla(0, 0%, 97%, 1);
+  --color-header-background: white;
   --color-event-text: white;
   --color-event-background: hsl(202, 100%, 20%);
   --color-event-active-background: hsl(212, 85%, 44%);
@@ -43,6 +43,11 @@
   &,
   * {
     box-sizing: border-box;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
   }
 }
 
@@ -87,12 +92,12 @@
   vertical-align: middle;
 
   .handle.top {
-    top: -5px !important;
+    top: -6px !important;
     cursor: n-resize !important;
   }
 
   .handle.bottom {
-    bottom: 8px !important;
+    bottom: -4px !important;
     cursor: s-resize !important;
   }
 
@@ -100,8 +105,14 @@
   .handle.bottom {
     &::after {
       display: block;
-      text-align: center;
-      content: '═';
+      content: '';
+      background: white;
+      width: 12px;
+      height: 12px;
+      border-radius: 12px;
+      border: 2px solid #093971;
+      margin: 0 auto;
+      box-sizing: border-box;
     }
   }
 }
@@ -169,7 +180,6 @@
 
 .event {
   will-change: height;
-  contain: content;
   user-select: none;
   display: block;
   z-index: var(--z-index-event);
@@ -210,7 +220,6 @@
   right: 0;
   width: 100px;
   height: 50px;
-  overflow: hidden;
   text-overflow: ellipsis;
 
   &.is-pending-creation {
@@ -312,7 +321,7 @@
 
 .range-boxes {
   .event-content {
-    padding: 5px 10px;
+    padding: 8px 10px;
     font-weight: bold;
 
     font-size: 13px;
