@@ -17,7 +17,6 @@ var invariant = _interopDefault(require('invariant'));
 var isEqual = _interopDefault(require('lodash/isEqual'));
 var times = _interopDefault(require('lodash/times'));
 var scrollIntoView = _interopDefault(require('scroll-into-view-if-needed'));
-var en = _interopDefault(require('date-fns/locale/en'));
 var rxjs = require('rxjs');
 var operators = require('rxjs/operators');
 var Mousetrap = _interopDefault(require('mousetrap'));
@@ -38,6 +37,7 @@ var getMinutes = _interopDefault(require('date-fns/get_minutes'));
 var Resizable = _interopDefault(require('re-resizable'));
 var Draggable = _interopDefault(require('react-draggable'));
 var VisuallyHidden = _interopDefault(require('@reach/visually-hidden'));
+var en = _interopDefault(require('date-fns/locale/en'));
 var isSameDay = _interopDefault(require('date-fns/is_same_day'));
 
 function _defineProperty(obj, key, value) {
@@ -234,8 +234,6 @@ ref)
 {var isActive = _ref.isActive,handleDelete = _ref.handleDelete,cellIndex = _ref.cellIndex,rangeIndex = _ref.rangeIndex,classes = _ref.classes,disabled = _ref.disabled,props = _objectWithoutProperties(_ref, ["isActive", "handleDelete", "cellIndex", "rangeIndex", "classes", "disabled"]);
   return /*#__PURE__*/React__default.createElement("div", _extends({ ref: ref, "aria-disabled": disabled }, props));
 }));
-
-var SchedulerContext = /*#__PURE__*/React.createContext({ locale: en });
 
 var createPageMapCoordsToContainer = function createPageMapCoordsToContainer(container) {
   return function (event) {
@@ -678,6 +676,8 @@ var Cell = /*#__PURE__*/React__default.memo(function Cell(_ref)
 
 
 });
+
+var SchedulerContext = /*#__PURE__*/React.createContext({ locale: en });
 
 var formatTemplate = 'ddd h:mma';
 
@@ -1278,8 +1278,14 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled;var _useContext =
-  React.useContext(SchedulerContext),locale = _useContext.locale;
+
+
+
+
+
+
+
+{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,locale = _ref.locale;
   var originDate = React.useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
   var numVerticalCells = MINS_IN_DAY / verticalPrecision;
   var numHorizontalCells = 7 / horizontalPrecision;
