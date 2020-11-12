@@ -33,10 +33,7 @@ export const EventContent = React.memo(function EventContent({
   });
 
   return (
-    <div
-      style={{ width: width - 20, height }}
-      className={classes['event-content']}
-    >
+    <div style={{ width: width, height }} className={classes['event-content']}>
       <VisuallyHidden>
         {getTextForDateRange({ dateRange, locale })}
       </VisuallyHidden>

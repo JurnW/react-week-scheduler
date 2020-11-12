@@ -765,10 +765,7 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
 
 
   return /*#__PURE__*/(
-    React__default.createElement("div", {
-      style: { width: width - 20, height: height },
-      className: classes['event-content'] }, /*#__PURE__*/
-
+    React__default.createElement("div", { style: { width: width, height: height }, className: classes['event-content'] }, /*#__PURE__*/
     React__default.createElement(VisuallyHidden, null,
     getTextForDateRange({ dateRange: dateRange, locale: locale })), /*#__PURE__*/
 

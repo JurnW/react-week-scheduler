@@ -134,7 +134,6 @@
     "prebuild": "npm-run-all -s clean -p lint check-ts",
     "build/demo": "NODE_ENV=production parcel build demo/index.html --public-url /react-week-scheduler/",
     "build": "npm-run-all -s clean -p --aggregate-output types build/demo rollup",
-    "deploy/demo": "gh-pages -d dist",
     "run-prettier": "prettier --write '*.json' 'types/**/*.ts' 'src/**/*.ts{,x}' 'src/**/*.scss'",
     "semantic-release": "semantic-release",
     "commitlint": "commitlint -e $GIT_PARAMS"

@@ -9,9 +9,9 @@
   --color-handle-wrapper-text: hsla(209, 100%, 80%, 0.5);
   --color-timeline-text: hsl(0, 0%, 48%);
   --color-header-background: hsla(0, 0%, 97%, 1);
-  --color-event-text: hsl(207, 65%, 93%);
+  --color-event-text: white;
   --color-event-background: hsl(202, 100%, 20%);
-  --color-event-active-background: hsl(202, 100%, 40%);
+  --color-event-active-background: hsl(212, 85%, 44%);
   --color-event-hover-background: hsl(202, 100%, 30%);
   --color-event-shadow-1: hsla(202, 100%, 16%, 0.5);
   --color-event-shadow-2: rgba(217, 217, 217, 0.5);
@@ -33,7 +33,7 @@
   --z-index-timeline: 2;
   --z-index-timeline-header: 1;
   contain: strict;
-  overflow: hidden;
+  overflow: visible;
   margin-top: 24px;
   background: var(--color-grid-background, white);
   border: 1px solid var(--color-cell-border); }
@@ -253,7 +253,8 @@
     width: 100%; }
 
 .styles-module_range-boxes__ib1Nb .styles-module_start__3CzHL {
-  display: inline; }
+  display: inline;
+  margin-left: 5px; }
   .styles-module_range-boxes__ib1Nb .styles-module_start__3CzHL:after {
     content: ' \2013  ';
     display: inline; }
