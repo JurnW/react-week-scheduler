@@ -1,5 +1,6 @@
 import useComponentSize from '@rehooks/component-size';
 import classcat from 'classcat';
+import { isPast, isToday } from 'date-fns';
 import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
 import format from 'date-fns/format';
@@ -489,7 +490,16 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
                 role="presentation"
                 className={classes['day-column']}
               >
-                <div className={classcat([classes.cell, classes.title])}>
+                <div
+                  className={classcat([
+                    classes.cell,
+                    classes.title,
+                    { [classes['is-passed']]: isPast(addDays(originDate, i)) },
+                    {
+                      [classes['is-current']]: isToday(addDays(originDate, i)),
+                    },
+                  ])}
+                >
                   {format(addDays(originDate, i), 'ddd', { locale })}
                   <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>
                     {format(addDays(originDate, i), ' D', { locale })}

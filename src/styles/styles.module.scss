@@ -20,6 +20,8 @@
   --color-header-shadow-2: hsla(0, 0%, 85%, 0.239);
   --color-timeline-background: white;
   --color-grid-background: white;
+  --color-header-text-past: hsla(0, 0%, 0%, 0.25);
+  --color-header-text-current: hsl(212, 85%, 44%);
 }
 
 .root {
@@ -282,9 +284,16 @@
 
 .header .cell {
   border-top-width: 0;
+
+  &.is-passed {
+    color: var(--color-header-text-past);
+  }
+  &.is-current {
+    color: var(--color-header-text-current);
+  }
 }
 
-.day-header-row {
+.header .cell .day-header-row {
   z-index: var(--z-index-day-header-row);
 }
 

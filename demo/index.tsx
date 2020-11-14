@@ -46,13 +46,7 @@ const classes = mapValues(
 );
 
 const rangeStrings: [string, string][] = [
-  ['2019-03-04 00:15', '2019-03-04 01:45'],
-  ['2019-03-05 09:00', '2019-03-05 10:30'],
-  ['2019-03-06 22:00', '2019-03-06 22:30'],
-  ['2019-03-07 01:30', '2019-03-07 03:00'],
-  ['2019-03-07 05:30', '2019-03-07 10:00'],
-  ['2019-03-08 12:30', '2019-03-08 01:30'],
-  ['2019-03-09 22:00', '2019-03-09 23:59'],
+  ['2020-11-14 01:30', '2020-11-14 02:30'],
 ];
 
 const defaultSchedule: ScheduleType = rangeStrings.map(
@@ -91,7 +85,7 @@ function App() {
   const [weekStart, setWeekStart] = useState(1);
   const originDate = useMemo(
     () =>
-      startOfWeek(new Date('2019-03-04'), {
+      startOfWeek(new Date(), {
         weekStartsOn: weekStart,
       }),
     [weekStart],

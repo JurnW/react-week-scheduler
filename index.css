@@ -220,6 +220,11 @@
 
 .styles-module_header__10uIZ .styles-module_cell__sVJZY {
   border-top-width: 0; }
+  .styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-current__19oIX {
+    color: green; }
+
+.styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-passed__2GHSt {
+  color: red; }
 
 .styles-module_day-header-row__27lss {
   z-index: var(--z-index-day-header-row); }
