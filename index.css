@@ -19,7 +19,9 @@
   --color-header-shadow-1: hsla(0, 0%, 50%, 0.2);
   --color-header-shadow-2: hsla(0, 0%, 85%, 0.239);
   --color-timeline-background: white;
-  --color-grid-background: white; }
+  --color-grid-background: white;
+  --color-header-text-past: hsla(0, 0%, 0%, 0.25);
+  --color-header-text-current: hsl(212, 85%, 44%); }
 
 .styles-module_root__2iNXQ {
   --z-index-handle-wrapper: 1;
@@ -34,7 +36,7 @@
   --z-index-timeline: 2;
   --z-index-timeline-header: 1;
   contain: strict;
-  overflow: visible;
+  overflow: auto;
   margin-top: 24px;
   background: var(--color-grid-background, white);
   border: 1px solid var(--color-cell-border);
@@ -82,11 +84,9 @@
   color: var(--color-handle-wrapper-text);
   vertical-align: middle; }
   .styles-module_handle-wrapper__26Eew .styles-module_handle__LTyBN.styles-module_top__3D7og {
-    top: -6px !important;
-    cursor: n-resize !important; }
+    top: -6px !important; }
   .styles-module_handle-wrapper__26Eew .styles-module_handle__LTyBN.styles-module_bottom__daw_j {
-    bottom: -4px !important;
-    cursor: s-resize !important; }
+    bottom: -4px !important; }
   .styles-module_handle-wrapper__26Eew .styles-module_handle__LTyBN.styles-module_top__3D7og::after,
   .styles-module_handle-wrapper__26Eew .styles-module_handle__LTyBN.styles-module_bottom__daw_j::after {
     display: block;
@@ -220,13 +220,12 @@
 
 .styles-module_header__10uIZ .styles-module_cell__sVJZY {
   border-top-width: 0; }
+  .styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-passed__2GHSt {
+    color: var(--color-header-text-past); }
   .styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-current__19oIX {
-    color: green; }
+    color: var(--color-header-text-current); }
 
-.styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-passed__2GHSt {
-  color: red; }
-
-.styles-module_day-header-row__27lss {
+.styles-module_header__10uIZ .styles-module_cell__sVJZY .styles-module_day-header-row__27lss {
   z-index: var(--z-index-day-header-row); }
 
 .styles-module_sticky-top__2dSgb {

@@ -38,7 +38,7 @@
   --z-index-timeline-header: 1;
 
   contain: strict;
-  overflow: visible;
+  overflow: auto;
   margin-top: 24px;
   background: var(--color-grid-background, white);
   border: 1px solid var(--color-cell-border);
