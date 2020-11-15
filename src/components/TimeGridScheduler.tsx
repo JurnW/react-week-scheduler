@@ -1,4 +1,5 @@
 import useComponentSize from '@rehooks/component-size';
+import Tippy from '@tippy.js/react';
 import classcat from 'classcat';
 import { isPast, isToday } from 'date-fns';
 import addDays from 'date-fns/add_days';
@@ -18,6 +19,7 @@ import React, {
   useState,
 } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
+import { DefaultEventRootComponent } from '../../src/components/DefaultEventRootComponent';
 import { SchedulerContext } from '../context';
 import { useClickAndDrag } from '../hooks/useClickAndDrag';
 import { useMousetrap } from '../hooks/useMousetrap';
@@ -25,6 +27,7 @@ import {
   CellInfo,
   ClassNames,
   DateRange,
+  EventRootProps,
   Grid,
   OnChangeCallback,
   ScheduleType,
@@ -38,6 +41,8 @@ import { createMapDateRangeToCells } from '../utils/createMapDateRangeToCells';
 import { getEarliestTimeRange } from '../utils/getEarliestTimeRange';
 import { getSpan } from '../utils/getSpan';
 import { mergeEvents, mergeRanges } from '../utils/mergeEvents';
+//@ts-ignore
+import DeleteIcon from './assets/delete-icon.js';
 import { Cell } from './Cell';
 import { Schedule, ScheduleProps } from './Schedule';
 
@@ -421,6 +426,34 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
     },
     [grid, disabled, toY, cellClickPrecision, cellInfoToDateRanges],
   );
+
+  const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
+    { handleDelete, disabled, ...props },
+    ref,
+  ) {
+    return (
+      <Tippy
+        arrow
+        interactive
+        isEnabled={!disabled}
+        hideOnClick={false}
+        className={classes.tooltip}
+        content={
+          <button disabled={disabled} onClick={handleDelete}>
+            <DeleteIcon className={classes.icon} />
+            Delete
+          </button>
+        }
+      >
+        <DefaultEventRootComponent
+          handleDelete={handleDelete}
+          disabled={disabled}
+          {...props}
+          ref={ref}
+        />
+      </Tippy>
+    );
+  });
 
   return (
     <div

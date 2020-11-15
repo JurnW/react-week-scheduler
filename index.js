@@ -7,6 +7,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var React = require('react');
 var React__default = _interopDefault(React);
 var useComponentSize = _interopDefault(require('@rehooks/component-size'));
+require('@tippy.js/react');
 var classcat = _interopDefault(require('classcat'));
 var isToday = _interopDefault(require('date-fns/is_today'));
 var isPast = _interopDefault(require('date-fns/is_past'));
@@ -1593,7 +1594,6 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
     };},
   [grid, disabled, toY, cellClickPrecision, cellInfoToDateRanges]);
 
-
   return /*#__PURE__*/(
     React__default.createElement("div", {
       ref: root,
@@ -1628,7 +1628,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
           key: timeIndex,
           timeIndex: timeIndex },
 
-        function (_ref4) {var start = _ref4.start,isHourStart = _ref4.isHourStart;
+        function (_ref5) {var start = _ref5.start,isHourStart = _ref5.isHourStart;
           if (isHourStart) {
             return /*#__PURE__*/(
               React__default.createElement("div", { className: classes.time },
@@ -1755,7 +1755,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","day-hours":"styles-module_day-hours__1E9lT","cell":"styles-module_cell__sVJZY","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","is-hour-start":"styles-module_is-hour-start__1_0Zo","header":"styles-module_header__10uIZ","is-passed":"styles-module_is-passed__2GHSt","is-current":"styles-module_is-current__19oIX","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","timeline":"styles-module_timeline__1hCLT"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","day-hours":"styles-module_day-hours__1E9lT","cell":"styles-module_cell__sVJZY","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","is-hour-start":"styles-module_is-hour-start__1_0Zo","header":"styles-module_header__10uIZ","is-passed":"styles-module_is-passed__2GHSt","is-current":"styles-module_is-current__19oIX","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","timeline":"styles-module_timeline__1hCLT"};
 
 exports.DefaultEventRootComponent = DefaultEventRootComponent;
 exports.SchedulerContext = SchedulerContext;

@@ -151,6 +151,25 @@
   cursor: grabbing;
   z-index: var(--z-index-dragging) !important; }
 
+.styles-module_tooltip__255C3 {
+  padding: 0; }
+  .styles-module_tooltip__255C3 button {
+    padding: 0.3125rem 0.5625rem;
+    -webkit-appearance: none;
+            appearance: none;
+    background: transparent;
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer; }
+    .styles-module_tooltip__255C3 button .styles-module_icon__28xum {
+      filter: invert(100%); }
+
 .styles-module_event__1PixZ {
   will-change: height;
   -webkit-user-select: none;
