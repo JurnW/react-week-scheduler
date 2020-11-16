@@ -7,7 +7,6 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var React = require('react');
 var React__default = _interopDefault(React);
 var useComponentSize = _interopDefault(require('@rehooks/component-size'));
-require('@tippy.js/react');
 var classcat = _interopDefault(require('classcat'));
 var isToday = _interopDefault(require('date-fns/is_today'));
 var isPast = _interopDefault(require('date-fns/is_past'));
@@ -1594,6 +1593,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
     };},
   [grid, disabled, toY, cellClickPrecision, cellInfoToDateRanges]);
 
+
   return /*#__PURE__*/(
     React__default.createElement("div", {
       ref: root,
@@ -1628,7 +1628,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
           key: timeIndex,
           timeIndex: timeIndex },
 
-        function (_ref5) {var start = _ref5.start,isHourStart = _ref5.isHourStart;
+        function (_ref4) {var start = _ref4.start,isHourStart = _ref4.isHourStart;
           if (isHourStart) {
             return /*#__PURE__*/(
               React__default.createElement("div", { className: classes.time },
