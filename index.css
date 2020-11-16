@@ -250,7 +250,8 @@
 .styles-module_sticky-top__2dSgb {
   position: sticky;
   top: 0;
-  border-bottom: 1px solid var(--color-cell-border-dark); }
+  border-bottom: 1px solid var(--color-cell-border-dark);
+  z-index: var(--z-index-day-header-row); }
 
 .styles-module_sticky-left__3tNLK {
   position: sticky;
