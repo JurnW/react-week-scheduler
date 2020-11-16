@@ -168,7 +168,7 @@
     text-align: center;
     cursor: pointer; }
     .styles-module_tooltip__255C3 button .styles-module_icon__28xum {
-      filter: invert(100%); }
+      filter: brightness(0) invert(1); }
 
 .styles-module_event__1PixZ {
   will-change: height;
