@@ -5,6 +5,8 @@
 .theme {
   --color-cell-border: hsla(0, 0%, 0%, 0.1);
   --color-cell-border-dark: hsla(0, 0%, 0%, 0.25);
+  --color-cell-hover: hsla(173, 36%, 95%, 1);
+  --color-cell-hover-text: hsla(173, 40%, 51%, 1);
   --color-drag-box-border: hsla(209, 97%, 50%, 0.5);
   --color-drag-box-background: hsla(209, 97%, 65%, 0.5);
   --color-handle-wrapper-text: hsla(209, 100%, 80%, 0.5);
@@ -270,6 +272,19 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    .cell:hover {
+      background: var(--color-cell-hover);
+      border: 2px dashed var(--color-cell-hover-text);
+      border-radius: 8px;
+      cursor: pointer;
+      &:after {
+        content: '+ Add availability';
+        color: var(--color-cell-hover-text);
+        margin: 6px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+    }
   }
 
   .cell {
@@ -404,6 +419,14 @@
   top: -8px;
   &:first-child {
     visibility: hidden;
+  }
+  &:hover,
+  + .cell:hover {
+    background: var(--color-grid-background);
+    border: none;
+    &:after {
+      content: none;
+    }
   }
 
   .time {
