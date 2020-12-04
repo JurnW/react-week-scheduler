@@ -13,9 +13,9 @@
   --color-timeline-text: hsl(0, 0%, 48%);
   --color-header-background: white;
   --color-event-text: white;
-  --color-event-background: hsl(202, 100%, 20%);
-  --color-event-active-background: hsl(212, 85%, 44%);
-  --color-event-hover-background: hsl(202, 100%, 30%);
+  --color-event-background: hsl(173, 40%, 51%);
+  --color-event-active-background: hsl(173, 40%, 51%);
+  --color-event-hover-background: hsl(173, 40%, 51%);
   --color-event-shadow-1: hsla(202, 100%, 16%, 0.5);
   --color-event-shadow-2: rgba(217, 217, 217, 0.5);
   --color-header-shadow-1: hsla(0, 0%, 50%, 0.2);
@@ -212,6 +212,7 @@
   margin: 0;
   position: absolute;
   font-size: 1rem;
+  outline: none;
 
   &:not(.is-pending-creation):not([disabled]):not(.is-disabled) {
     &:focus,
@@ -247,6 +248,10 @@
   width: 100px;
   height: 50px;
   text-overflow: ellipsis;
+  border: 1px solid #32a093;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 5px rgba(50, 160, 147, 0.5);
+  border-radius: 8px;
 
   &.is-pending-creation {
     z-index: var(--z-index-event-is-pending-creation);
@@ -381,7 +386,6 @@
 
   .start {
     display: inline;
-    margin-left: 5px;
     &:after {
       content: ' – ';
       display: inline;
@@ -390,6 +394,11 @@
 
   .end {
     display: inline;
+  }
+  .status {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 12px;
   }
 }
 

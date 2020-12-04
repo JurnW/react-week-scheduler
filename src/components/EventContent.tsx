@@ -43,6 +43,7 @@ export const EventContent = React.memo(function EventContent({
       <span aria-hidden className={classes.end}>
         {isEnd && end}
       </span>
+      <span className={classes.status}>Available</span>
     </div>
   );
 });
