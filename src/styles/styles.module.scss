@@ -3,7 +3,7 @@
 }
 
 .theme {
-  --color-cell-border: hsla(0, 0%, 0%, 0.1);
+  --color-cell-border: hsl(214, 32%, 91%);
   --color-cell-border-dark: hsla(0, 0%, 0%, 0.25);
   --color-cell-hover: hsla(173, 36%, 95%, 1);
   --color-cell-hover-text: hsla(173, 40%, 51%, 1);
@@ -22,8 +22,8 @@
   --color-header-shadow-2: hsla(0, 0%, 85%, 0.239);
   --color-timeline-background: white;
   --color-grid-background: white;
-  --color-header-text-past: hsla(0, 0%, 0%, 0.25);
-  --color-header-text-current: hsl(212, 85%, 44%);
+  --color-header-text-past: hsl(216, 20%, 69%);
+  --color-header-text-current: hsl(213, 49%, 34%);
 }
 
 .root {
@@ -114,7 +114,7 @@
       width: 12px;
       height: 12px;
       border-radius: 12px;
-      border: 2px solid #093971;
+      border: 2px solid #32a093;
       margin: 0 auto;
       box-sizing: border-box;
     }
@@ -317,19 +317,35 @@
   border-left: 0;
 }
 
-.cell:not(.is-hour-start) {
-  border-top-width: 1px;
-  border-top-style: dashed;
-}
-
 .header .cell {
-  border-top-width: 0;
+  border: none;
+  line-height: 24px;
+  justify-content: center;
+  align-items: center;
+  color: #718096;
+
+  span {
+    display: inline-block;
+    margin-right: 3px;
+    font-weight: bold;
+    &:first-of-type {
+      font-weight: normal;
+    }
+  }
 
   &.is-passed {
     color: var(--color-header-text-past);
   }
   &.is-current {
     color: var(--color-header-text-current);
+    .date {
+      color: white;
+      background: #2c5282;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-weight: bold;
+    }
   }
 }
 
@@ -340,8 +356,12 @@
 .sticky-top {
   position: sticky;
   top: 0;
-  border-bottom: 1px solid var(--color-cell-border-dark);
   z-index: var(--z-index-day-header-row);
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 5px rgba(203, 212, 224, 0.5);
+  border-radius: 8px 8px 0px 0px;
+  border-collapse: collapse;
 }
 
 .sticky-left {
@@ -371,10 +391,11 @@
 
 .range-boxes {
   .event-content {
-    padding: 0 10px;
+    overflow: hidden;
+    padding: 4px 10px;
     font-weight: bold;
 
-    font-size: 13px;
+    font-size: 12px;
     width: 100%;
     height: 100%;
     white-space: pre-wrap;
@@ -418,6 +439,10 @@
   z-index: var(--z-index-timeline-header);
   box-shadow: none;
   background: var(--color-timeline-background);
+  height: 46px;
+  position: sticky;
+  top: 0;
+
   .cell {
     visibility: hidden;
   }
@@ -426,6 +451,7 @@
 .timeline > *:not(.header) .cell {
   position: relative;
   top: -8px;
+  border-left: 0;
   &:first-child {
     visibility: hidden;
   }
@@ -440,10 +466,9 @@
 
   .time {
     background: inherit;
-    padding-right: 1rem;
+    padding: 0 12px;
   }
 
-  border: none;
   border-color: transparent;
   text-align: end;
   justify-content: flex-end;

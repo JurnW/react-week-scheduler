@@ -344,7 +344,7 @@ export const RangeBox = React.memo(function RangeBox({
           },
         ])}
         ref={ref}
-        style={{ width: width, height }}
+        style={{ width: width - 4, height, marginLeft: '2px' }}
       >
         <Resizable
           size={{ ...originalRect, width: originalRect.width }}

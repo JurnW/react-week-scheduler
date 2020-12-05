@@ -33,7 +33,10 @@ export const EventContent = React.memo(function EventContent({
   });
 
   return (
-    <div style={{ width: width, height }} className={classes['event-content']}>
+    <div
+      style={{ width: width - 4, height }}
+      className={classes['event-content']}
+    >
       <VisuallyHidden>
         {getTextForDateRange({ dateRange, locale })}
       </VisuallyHidden>
@@ -43,7 +46,7 @@ export const EventContent = React.memo(function EventContent({
       <span aria-hidden className={classes.end}>
         {isEnd && end}
       </span>
-      <span className={classes.status}>Available</span>
+      {height > 25 ? <span className={classes.status}>Available</span> : null}
     </div>
   );
 });

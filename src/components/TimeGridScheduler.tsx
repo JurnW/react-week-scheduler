@@ -460,7 +460,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
                         if (isHourStart) {
                           return (
                             <div className={classes.time}>
-                              {format(start, 'h a', { locale })}
+                              {format(start, 'hh:mm', { locale })}
                             </div>
                           );
                         }
@@ -480,6 +480,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
             classes['day-header-row'],
           ])}
         >
+          <div className={classes.cell}></div>
           <div
             role="presentation"
             className={classcat([classes.calendar, classes.header])}
@@ -500,8 +501,13 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
                     },
                   ])}
                 >
-                  {format(addDays(originDate, i), 'ddd', { locale })}
-                  <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>
+                  <span>
+                    {format(addDays(originDate, i), 'ddd ', { locale })}
+                  </span>
+                  <span className={classes.month}>
+                    {format(addDays(originDate, i), 'MMM ', { locale })}
+                  </span>
+                  <span className={classes.date}>
                     {format(addDays(originDate, i), ' D', { locale })}
                   </span>
                 </div>
