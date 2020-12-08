@@ -1680,7 +1680,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
         React__default.createElement("span", null,
         format(addDays(originDate, i), 'ddd ', { locale: locale })), /*#__PURE__*/
 
-        React__default.createElement("span", { className: classes.month },
+        React__default.createElement("span", null,
         format(addDays(originDate, i), 'MMM ', { locale: locale })), /*#__PURE__*/
 
         React__default.createElement("span", { className: classes.date },

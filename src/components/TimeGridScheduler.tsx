@@ -504,7 +504,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
                   <span>
                     {format(addDays(originDate, i), 'ddd ', { locale })}
                   </span>
-                  <span className={classes.month}>
+                  <span>
                     {format(addDays(originDate, i), 'MMM ', { locale })}
                   </span>
                   <span className={classes.date}>
