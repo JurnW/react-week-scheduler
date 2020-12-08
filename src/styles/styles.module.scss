@@ -45,6 +45,7 @@
   background: var(--color-grid-background, white);
   border: 1px solid var(--color-cell-border);
   border-top: none;
+  border-color: transparent;
 
   &,
   * {
@@ -269,15 +270,12 @@
 .day-column {
   flex: 1 1 var(--cell-width, 250px);
   min-width: var(--cell-min-width, 189px);
-  &:first-child .day-hours {
-    border-left: 1px solid var(--color-cell-border);
-  }
 
   .day-hours {
     display: flex;
     flex-direction: column;
     position: relative;
-    .cell:hover {
+    &:not(.sticky-left).cell:hover {
       background: var(--color-cell-hover);
       border: 2px dashed var(--color-cell-hover-text);
       border-radius: 8px;
@@ -345,6 +343,7 @@
       height: 24px;
       border-radius: 50%;
       font-weight: bold;
+      margin-left: 3px;
     }
   }
 }
@@ -367,6 +366,9 @@
 .sticky-left {
   position: sticky;
   left: 0;
+  &.day-hours {
+    border-left: 0;
+  }
 }
 
 .header {
@@ -433,6 +435,9 @@
     min-width: auto;
     flex: 0 0 auto;
   }
+  .day-hours {
+    border-right: 1px solid var(--color-cell-border);
+  }
 }
 
 .timeline .header {
@@ -458,7 +463,6 @@
   &:hover,
   + .cell:hover {
     background: var(--color-grid-background);
-    border: none;
     &:after {
       content: none;
     }
