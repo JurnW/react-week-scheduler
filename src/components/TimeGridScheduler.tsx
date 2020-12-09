@@ -556,22 +556,34 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
 
           <div ref={parent} role="grid" className={classes.calendar}>
             {times(7).map(dayIndex => {
+              const isPassed = isPast(addDays(originDate, dayIndex + 1));
               return (
                 <div
                   role="gridcell"
                   key={dayIndex}
                   className={classes['day-column']}
                 >
-                  <div className={classes['day-hours']}>
+                  <div
+                    className={classcat([
+                      classes['day-hours'],
+                      {
+                        [classes['is-passed']]: isPassed,
+                      },
+                    ])}
+                  >
                     {times(numVisualVerticalCells).map(timeIndex => {
                       return (
                         <Cell
                           classes={classes}
-                          onClick={handleCellClick(
-                            dayIndex,
-                            timeIndex *
-                              (numVerticalCells / numVisualVerticalCells),
-                          )}
+                          onClick={
+                            !isPassed
+                              ? handleCellClick(
+                                  dayIndex,
+                                  timeIndex *
+                                    (numVerticalCells / numVisualVerticalCells),
+                                )
+                              : undefined
+                          }
                           getDateRangeForVisualGrid={getDateRangeForVisualGrid}
                           key={timeIndex}
                           timeIndex={timeIndex}

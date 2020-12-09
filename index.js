@@ -1684,7 +1684,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
         format(addDays(originDate, i), 'MMM ', { locale: locale })), /*#__PURE__*/
 
         React__default.createElement("span", { className: classes.date },
-        format(addDays(originDate, i), ' D', { locale: locale })))));}))), /*#__PURE__*/
+        format(addDays(originDate, i), 'D', { locale: locale })))));}))), /*#__PURE__*/
 
 
 
@@ -1732,21 +1732,33 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
     React__default.createElement("div", { ref: parent, role: "grid", className: classes.calendar },
     times(7).map(function (dayIndex) {
+      var isPassed = isPast(addDays(originDate, dayIndex + 1));
       return /*#__PURE__*/(
         React__default.createElement("div", {
           role: "gridcell",
           key: dayIndex,
           className: classes['day-column'] }, /*#__PURE__*/
 
-        React__default.createElement("div", { className: classes['day-hours'] },
+        React__default.createElement("div", {
+          className: classcat([
+          classes['day-hours'], _defineProperty({},
+
+          classes['is-passed'], isPassed)]) },
+
+
+
         times(numVisualVerticalCells).map(function (timeIndex) {
           return /*#__PURE__*/(
             React__default.createElement(Cell, {
               classes: classes,
-              onClick: handleCellClick(
+              onClick:
+              !isPassed ?
+              handleCellClick(
               dayIndex,
               timeIndex * (
-              numVerticalCells / numVisualVerticalCells)),
+              numVerticalCells / numVisualVerticalCells)) :
+
+              undefined,
 
               getDateRangeForVisualGrid: getDateRangeForVisualGrid,
               key: timeIndex,
@@ -1765,7 +1777,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","day-hours":"styles-module_day-hours__1E9lT","cell":"styles-module_cell__sVJZY","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-passed":"styles-module_is-passed__2GHSt","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","day-hours":"styles-module_day-hours__1E9lT","sticky-left":"styles-module_sticky-left__3tNLK","is-passed":"styles-module_is-passed__2GHSt","cell":"styles-module_cell__sVJZY","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
 
 exports.DefaultEventRootComponent = DefaultEventRootComponent;
 exports.SchedulerContext = SchedulerContext;

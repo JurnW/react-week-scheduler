@@ -275,7 +275,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    &:not(.sticky-left).cell:hover {
+    &:not(.sticky-left):not(.is-passed) .cell:hover {
       background: var(--color-cell-hover);
       border: 2px dashed var(--color-cell-hover-text);
       border-radius: 8px;
