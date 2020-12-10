@@ -233,7 +233,7 @@
         font-weight: 600;
         font-size: 12px; }
   .styles-module_day-column__30McI .styles-module_cell__sVJZY {
-    flex: 1 1 var(--cell-height, 40px);
+    flex: 1 1 var(--cell-height, 42px);
     display: flex;
     justify-content: flex-start;
     align-items: flex-start; }
