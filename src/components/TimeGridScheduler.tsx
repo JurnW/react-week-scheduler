@@ -480,7 +480,6 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
             classes['day-header-row'],
           ])}
         >
-          <div className={classes.cell}></div>
           <div
             role="presentation"
             className={classcat([classes.calendar, classes.header])}
