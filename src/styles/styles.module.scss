@@ -15,6 +15,7 @@
   --color-event-text: white;
   --color-event-background: hsl(173, 40%, 51%);
   --color-event-active-background: hsl(173, 40%, 51%);
+  --color-event-google-background: hsl(216, 38%, 95%);
   --color-event-hover-background: hsl(173, 40%, 51%);
   --color-event-shadow-1: hsla(202, 100%, 16%, 0.5);
   --color-event-shadow-2: rgba(217, 217, 217, 0.5);
@@ -269,6 +270,13 @@
   box-sizing: border-box;
   box-shadow: 0px 2px 5px rgba(50, 160, 147, 0.5);
   border-radius: 8px;
+
+  &.is-google {
+    background: var(--color-event-google-background);
+    color: #2c5282;
+    border: 1px solid var(--color-event-google-background);
+    box-shadow: none;
+  }
 
   &.is-pending-creation {
     z-index: var(--z-index-event-is-pending-creation);

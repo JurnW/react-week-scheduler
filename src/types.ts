@@ -27,9 +27,10 @@ export type CellInfo = {
   startY: number;
   endX: number;
   endY: number;
+  source: string;
 };
 
-export type DateRange = [Date, Date];
+export type DateRange = [Date, Date, string];
 
 export type MapCellInfoToDateRange = (
   options: MapCellInfoToDateRangeOptions,

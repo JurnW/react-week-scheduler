@@ -57,6 +57,9 @@ export const RangeBox = React.memo(function RangeBox({
     modifiedCell,
   ]);
 
+  const isGoogleEvent = cell.source === 'google';
+  disabled = isGoogleEvent;
+
   const { top, left, width, height } = rect;
 
   const isStart = cellIndex === 0;
@@ -341,13 +344,14 @@ export const RangeBox = React.memo(function RangeBox({
           {
             [classes['is-draggable']]: !disabled && moveAxis !== 'none',
             [classes['is-disabled']]: disabled,
+            [classes['is-google']]: isGoogleEvent,
           },
         ])}
         ref={ref}
         style={{ width: width - 4, height, marginLeft: '2px' }}
       >
         <Resizable
-          size={{ ...originalRect, width: originalRect.width }}
+          size={{ ...originalRect, width: originalRect.width - 4 }}
           key={`${rangeIndex}.${cellIndex}.${cellArray.length}.${originalRect.top}.${originalRect.left}`}
           onResize={handleResize}
           onResizeStop={handleStop}
