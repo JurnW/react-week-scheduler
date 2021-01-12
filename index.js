@@ -1202,7 +1202,7 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
         dateRangeToCells(dateRange).map(function (cell, cellIndex, cellArray) {var _ref2;
           var isGoogleEvent = cell.source === 'google';
           if (isGoogleEvent) {
-            isDeletable = false, isResizable = false, disabled = true;
+            isDeletable = false, isResizable = false;
           }
           return /*#__PURE__*/(
             React__default.createElement(RangeBox, {
@@ -1230,7 +1230,7 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
               getIsActive: getIsActive,
               eventContentComponent: eventContentComponent,
               eventRootComponent: eventRootComponent,
-              disabled: disabled }));
+              disabled: isGoogleEvent }));
 
 
         })));
