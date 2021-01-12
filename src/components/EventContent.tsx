@@ -31,10 +31,15 @@ export const EventContent = React.memo(function EventContent({
     locale,
     includeDayIfSame: false,
   });
+  const isFifteenMinuteMeeting = height < 25 ? '0 10px' : '';
 
   return (
     <div
-      style={{ width: width - 4, height }}
+      style={{
+        width: width - 4,
+        height: height - 4,
+        padding: isFifteenMinuteMeeting,
+      }}
       className={classes['event-content']}
     >
       <VisuallyHidden>
@@ -46,7 +51,6 @@ export const EventContent = React.memo(function EventContent({
       <span aria-hidden className={classes.end}>
         {isEnd && end}
       </span>
-      {height > 25 ? <span className={classes.status}>Available</span> : null}
     </div>
   );
 });
