@@ -46,6 +46,7 @@ const classes = mapValues(
 );
 
 const rangeStrings: [string, string, string][] = [
+  ['2020-11-09 01:30', '2020-11-09 02:30', 'google'],
   ['2020-11-14 01:30', '2020-11-14 02:30', 'local'],
   ['2020-11-14 03:30', '2020-11-14 04:30', 'google'],
 ];

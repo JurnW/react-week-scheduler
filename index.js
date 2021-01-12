@@ -771,10 +771,15 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
     locale: locale,
     includeDayIfSame: false }),_getFormattedComponen2 = _slicedToArray(_getFormattedComponen, 2),start = _getFormattedComponen2[0],end = _getFormattedComponen2[1];
 
+  var isFifteenMinuteMeeting = height < 25 ? '0 10px' : '';
 
   return /*#__PURE__*/(
     React__default.createElement("div", {
-      style: { width: width - 4, height: height },
+      style: {
+        width: width - 4,
+        height: height - 4,
+        padding: isFifteenMinuteMeeting },
+
       className: classes['event-content'] }, /*#__PURE__*/
 
     React__default.createElement(VisuallyHidden, null,
@@ -784,9 +789,8 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
     isStart && start), /*#__PURE__*/
 
     React__default.createElement("span", { "aria-hidden": true, className: classes.end },
-    isEnd && end),
+    isEnd && end)));
 
-    height > 25 ? /*#__PURE__*/React__default.createElement("span", { className: classes.status }, "Available") : null));
 
 
 });
@@ -830,11 +834,8 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
 
   var modifiedDateRange = React.useMemo(function () {return cellInfoToDateRange(modifiedCell);}, [
   cellInfoToDateRange,
-  modifiedCell]);
+  modifiedCell]);var
 
-
-  var isGoogleEvent = cell.source === 'google';
-  disabled = isGoogleEvent;var
 
   top = rect.top,left = rect.left,width = rect.width,height = rect.height;
 
@@ -1119,12 +1120,16 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
       className, (_ref4 = {}, _defineProperty(_ref4,
 
       classes['is-draggable'], !disabled && moveAxis !== 'none'), _defineProperty(_ref4,
-      classes['is-disabled'], disabled), _defineProperty(_ref4,
-      classes['is-google'], isGoogleEvent), _ref4)]),
+      classes['is-disabled'], disabled), _ref4)]),
 
 
       ref: ref,
-      style: { width: width - 4, height: height, marginLeft: '2px' } }, /*#__PURE__*/
+      style: {
+        width: width - 4,
+        height: height - 4,
+        marginLeft: '2px',
+        marginTop: '2px' } }, /*#__PURE__*/
+
 
     React__default.createElement(Resizable, {
       size: _objectSpread2(_objectSpread2({}, originalRect), {}, { width: originalRect.width - 4 }),
@@ -1191,9 +1196,14 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
   return /*#__PURE__*/(
     React__default.createElement("div", { className: classes['range-boxes'] },
     ranges.map(function (dateRange, rangeIndex) {
+      var isPast = isBefore(dateRange[1], new Date());
       return /*#__PURE__*/(
         React__default.createElement("span", { key: rangeIndex },
-        dateRangeToCells(dateRange).map(function (cell, cellIndex, cellArray) {
+        dateRangeToCells(dateRange).map(function (cell, cellIndex, cellArray) {var _ref2;
+          var isGoogleEvent = cell.source === 'google';
+          if (isGoogleEvent) {
+            isDeletable = false, isResizable = false, disabled = true;
+          }
           return /*#__PURE__*/(
             React__default.createElement(RangeBox, {
               classes: classes,
@@ -1206,7 +1216,13 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
               cellArray: cellArray,
               cellIndex: cellIndex,
               rangeIndex: rangeIndex,
-              className: className,
+              className: classcat([
+              className, (_ref2 = {}, _defineProperty(_ref2,
+
+              classes['is-past'], isPast), _defineProperty(_ref2,
+              classes['is-google'], isGoogleEvent), _ref2)]),
+
+
               onChange: onChange,
               onClick: onClick,
               grid: grid,
@@ -1785,7 +1801,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-passed":"styles-module_is-passed__2GHSt","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-passed":"styles-module_is-passed__2GHSt","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","is-past":"styles-module_is-past__uYDtP","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
 
 exports.DefaultEventRootComponent = DefaultEventRootComponent;
 exports.SchedulerContext = SchedulerContext;

@@ -1,3 +1,5 @@
+import classcat from 'classcat';
+import { isBefore } from 'date-fns';
 import React from 'react';
 import {
   CellInfo,
@@ -51,9 +53,14 @@ export const Schedule = React.memo(function Schedule({
   return (
     <div className={classes['range-boxes']}>
       {ranges.map((dateRange, rangeIndex) => {
+        const isPast = isBefore(dateRange[1], new Date());
         return (
           <span key={rangeIndex}>
             {dateRangeToCells(dateRange).map((cell, cellIndex, cellArray) => {
+              const isGoogleEvent = cell.source === 'google';
+              if (isGoogleEvent) {
+                (isDeletable = false), (isResizable = false), (disabled = true);
+              }
               return (
                 <RangeBox
                   classes={classes}
@@ -66,7 +73,13 @@ export const Schedule = React.memo(function Schedule({
                   cellArray={cellArray}
                   cellIndex={cellIndex}
                   rangeIndex={rangeIndex}
-                  className={className}
+                  className={classcat([
+                    className,
+                    {
+                      [classes['is-past']]: isPast,
+                      [classes['is-google']]: isGoogleEvent,
+                    },
+                  ])}
                   onChange={onChange}
                   onClick={onClick}
                   grid={grid}
