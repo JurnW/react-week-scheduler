@@ -17,7 +17,7 @@ export const createMapDateRangeToCells = ({
   numHorizontalCells: number;
   numVerticalCells: number;
   originDate: Date;
-}) => ([start, end]: DateRange): CellInfo[] => {
+}) => ([start, end, source]: DateRange): CellInfo[] => {
   const originOfThisDay = startOfDay(start);
   const _startX = toX(differenceInDays(start, originDate));
   const _startY = toY(differenceInMinutes(start, originOfThisDay));
@@ -41,6 +41,7 @@ export const createMapDateRangeToCells = ({
       endY,
       spanX,
       spanY,
+      source
     };
   });
 

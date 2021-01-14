@@ -2,9 +2,10 @@ import compareAsc from 'date-fns/compare_asc';
 import _mergeRanges from 'merge-ranges';
 import { ScheduleType } from '../types';
 
+//TODO: add string to retun value
 export function mergeRanges(event: ScheduleType): ScheduleType {
   return _mergeRanges(
-    [...event].map(d => d.map(c => new Date(c)) as [Date, Date]),
+    [...event].map(d => d.map(c => new Date(c)) as [Date, Date, string]),
   );
 }
 

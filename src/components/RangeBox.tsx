@@ -344,10 +344,15 @@ export const RangeBox = React.memo(function RangeBox({
           },
         ])}
         ref={ref}
-        style={{ width: width - 4, height, marginLeft: '2px' }}
+        style={{
+          width: width - 4,
+          height: height - 4,
+          marginLeft: '2px',
+          marginTop: '2px',
+        }}
       >
         <Resizable
-          size={{ ...originalRect, width: originalRect.width }}
+          size={{ ...originalRect, width: originalRect.width - 4 }}
           key={`${rangeIndex}.${cellIndex}.${cellArray.length}.${originalRect.top}.${originalRect.left}`}
           onResize={handleResize}
           onResizeStop={handleStop}

@@ -23,6 +23,7 @@ export const Cell = React.memo(function Cell({
     endY: timeIndex + 1,
     spanX: 1,
     spanY: 1,
+    source: '',
   });
 
   const isHourStart = getMinutes(start) === 0;

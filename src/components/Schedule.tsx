@@ -1,3 +1,5 @@
+import classcat from 'classcat';
+import { isBefore } from 'date-fns';
 import React from 'react';
 import {
   CellInfo,
@@ -51,16 +53,19 @@ export const Schedule = React.memo(function Schedule({
   return (
     <div className={classes['range-boxes']}>
       {ranges.map((dateRange, rangeIndex) => {
+        const isPast = isBefore(dateRange[1], new Date());
         return (
           <span key={rangeIndex}>
             {dateRangeToCells(dateRange).map((cell, cellIndex, cellArray) => {
+              const isGoogleEvent = cell.source === 'google';
+              if (isGoogleEvent) {
+                (isDeletable = false), (isResizable = false);
+              }
               return (
                 <RangeBox
                   classes={classes}
                   onActiveChange={onActiveChange}
-                  key={`${rangeIndex}.${ranges.length}.${cellIndex}.${
-                    cellArray.length
-                  }`}
+                  key={`${rangeIndex}.${ranges.length}.${cellIndex}.${cellArray.length}`}
                   isResizable={isResizable}
                   moveAxis={moveAxis}
                   isDeletable={isDeletable}
@@ -68,7 +73,13 @@ export const Schedule = React.memo(function Schedule({
                   cellArray={cellArray}
                   cellIndex={cellIndex}
                   rangeIndex={rangeIndex}
-                  className={className}
+                  className={classcat([
+                    className,
+                    {
+                      [classes['is-past']]: isPast,
+                      [classes['is-google']]: isGoogleEvent,
+                    },
+                  ])}
                   onChange={onChange}
                   onClick={onClick}
                   grid={grid}
@@ -76,7 +87,7 @@ export const Schedule = React.memo(function Schedule({
                   getIsActive={getIsActive}
                   eventContentComponent={eventContentComponent}
                   eventRootComponent={eventRootComponent}
-                  disabled={disabled}
+                  disabled={isGoogleEvent}
                 />
               );
             })}

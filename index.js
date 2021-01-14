@@ -468,7 +468,7 @@ var createGrid = function createGrid(_ref)
     cellHeight: cellHeight,
 
     getRectFromCell: function getRectFromCell(data) {var
-      endX = data.endX,startX = data.startX,endY = data.endY,startY = data.startY,spanX = data.spanX,spanY = data.spanY;
+      endX = data.endX,startX = data.startX,endY = data.endY,startY = data.startY,spanX = data.spanX,spanY = data.spanY,source = data.source;
       var bottom = endY * this.cellHeight;
       var top = startY * this.cellHeight;
       var left = startX * this.cellWidth;
@@ -483,6 +483,7 @@ var createGrid = function createGrid(_ref)
         right: right,
         height: height,
         width: width,
+        source: source,
 
         // @TODO: check the math
         startX: startX * this.cellWidth,
@@ -515,6 +516,7 @@ var createGrid = function createGrid(_ref)
 
       var spanX = clamp(getSpan(startX, endX), 1, numHorizontalCells);
       var spanY = clamp(getSpan(startY, endY), 1, numVerticalCells);
+      var source = data.source;
 
       return {
         spanX: spanX,
@@ -522,7 +524,8 @@ var createGrid = function createGrid(_ref)
         startX: startX,
         startY: startY,
         endX: endX,
-        endY: endY };
+        endY: endY,
+        source: source };
 
     } };
 
@@ -582,7 +585,7 @@ var createMapDateRangeToCells = function createMapDateRangeToCells(_ref) {var _r
 
 
 
-    function (_ref2) {var _ref3 = _slicedToArray(_ref2, 2),start = _ref3[0],end = _ref3[1];
+    function (_ref2) {var _ref3 = _slicedToArray(_ref2, 3),start = _ref3[0],end = _ref3[1],source = _ref3[2];
       var originOfThisDay = startOfDay(start);
       var _startX = toX(differenceInDays(start, originDate));
       var _startY = toY(differenceInMinutes(start, originOfThisDay));
@@ -605,7 +608,8 @@ var createMapDateRangeToCells = function createMapDateRangeToCells(_ref) {var _r
           endX: endX,
           endY: endY,
           spanX: spanX,
-          spanY: spanY };
+          spanY: spanY,
+          source: source };
 
       });
 
@@ -624,6 +628,7 @@ ranges)
   0];
 }
 
+//TODO: add string to retun value
 function mergeRanges(event) {
   return _mergeRanges(
   _toConsumableArray(event).map(function (d) {return d.map(function (c) {return new Date(c);});}));
@@ -662,7 +667,8 @@ var Cell = /*#__PURE__*/React__default.memo(function Cell(_ref)
     endX: 0,
     endY: timeIndex + 1,
     spanX: 1,
-    spanY: 1 }),_getDateRangeForVisua2 = _slicedToArray(_getDateRangeForVisua, 1),_getDateRangeForVisua3 = _slicedToArray(_getDateRangeForVisua2[0], 1),start = _getDateRangeForVisua3[0];
+    spanY: 1,
+    source: '' }),_getDateRangeForVisua2 = _slicedToArray(_getDateRangeForVisua, 1),_getDateRangeForVisua3 = _slicedToArray(_getDateRangeForVisua2[0], 1),start = _getDateRangeForVisua3[0];
 
 
   var isHourStart = getMinutes(start) === 0;
@@ -765,10 +771,15 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
     locale: locale,
     includeDayIfSame: false }),_getFormattedComponen2 = _slicedToArray(_getFormattedComponen, 2),start = _getFormattedComponen2[0],end = _getFormattedComponen2[1];
 
+  var isFifteenMinuteMeeting = height < 25 ? '0 10px' : '';
 
   return /*#__PURE__*/(
     React__default.createElement("div", {
-      style: { width: width - 4, height: height },
+      style: {
+        width: width - 4,
+        height: height - 4,
+        padding: isFifteenMinuteMeeting },
+
       className: classes['event-content'] }, /*#__PURE__*/
 
     React__default.createElement(VisuallyHidden, null,
@@ -778,9 +789,8 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
     isStart && start), /*#__PURE__*/
 
     React__default.createElement("span", { "aria-hidden": true, className: classes.end },
-    isEnd && end),
+    isEnd && end)));
 
-    height > 25 ? /*#__PURE__*/React__default.createElement("span", { className: classes.status }, "Available") : null));
 
 
 });
@@ -1114,10 +1124,15 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
 
 
       ref: ref,
-      style: { width: width - 4, height: height, marginLeft: '2px' } }, /*#__PURE__*/
+      style: {
+        width: width - 4,
+        height: height - 4,
+        marginLeft: '2px',
+        marginTop: '2px' } }, /*#__PURE__*/
+
 
     React__default.createElement(Resizable, {
-      size: _objectSpread2(_objectSpread2({}, originalRect), {}, { width: originalRect.width }),
+      size: _objectSpread2(_objectSpread2({}, originalRect), {}, { width: originalRect.width - 4 }),
       key: "".concat(rangeIndex, ".").concat(cellIndex, ".").concat(cellArray.length, ".").concat(originalRect.top, ".").concat(originalRect.left),
       onResize: handleResize,
       onResizeStop: handleStop,
@@ -1181,16 +1196,19 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
   return /*#__PURE__*/(
     React__default.createElement("div", { className: classes['range-boxes'] },
     ranges.map(function (dateRange, rangeIndex) {
+      var isPast = isBefore(dateRange[1], new Date());
       return /*#__PURE__*/(
         React__default.createElement("span", { key: rangeIndex },
-        dateRangeToCells(dateRange).map(function (cell, cellIndex, cellArray) {
+        dateRangeToCells(dateRange).map(function (cell, cellIndex, cellArray) {var _ref2;
+          var isGoogleEvent = cell.source === 'google';
+          if (isGoogleEvent) {
+            isDeletable = false, isResizable = false;
+          }
           return /*#__PURE__*/(
             React__default.createElement(RangeBox, {
               classes: classes,
               onActiveChange: onActiveChange,
-              key: "".concat(rangeIndex, ".").concat(ranges.length, ".").concat(cellIndex, ".").concat(
-              cellArray.length),
-
+              key: "".concat(rangeIndex, ".").concat(ranges.length, ".").concat(cellIndex, ".").concat(cellArray.length),
               isResizable: isResizable,
               moveAxis: moveAxis,
               isDeletable: isDeletable,
@@ -1198,7 +1216,13 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
               cellArray: cellArray,
               cellIndex: cellIndex,
               rangeIndex: rangeIndex,
-              className: className,
+              className: classcat([
+              className, (_ref2 = {}, _defineProperty(_ref2,
+
+              classes['is-past'], isPast), _defineProperty(_ref2,
+              classes['is-google'], isGoogleEvent), _ref2)]),
+
+
               onChange: onChange,
               onClick: onClick,
               grid: grid,
@@ -1206,7 +1230,7 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
               getIsActive: getIsActive,
               eventContentComponent: eventContentComponent,
               eventRootComponent: eventRootComponent,
-              disabled: disabled }));
+              disabled: isGoogleEvent }));
 
 
         })));
@@ -1534,7 +1558,8 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
     var range = dateRangeToCells(
     getEarliestTimeRange(schedule) || [
     addHours(originDate, defaultHours[0]),
-    addHours(originDate, defaultHours[1])]);
+    addHours(originDate, defaultHours[1]),
+    '']);
 
 
     var rect = grid.getRectFromCell(range[0]);var
@@ -1776,7 +1801,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-passed":"styles-module_is-passed__2GHSt","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-passed":"styles-module_is-passed__2GHSt","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","is-past":"styles-module_is-past__uYDtP","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
 
 exports.DefaultEventRootComponent = DefaultEventRootComponent;
 exports.SchedulerContext = SchedulerContext;
