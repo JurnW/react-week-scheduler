@@ -116,12 +116,12 @@
     left: 0;
     right: 0;
     bottom: 0; }
-  .styles-module_layer-container__1wxVL .styles-module_day-hours__1E9lT:not(.styles-module_is-passed__2GHSt) .styles-module_cell__sVJZY:hover {
+  .styles-module_layer-container__1wxVL .styles-module_day-hours__1E9lT:not(.styles-module_is-past__uYDtP) .styles-module_cell__sVJZY:hover {
     background: var(--color-cell-hover);
     border: 2px dashed var(--color-cell-hover-text);
     border-radius: 8px;
     cursor: pointer; }
-    .styles-module_layer-container__1wxVL .styles-module_day-hours__1E9lT:not(.styles-module_is-passed__2GHSt) .styles-module_cell__sVJZY:hover:after {
+    .styles-module_layer-container__1wxVL .styles-module_day-hours__1E9lT:not(.styles-module_is-past__uYDtP) .styles-module_cell__sVJZY:hover:after {
       content: '+ Add availability';
       color: var(--color-cell-hover-text);
       margin: 6px;
@@ -230,7 +230,8 @@
     box-shadow: none; }
   .styles-module_event__1PixZ.styles-module_is-past__uYDtP {
     background: var(--color-event-past-google-background);
-    color: var(--color-event-text-past-google); }
+    color: var(--color-event-text-past-google);
+    box-shadow: none; }
   .styles-module_event__1PixZ.styles-module_is-pending-creation__3Qr4x {
     z-index: var(--z-index-event-is-pending-creation);
     opacity: 0.75; }
@@ -274,8 +275,9 @@
     font-weight: bold; }
     .styles-module_header__10uIZ .styles-module_cell__sVJZY span:first-of-type {
       font-weight: normal; }
-  .styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-passed__2GHSt {
-    color: var(--color-header-text-past); }
+  .styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-past__uYDtP {
+    color: var(--color-header-text-past);
+    pointer-events: none; }
   .styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-current__19oIX {
     color: var(--color-header-text-current); }
     .styles-module_header__10uIZ .styles-module_cell__sVJZY.styles-module_is-current__19oIX .styles-module_date__a2LvS {

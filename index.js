@@ -628,10 +628,11 @@ ranges)
   0];
 }
 
-//TODO: add string to retun value
 function mergeRanges(event) {
   return _mergeRanges(
-  _toConsumableArray(event).map(function (d) {return d.map(function (c) {return new Date(c);});}));
+  _toConsumableArray(event).map(
+  function (d) {return [new Date(d[0]), new Date(d[1]), d[2]];}));
+
 
 }
 
@@ -1695,7 +1696,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
           className: classcat([
           classes.cell,
           classes.title, _defineProperty({},
-          classes['is-passed'], isPast(addDays(originDate, i))), _defineProperty({},
+          classes['is-past'], isPast(addDays(originDate, i))), _defineProperty({},
 
           classes['is-current'], isToday(addDays(originDate, i)))]) }, /*#__PURE__*/
 
@@ -1767,7 +1768,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
           className: classcat([
           classes['day-hours'], _defineProperty({},
 
-          classes['is-passed'], isPassed)]) },
+          classes['is-past'], isPassed)]) },
 
 
 
@@ -1801,7 +1802,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-passed":"styles-module_is-passed__2GHSt","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","is-past":"styles-module_is-past__uYDtP","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
 
 exports.DefaultEventRootComponent = DefaultEventRootComponent;
 exports.SchedulerContext = SchedulerContext;

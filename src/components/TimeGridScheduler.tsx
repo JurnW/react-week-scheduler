@@ -495,7 +495,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
                   className={classcat([
                     classes.cell,
                     classes.title,
-                    { [classes['is-passed']]: isPast(addDays(originDate, i)) },
+                    { [classes['is-past']]: isPast(addDays(originDate, i)) },
                     {
                       [classes['is-current']]: isToday(addDays(originDate, i)),
                     },
@@ -567,7 +567,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
                     className={classcat([
                       classes['day-hours'],
                       {
-                        [classes['is-passed']]: isPassed,
+                        [classes['is-past']]: isPassed,
                       },
                     ])}
                   >
