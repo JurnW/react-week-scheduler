@@ -383,6 +383,7 @@ export const RangeBox = React.memo(function RangeBox({
             dateRange={modifiedDateRange}
             isStart={isStart}
             isEnd={isEnd}
+            title={cell.title}
           />
         </Resizable>
       </EventRootComponent>

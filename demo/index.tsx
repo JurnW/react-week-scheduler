@@ -45,15 +45,35 @@ const classes = mapValues(
     classcat([value, demoClasses[key]]),
 );
 
-const rangeStrings: [string, string, string][] = [
-  ['2020-11-09 01:30', '2020-11-09 02:30', 'google'],
-  ['2020-11-14 01:30', '2020-11-14 02:30', 'local'],
-  ['2020-11-14 03:30', '2020-11-14 04:30', 'google'],
+const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
+  {
+    timerange: ['2020-11-09 01:30', '2020-11-09 02:30'],
+    source: 'google',
+    title: 'Meeting title',
+  },
+  {
+    timerange: ['2020-11-14 01:30', '2020-11-14 02:30'],
+    source: 'local',
+    title: '',
+  },
+  {
+    timerange: ['2020-11-14 03:30', '2020-11-14 04:30'],
+    source: 'google',
+    title: 'Meeting title that is quite a bit longer',
+  },
 ];
 
-const defaultSchedule: ScheduleType = rangeStrings.map(
-  range =>
-    [new Date(range[0]), new Date(range[1]), range[2]] as [Date, Date, string],
+const defaultSchedule: [Date, Date, string, string][] = rangeStrings.map(
+  range => {
+    const start = new Date(range.timerange[0]);
+    const end = new Date(range.timerange[1]);
+    return [start, end, range.source, range.title] as [
+      Date,
+      Date,
+      string,
+      string,
+    ];
+  },
 );
 
 const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
@@ -118,7 +138,8 @@ function App() {
                 getMinutes(range[1]),
               ),
               range[2],
-            ] as [Date, Date, string],
+              range[3],
+            ] as [Date, Date, string, string],
         )
         .sort(([start], [end]) => compareAsc(start, end)),
     [weekStart, originDate],

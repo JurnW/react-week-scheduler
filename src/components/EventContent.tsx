@@ -2,7 +2,7 @@
 import VisuallyHidden from '@reach/visually-hidden';
 import React, { useContext } from 'react';
 import { SchedulerContext } from '../context';
-import { ClassNames } from '../types';
+import { ClassNames, DateRange } from '../types';
 import {
   getFormattedComponentsForDateRange,
   getTextForDateRange,
@@ -12,9 +12,10 @@ export type EventContentProps = {
   width: number;
   height: number;
   classes: ClassNames;
-  dateRange: [Date, Date];
+  dateRange: DateRange;
   isStart: boolean;
   isEnd: boolean;
+  title: string;
 };
 
 export const EventContent = React.memo(function EventContent({
@@ -24,6 +25,7 @@ export const EventContent = React.memo(function EventContent({
   dateRange,
   isStart,
   isEnd,
+  title,
 }: EventContentProps) {
   const { locale } = useContext(SchedulerContext);
   const [start, end] = getFormattedComponentsForDateRange({
@@ -48,9 +50,13 @@ export const EventContent = React.memo(function EventContent({
       <span aria-hidden className={classes.start}>
         {isStart && start}
       </span>
-      <span aria-hidden className={classes.end}>
-        {isEnd && end}
-      </span>
+      {title ? (
+        <span>{title}</span>
+      ) : (
+        <span aria-hidden className={classes.end}>
+          {isEnd && end}
+        </span>
+      )}
     </div>
   );
 });

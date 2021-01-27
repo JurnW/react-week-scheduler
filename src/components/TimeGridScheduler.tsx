@@ -360,6 +360,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
           addHours(originDate, defaultHours[0]),
           addHours(originDate, defaultHours[1]),
           '',
+          '',
         ],
       );
       const rect = grid.getRectFromCell(range[0]);

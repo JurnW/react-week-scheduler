@@ -28,9 +28,10 @@ export type CellInfo = {
   endX: number;
   endY: number;
   source: string;
+  title: string;
 };
 
-export type DateRange = [Date, Date, string];
+export type DateRange = [Date, Date, string, string];
 
 export type MapCellInfoToDateRange = (
   options: MapCellInfoToDateRangeOptions,
@@ -41,6 +42,7 @@ export type MapCellInfoToDateRangeOptions = {
   fromX: (x: number) => number;
   originDate: Date;
   source: string;
+  title: string;
 };
 
 export type Grid = {
@@ -60,4 +62,5 @@ export type Rect = ClientRect & {
   startY: number;
   endY: number;
   source: string;
+  title: string;
 };
