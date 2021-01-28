@@ -58,9 +58,7 @@ export const Schedule = React.memo(function Schedule({
           <span key={rangeIndex}>
             {dateRangeToCells(dateRange).map((cell, cellIndex, cellArray) => {
               const isGoogleEvent = cell.source === 'google';
-              if (isGoogleEvent) {
-                (isDeletable = false), (isResizable = false);
-              }
+
               return (
                 <RangeBox
                   classes={classes}

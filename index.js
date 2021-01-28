@@ -468,7 +468,7 @@ var createGrid = function createGrid(_ref)
     cellHeight: cellHeight,
 
     getRectFromCell: function getRectFromCell(data) {var
-      endX = data.endX,startX = data.startX,endY = data.endY,startY = data.startY,spanX = data.spanX,spanY = data.spanY,source = data.source;
+      endX = data.endX,startX = data.startX,endY = data.endY,startY = data.startY,spanX = data.spanX,spanY = data.spanY,source = data.source,title = data.title;
       var bottom = endY * this.cellHeight;
       var top = startY * this.cellHeight;
       var left = startX * this.cellWidth;
@@ -484,6 +484,7 @@ var createGrid = function createGrid(_ref)
         height: height,
         width: width,
         source: source,
+        title: title,
 
         // @TODO: check the math
         startX: startX * this.cellWidth,
@@ -517,6 +518,7 @@ var createGrid = function createGrid(_ref)
       var spanX = clamp(getSpan(startX, endX), 1, numHorizontalCells);
       var spanY = clamp(getSpan(startY, endY), 1, numVerticalCells);
       var source = data.source;
+      var title = data.title;
 
       return {
         spanX: spanX,
@@ -525,7 +527,8 @@ var createGrid = function createGrid(_ref)
         startY: startY,
         endX: endX,
         endY: endY,
-        source: source };
+        source: source,
+        title: title };
 
     } };
 
@@ -585,7 +588,7 @@ var createMapDateRangeToCells = function createMapDateRangeToCells(_ref) {var _r
 
 
 
-    function (_ref2) {var _ref3 = _slicedToArray(_ref2, 3),start = _ref3[0],end = _ref3[1],source = _ref3[2];
+    function (_ref2) {var _ref3 = _slicedToArray(_ref2, 4),start = _ref3[0],end = _ref3[1],source = _ref3[2],title = _ref3[3];
       var originOfThisDay = startOfDay(start);
       var _startX = toX(differenceInDays(start, originDate));
       var _startY = toY(differenceInMinutes(start, originOfThisDay));
@@ -609,7 +612,8 @@ var createMapDateRangeToCells = function createMapDateRangeToCells(_ref) {var _r
           endY: endY,
           spanX: spanX,
           spanY: spanY,
-          source: source };
+          source: source,
+          title: title };
 
       });
 
@@ -631,7 +635,13 @@ ranges)
 function mergeRanges(event) {
   return _mergeRanges(
   _toConsumableArray(event).map(
-  function (d) {return [new Date(d[0]), new Date(d[1]), d[2]];}));
+  function (d) {return (
+      [new Date(d[0]), new Date(d[1]), d[2], d[3]]);}));
+
+
+
+
+
 
 
 }
@@ -669,7 +679,8 @@ var Cell = /*#__PURE__*/React__default.memo(function Cell(_ref)
     endY: timeIndex + 1,
     spanX: 1,
     spanY: 1,
-    source: '' }),_getDateRangeForVisua2 = _slicedToArray(_getDateRangeForVisua, 1),_getDateRangeForVisua3 = _slicedToArray(_getDateRangeForVisua2[0], 1),start = _getDateRangeForVisua3[0];
+    source: '',
+    title: '' }),_getDateRangeForVisua2 = _slicedToArray(_getDateRangeForVisua, 1),_getDateRangeForVisua3 = _slicedToArray(_getDateRangeForVisua2[0], 1),start = _getDateRangeForVisua3[0];
 
 
   var isHourStart = getMinutes(start) === 0;
@@ -735,10 +746,10 @@ var getFormattedComponentsForDateRange = function getFormattedComponentsForDateR
 
 {var dateRange = _ref.dateRange,locale = _ref.locale,template = _ref.template,template2 = _ref.template2,_ref$includeDayIfSame = _ref.includeDayIfSame,includeDayIfSame = _ref$includeDayIfSame === void 0 ? true : _ref$includeDayIfSame;
   var start = dateRange[0];
-  var end = dateRange[dateRange.length - 1];
+  var end = dateRange[1];
 
   if (isSameDay(start, end) && !template) {var _dropSame =
-    dropSame(dateRange, 'a', true, locale),_dropSame2 = _slicedToArray(_dropSame, 2),firstM = _dropSame2[0],secondM = _dropSame2[1];
+    dropSame([start, end], 'a', true, locale),_dropSame2 = _slicedToArray(_dropSame, 2),firstM = _dropSame2[0],secondM = _dropSame2[1];
     var day = includeDayIfSame ? "".concat(format(start, 'ddd', { locale: locale }), " ") : '';
     return ["".concat(
     day).concat(formatHour(start, {
@@ -765,7 +776,8 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
 
 
 
-{var width = _ref.width,height = _ref.height,classes = _ref.classes,dateRange = _ref.dateRange,isStart = _ref.isStart,isEnd = _ref.isEnd;var _useContext =
+
+{var width = _ref.width,height = _ref.height,classes = _ref.classes,dateRange = _ref.dateRange,isStart = _ref.isStart,isEnd = _ref.isEnd,title = _ref.title;var _useContext =
   React.useContext(SchedulerContext),locale = _useContext.locale;var _getFormattedComponen =
   getFormattedComponentsForDateRange({
     dateRange: dateRange,
@@ -787,10 +799,14 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
     getTextForDateRange({ dateRange: dateRange, locale: locale })), /*#__PURE__*/
 
     React__default.createElement("span", { "aria-hidden": true, className: classes.start },
-    isStart && start), /*#__PURE__*/
+    isStart && start),
+
+    title ? /*#__PURE__*/
+    React__default.createElement("span", null, title) : /*#__PURE__*/
 
     React__default.createElement("span", { "aria-hidden": true, className: classes.end },
     isEnd && end)));
+
 
 
 
@@ -1163,7 +1179,8 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
       classes: classes,
       dateRange: modifiedDateRange,
       isStart: isStart,
-      isEnd: isEnd })))));
+      isEnd: isEnd,
+      title: cell.title })))));
 
 
 
@@ -1202,9 +1219,7 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
         React__default.createElement("span", { key: rangeIndex },
         dateRangeToCells(dateRange).map(function (cell, cellIndex, cellArray) {var _ref2;
           var isGoogleEvent = cell.source === 'google';
-          if (isGoogleEvent) {
-            isDeletable = false, isResizable = false;
-          }
+
           return /*#__PURE__*/(
             React__default.createElement(RangeBox, {
               classes: classes,
@@ -1560,6 +1575,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
     getEarliestTimeRange(schedule) || [
     addHours(originDate, defaultHours[0]),
     addHours(originDate, defaultHours[1]),
+    '',
     '']);
 
 

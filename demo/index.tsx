@@ -67,12 +67,9 @@ const defaultSchedule: [Date, Date, string, string][] = rangeStrings.map(
   range => {
     const start = new Date(range.timerange[0]);
     const end = new Date(range.timerange[1]);
-    return [start, end, range.source, range.title] as [
-      Date,
-      Date,
-      string,
-      string,
-    ];
+    const source = range.source;
+    const title = range.title;
+    return [start, end, source, title] as [Date, Date, string, string];
   },
 );
 

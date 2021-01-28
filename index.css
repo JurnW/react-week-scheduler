@@ -246,6 +246,8 @@
     display: flex;
     flex-direction: column;
     position: relative; }
+    .styles-module_day-column__30McI .styles-module_day-hours__1E9lT.styles-module_is-past__uYDtP {
+      pointer-events: none; }
   .styles-module_day-column__30McI .styles-module_cell__sVJZY {
     flex: 1 1 var(--cell-height, 42px);
     display: flex;
