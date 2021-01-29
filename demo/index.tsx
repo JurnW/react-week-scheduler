@@ -28,6 +28,7 @@ import { SchedulerContext } from '../src/context';
 import { useMousetrap } from '../src/hooks/useMousetrap';
 import { classes as defaultClasses } from '../src/styles';
 import { EventRootProps, ScheduleType } from '../src/types';
+// @ts-ignore
 import DeleteIcon from './assets/outline-delete-24px.svg';
 import { Key } from './components/Key/Key';
 import demoClasses from './index.module.scss';

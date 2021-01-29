@@ -43,7 +43,6 @@ export const Schedule = React.memo(function Schedule({
   eventRootComponent,
   onClick,
   getIsActive,
-  disabled,
 }: {
   dateRangeToCells(range: DateRange): CellInfo[];
   ranges: ScheduleType;

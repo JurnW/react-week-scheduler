@@ -41,8 +41,6 @@ export type MapCellInfoToDateRangeOptions = {
   fromY: (y: number) => number;
   fromX: (x: number) => number;
   originDate: Date;
-  source: string;
-  title: string;
 };
 
 export type Grid = {

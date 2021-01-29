@@ -9,6 +9,7 @@ import startOfDay from 'date-fns/start_of_day';
 import invariant from 'invariant';
 import isEqual from 'lodash/isEqual';
 import times from 'lodash/times';
+import { ExtendedKeyboardEvent } from 'mousetrap';
 import React, {
   useCallback,
   useContext,
@@ -323,6 +324,8 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
       originDate,
       fromX: toDay,
       fromY: y => y * visualGridVerticalPrecision,
+      // source,
+      // title,
     });
   }, [visualGridVerticalPrecision, originDate]);
 
@@ -412,6 +415,8 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
         endY: spanY + timeIndex,
         spanY,
         spanX: getSpan(dayIndex, dayIndex),
+        source: '',
+        title: '',
       };
 
       const dateRanges = cellInfoToDateRanges(cell);

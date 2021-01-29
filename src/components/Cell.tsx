@@ -30,14 +30,7 @@ export const Cell = React.memo(function Cell({
   const isHourStart = getMinutes(start) === 0;
 
   return (
-    <div
-      role="button"
-      onClick={onClick}
-      className={classcat([
-        classes.cell,
-        { [classes['is-hour-start']]: isHourStart },
-      ])}
-    >
+    <div role="button" onClick={onClick} className={classcat([classes.cell])}>
       {children && children({ start, isHourStart })}
     </div>
   );

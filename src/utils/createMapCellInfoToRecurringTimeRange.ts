@@ -13,7 +13,7 @@ export const createMapCellInfoToRecurringTimeRange: MapCellInfoToDateRange = ({
   fromY: toMin,
   fromX: toDay,
   originDate,
-}) => ({ startX, startY, endX, spanY }) => {
+}) => ({ startX, startY, endX, spanY, source, title }) => {
   const result = range(startX, endX + 1)
     .map(i => {
       const startDate = cellToDate({
@@ -29,8 +29,8 @@ export const createMapCellInfoToRecurringTimeRange: MapCellInfoToDateRange = ({
       );
 
       const range: DateRange = isBefore(startDate, endDate)
-        ? [startDate, endDate]
-        : [endDate, startDate];
+        ? [startDate, endDate, source, title]
+        : [endDate, startDate, source, title];
 
       return range;
     })
