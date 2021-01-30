@@ -551,7 +551,7 @@ var createMapCellInfoToRecurringTimeRange = function createMapCellInfoToRecurrin
   toMin = _ref.fromY,
   toDay = _ref.fromX,
   originDate = _ref.originDate;return (
-    function (_ref2) {var startX = _ref2.startX,startY = _ref2.startY,endX = _ref2.endX,spanY = _ref2.spanY;
+    function (_ref2) {var startX = _ref2.startX,startY = _ref2.startY,endX = _ref2.endX,spanY = _ref2.spanY,source = _ref2.source,title = _ref2.title;
       var result = range(startX, endX + 1).
       map(function (i) {
         var startDate = cellToDate({
@@ -567,8 +567,8 @@ var createMapCellInfoToRecurringTimeRange = function createMapCellInfoToRecurrin
 
 
         var range = isBefore(startDate, endDate) ?
-        [startDate, endDate] :
-        [endDate, startDate];
+        [startDate, endDate, source, title] :
+        [endDate, startDate, source, title];
 
         return range;
       }).
@@ -686,14 +686,7 @@ var Cell = /*#__PURE__*/React__default.memo(function Cell(_ref)
   var isHourStart = getMinutes(start) === 0;
 
   return /*#__PURE__*/(
-    React__default.createElement("div", {
-      role: "button",
-      onClick: onClick,
-      className: classcat([
-      classes.cell, _defineProperty({},
-      classes['is-hour-start'], isHourStart)]) },
-
-
+    React__default.createElement("div", { role: "button", onClick: onClick, className: classcat([classes.cell]) },
     children && children({ start: start, isHourStart: isHourStart })));
 
 
@@ -1209,8 +1202,7 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
 
 
 
-
-{var classes = _ref.classes,ranges = _ref.ranges,grid = _ref.grid,className = _ref.className,onChange = _ref.onChange,isResizable = _ref.isResizable,isDeletable = _ref.isDeletable,moveAxis = _ref.moveAxis,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,onActiveChange = _ref.onActiveChange,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,onClick = _ref.onClick,getIsActive = _ref.getIsActive,disabled = _ref.disabled;
+{var classes = _ref.classes,ranges = _ref.ranges,grid = _ref.grid,className = _ref.className,onChange = _ref.onChange,isResizable = _ref.isResizable,isDeletable = _ref.isDeletable,moveAxis = _ref.moveAxis,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,onActiveChange = _ref.onActiveChange,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,onClick = _ref.onClick,getIsActive = _ref.getIsActive;
   return /*#__PURE__*/(
     React__default.createElement("div", { className: classes['range-boxes'] },
     ranges.map(function (dateRange, rangeIndex) {
@@ -1538,8 +1530,10 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
     return createMapCellInfoToRecurringTimeRange({
       originDate: originDate,
       fromX: toDay,
-      fromY: function fromY(y) {return y * visualGridVerticalPrecision;} });
-
+      fromY: function fromY(y) {return y * visualGridVerticalPrecision;}
+      // source,
+      // title,
+    });
   }, [visualGridVerticalPrecision, originDate]);
 
   React.useEffect(
@@ -1627,7 +1621,9 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
         endX: dayIndex,
         endY: spanY + timeIndex,
         spanY: spanY,
-        spanX: getSpan(dayIndex, dayIndex) };
+        spanX: getSpan(dayIndex, dayIndex),
+        source: '',
+        title: '' };
 
 
       var dateRanges = cellInfoToDateRanges(cell);
