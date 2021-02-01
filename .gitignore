@@ -42,7 +42,5 @@ node_modules/
 
 build
 dist
-index.mjs
 .cache
-index.mjs.map
 generated-types/
