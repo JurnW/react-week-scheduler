@@ -1,46 +1,39 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var React = require('react');
-var React__default = _interopDefault(React);
-var useComponentSize = _interopDefault(require('@rehooks/component-size'));
-var classcat = _interopDefault(require('classcat'));
-var isToday = _interopDefault(require('date-fns/is_today'));
-var isPast = _interopDefault(require('date-fns/is_past'));
-var addDays = _interopDefault(require('date-fns/add_days'));
-var addHours = _interopDefault(require('date-fns/add_hours'));
-var format = _interopDefault(require('date-fns/format'));
-var isDateEqual = _interopDefault(require('date-fns/is_equal'));
-var startOfDay = _interopDefault(require('date-fns/start_of_day'));
-var invariant = _interopDefault(require('invariant'));
-var isEqual = _interopDefault(require('lodash/isEqual'));
-var times = _interopDefault(require('lodash/times'));
-var scrollIntoView = _interopDefault(require('scroll-into-view-if-needed'));
-var en = _interopDefault(require('date-fns/locale/en'));
-var rxjs = require('rxjs');
-var operators = require('rxjs/operators');
-var Mousetrap = _interopDefault(require('mousetrap'));
-var clamp = _interopDefault(require('lodash/clamp'));
-var floor = _interopDefault(require('lodash/floor'));
-var round = _interopDefault(require('lodash/round'));
-var addMinutes = _interopDefault(require('date-fns/add_minutes'));
-var compareAsc = _interopDefault(require('date-fns/compare_asc'));
-var endOfDay = _interopDefault(require('date-fns/end_of_day'));
-var isBefore = _interopDefault(require('date-fns/is_before'));
-var min = _interopDefault(require('date-fns/min'));
-var range = _interopDefault(require('lodash/range'));
-var differenceInDays = _interopDefault(require('date-fns/difference_in_days'));
-var differenceInMinutes = _interopDefault(require('date-fns/difference_in_minutes'));
-var setDay = _interopDefault(require('date-fns/set_day'));
-var _mergeRanges = _interopDefault(require('merge-ranges'));
-var getMinutes = _interopDefault(require('date-fns/get_minutes'));
-var Resizable = _interopDefault(require('re-resizable'));
-var Draggable = _interopDefault(require('react-draggable'));
-var VisuallyHidden = _interopDefault(require('@reach/visually-hidden'));
-var isSameDay = _interopDefault(require('date-fns/is_same_day'));
+import React, { createContext, useState, useEffect, useCallback, useRef, useContext, useMemo } from 'react';
+import useComponentSize from '@rehooks/component-size';
+import classcat from 'classcat';
+import isToday from 'date-fns/is_today';
+import isPast from 'date-fns/is_past';
+import addDays from 'date-fns/add_days';
+import addHours from 'date-fns/add_hours';
+import format from 'date-fns/format';
+import isDateEqual from 'date-fns/is_equal';
+import startOfDay from 'date-fns/start_of_day';
+import invariant from 'invariant';
+import isEqual from 'lodash/isEqual';
+import times from 'lodash/times';
+import scrollIntoView from 'scroll-into-view-if-needed';
+import en from 'date-fns/locale/en';
+import { fromEvent, of, merge } from 'rxjs';
+import { mergeMap, delay, takeUntil, filter, map, tap, startWith } from 'rxjs/operators';
+import Mousetrap from 'mousetrap';
+import clamp from 'lodash/clamp';
+import floor from 'lodash/floor';
+import round from 'lodash/round';
+import addMinutes from 'date-fns/add_minutes';
+import compareAsc from 'date-fns/compare_asc';
+import endOfDay from 'date-fns/end_of_day';
+import isBefore from 'date-fns/is_before';
+import min from 'date-fns/min';
+import range from 'lodash/range';
+import differenceInDays from 'date-fns/difference_in_days';
+import differenceInMinutes from 'date-fns/difference_in_minutes';
+import setDay from 'date-fns/set_day';
+import _mergeRanges from 'merge-ranges';
+import getMinutes from 'date-fns/get_minutes';
+import Resizable from 're-resizable';
+import Draggable from 'react-draggable';
+import VisuallyHidden from '@reach/visually-hidden';
+import isSameDay from 'date-fns/is_same_day';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -221,8 +214,8 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
-var DefaultEventRootComponent = /*#__PURE__*/React__default.memo( /*#__PURE__*/
-React__default.forwardRef(function DefaultEventRootComponent(_ref,
+var DefaultEventRootComponent = /*#__PURE__*/React.memo( /*#__PURE__*/
+React.forwardRef(function DefaultEventRootComponent(_ref,
 
 
 
@@ -234,10 +227,10 @@ React__default.forwardRef(function DefaultEventRootComponent(_ref,
 
 ref)
 {var isActive = _ref.isActive,handleDelete = _ref.handleDelete,cellIndex = _ref.cellIndex,rangeIndex = _ref.rangeIndex,classes = _ref.classes,disabled = _ref.disabled,props = _objectWithoutProperties(_ref, ["isActive", "handleDelete", "cellIndex", "rangeIndex", "classes", "disabled"]);
-  return /*#__PURE__*/React__default.createElement("div", _extends({ ref: ref, "aria-disabled": disabled }, props));
+  return /*#__PURE__*/React.createElement("div", _extends({ ref: ref, "aria-disabled": disabled }, props));
 }));
 
-var SchedulerContext = /*#__PURE__*/React.createContext({ locale: en });
+var SchedulerContext = /*#__PURE__*/createContext({ locale: en });
 
 var createPageMapCoordsToContainer = function createPageMapCoordsToContainer(container) {
   return function (event) {
@@ -266,7 +259,7 @@ var createPageMapCoordsToContainer = function createPageMapCoordsToContainer(con
   };
 };
 
-var prevent = /*#__PURE__*/operators.tap(function (e) {
+var prevent = /*#__PURE__*/tap(function (e) {
   e.preventDefault();
   e.stopPropagation();
 });
@@ -275,80 +268,80 @@ function useClickAndDrag(
 ref,
 isDisabled)
 {var _useState =
-  React.useState({
+  useState({
     transform: 'translate(0, 0)',
     width: 0,
     height: 0 }),_useState2 = _slicedToArray(_useState, 2),style = _useState2[0],setStyle = _useState2[1];var _useState3 =
 
-  React.useState(null),_useState4 = _slicedToArray(_useState3, 2),box = _useState4[0],setBox = _useState4[1];var _useState5 =
-  React.useState(false),_useState6 = _slicedToArray(_useState5, 2),isDragging = _useState6[0],setIsDragging = _useState6[1];var _useState7 =
-  React.useState(false),_useState8 = _slicedToArray(_useState7, 2),hasFinishedDragging = _useState8[0],setHasFinishedDragging = _useState8[1];
+  useState(null),_useState4 = _slicedToArray(_useState3, 2),box = _useState4[0],setBox = _useState4[1];var _useState5 =
+  useState(false),_useState6 = _slicedToArray(_useState5, 2),isDragging = _useState6[0],setIsDragging = _useState6[1];var _useState7 =
+  useState(false),_useState8 = _slicedToArray(_useState7, 2),hasFinishedDragging = _useState8[0],setHasFinishedDragging = _useState8[1];
   var container = ref.current;
 
-  React.useEffect(function () {
+  useEffect(function () {
     if (!container || isDisabled) {
       return;
     }
 
     var mapCoordsToContainer = createPageMapCoordsToContainer(container);
 
-    var touchMove$ = rxjs.fromEvent(window, 'touchmove', {
+    var touchMove$ = fromEvent(window, 'touchmove', {
       passive: false }).
     pipe(prevent);
 
-    var touchEnd$ = rxjs.fromEvent(window, 'touchend', {
+    var touchEnd$ = fromEvent(window, 'touchend', {
       passive: true });
 
 
-    var touchStart$ = rxjs.fromEvent(container, 'touchstart', {
+    var touchStart$ = fromEvent(container, 'touchstart', {
       passive: false });
 
 
     var touchStartWithDelay$ = touchStart$.pipe(
-    operators.mergeMap(function (start) {return (
-        rxjs.of(start).pipe(
-        operators.delay(300),
-        operators.takeUntil(touchMove$),
+    mergeMap(function (start) {return (
+        of(start).pipe(
+        delay(300),
+        takeUntil(touchMove$),
         prevent));}));
 
 
 
 
-    var mouseDown$ = rxjs.fromEvent(container, 'mousedown', {
+    var mouseDown$ = fromEvent(container, 'mousedown', {
       passive: true }).
-    pipe(operators.filter(function (event) {return event.which === 1;}));
+    pipe(filter(function (event) {return event.which === 1;}));
 
-    var mouseMove$ = rxjs.fromEvent(window, 'mousemove', {
+    var mouseMove$ = fromEvent(window, 'mousemove', {
       passive: true });
 
 
-    var mouseUp$ = rxjs.fromEvent(window, 'mouseup', {
+    var mouseUp$ = fromEvent(window, 'mouseup', {
       passive: true });
 
 
-    var dragStart$ = rxjs.merge(mouseDown$, touchStartWithDelay$).pipe(
-    operators.map(mapCoordsToContainer));
+    var dragStart$ = merge(mouseDown$, touchStartWithDelay$).pipe(
+    map(mapCoordsToContainer));
 
 
-    var dragEnd$ = rxjs.merge(mouseUp$, touchEnd$).pipe(
-    operators.map(mapCoordsToContainer),
-    operators.tap(function () {
+    var dragEnd$ = merge(mouseUp$, touchEnd$).pipe(
+    map(mapCoordsToContainer),
+    tap(function () {
       setIsDragging(false);
       setHasFinishedDragging(true);
     }));
 
 
-    var move$ = rxjs.merge(mouseMove$, touchMove$).pipe(operators.map(mapCoordsToContainer));
+    var move$ = merge(mouseMove$, touchMove$).pipe(map(mapCoordsToContainer));
 
     var box$ = dragStart$.pipe(
-    operators.tap(function () {
+    tap(function () {
       setIsDragging(true);
       setHasFinishedDragging(false);
     }),
-    operators.mergeMap(function (down) {
+    mergeMap(function (down) {
       return move$.pipe(
-      operators.startWith(down),
-      operators.map(
+      startWith(down),
+      map(
       function (move) {
         var startX = Math.max(down.x, 0);
         var startY = Math.max(down.y, 0);
@@ -373,16 +366,16 @@ isDisabled)
 
       }),
 
-      operators.takeUntil(dragEnd$));
+      takeUntil(dragEnd$));
 
     }),
-    operators.map(function (rect) {
+    map(function (rect) {
       return rect.width === 0 && rect.height === 0 ? null : rect;
     }));
 
 
     var style$ = box$.pipe(
-    operators.map(function (rect) {
+    map(function (rect) {
       if (rect !== null) {var
         width = rect.width,height = rect.height,left = rect.left,top = rect.top;
         return {
@@ -405,7 +398,7 @@ isDisabled)
     };
   }, [container, isDisabled]);
 
-  var cancel = React.useCallback(function () {
+  var cancel = useCallback(function () {
     setIsDragging(false);
     setHasFinishedDragging(false);
     setBox(null);
@@ -425,12 +418,12 @@ handlerKey,
 handlerCallback,
 elementOrElementRef)
 {
-  var actionRef = React.useRef(null);
+  var actionRef = useRef(null);
   actionRef.current = handlerCallback;
   var element =
   'current' in elementOrElementRef ? elementOrElementRef.current : document;
 
-  React.useEffect(function () {
+  useEffect(function () {
     var instance = new Mousetrap(element);
 
     instance.bind(handlerKey, function (e, combo) {
@@ -659,7 +652,7 @@ event2)
 
 }
 
-var Cell = /*#__PURE__*/React__default.memo(function Cell(_ref)
+var Cell = /*#__PURE__*/React.memo(function Cell(_ref)
 
 
 
@@ -686,7 +679,7 @@ var Cell = /*#__PURE__*/React__default.memo(function Cell(_ref)
   var isHourStart = getMinutes(start) === 0;
 
   return /*#__PURE__*/(
-    React__default.createElement("div", { role: "button", onClick: onClick, className: classcat([classes.cell]) },
+    React.createElement("div", { role: "button", onClick: onClick, className: classcat([classes.cell]) },
     children && children({ start: start, isHourStart: isHourStart })));
 
 
@@ -762,7 +755,7 @@ var getTextForDateRange = function getTextForDateRange(options) {
   return getFormattedComponentsForDateRange(options).join(' – ');
 };
 
-var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
+var EventContent = /*#__PURE__*/React.memo(function EventContent(_ref)
 
 
 
@@ -771,7 +764,7 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
 
 
 {var width = _ref.width,height = _ref.height,classes = _ref.classes,dateRange = _ref.dateRange,isStart = _ref.isStart,isEnd = _ref.isEnd,title = _ref.title;var _useContext =
-  React.useContext(SchedulerContext),locale = _useContext.locale;var _getFormattedComponen =
+  useContext(SchedulerContext),locale = _useContext.locale;var _getFormattedComponen =
   getFormattedComponentsForDateRange({
     dateRange: dateRange,
     locale: locale,
@@ -780,7 +773,7 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
   var isFifteenMinuteMeeting = height < 25 ? '0 10px' : '';
 
   return /*#__PURE__*/(
-    React__default.createElement("div", {
+    React.createElement("div", {
       style: {
         width: width - 4,
         height: height - 4,
@@ -788,16 +781,16 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
 
       className: classes['event-content'] }, /*#__PURE__*/
 
-    React__default.createElement(VisuallyHidden, null,
+    React.createElement(VisuallyHidden, null,
     getTextForDateRange({ dateRange: dateRange, locale: locale })), /*#__PURE__*/
 
-    React__default.createElement("span", { "aria-hidden": true, className: classes.start },
+    React.createElement("span", { "aria-hidden": true, className: classes.start },
     isStart && start),
 
     title ? /*#__PURE__*/
-    React__default.createElement("span", null, title) : /*#__PURE__*/
+    React.createElement("span", null, title) : /*#__PURE__*/
 
-    React__default.createElement("span", { "aria-hidden": true, className: classes.end },
+    React.createElement("span", { "aria-hidden": true, className: classes.end },
     isEnd && end)));
 
 
@@ -805,7 +798,7 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
 
 });
 
-var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
+var RangeBox = /*#__PURE__*/React.memo(function RangeBox(_ref2)
 
 
 
@@ -830,19 +823,19 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
 
 
 {var _ref4;var classes = _ref2.classes,grid = _ref2.grid,rangeIndex = _ref2.rangeIndex,cellIndex = _ref2.cellIndex,cellArray = _ref2.cellArray,cell = _ref2.cell,className = _ref2.className,onChange = _ref2.onChange,cellInfoToDateRange = _ref2.cellInfoToDateRange,isResizable = _ref2.isResizable,moveAxis = _ref2.moveAxis,onActiveChange = _ref2.onActiveChange,onClick = _ref2.onClick,getIsActive = _ref2.getIsActive,_ref2$eventContentCom = _ref2.eventContentComponent,EventContentComponent = _ref2$eventContentCom === void 0 ? EventContent : _ref2$eventContentCom,_ref2$eventRootCompon = _ref2.eventRootComponent,EventRootComponent = _ref2$eventRootCompon === void 0 ? DefaultEventRootComponent : _ref2$eventRootCompon,disabled = _ref2.disabled;
-  var ref = React.useRef(null);var _useState =
-  React.useState(cell),_useState2 = _slicedToArray(_useState, 2),modifiedCell = _useState2[0],setModifiedCell = _useState2[1];
-  var originalRect = React.useMemo(function () {return grid.getRectFromCell(cell);}, [cell, grid]);
-  var rect = React.useMemo(function () {return grid.getRectFromCell(modifiedCell);}, [
+  var ref = useRef(null);var _useState =
+  useState(cell),_useState2 = _slicedToArray(_useState, 2),modifiedCell = _useState2[0],setModifiedCell = _useState2[1];
+  var originalRect = useMemo(function () {return grid.getRectFromCell(cell);}, [cell, grid]);
+  var rect = useMemo(function () {return grid.getRectFromCell(modifiedCell);}, [
   modifiedCell,
   grid]);
 
 
-  React.useEffect(function () {
+  useEffect(function () {
     setModifiedCell(cell);
   }, [cell]);
 
-  var modifiedDateRange = React.useMemo(function () {return cellInfoToDateRange(modifiedCell);}, [
+  var modifiedDateRange = useMemo(function () {return cellInfoToDateRange(modifiedCell);}, [
   cellInfoToDateRange,
   modifiedCell]);var
 
@@ -852,7 +845,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
   var isStart = cellIndex === 0;
   var isEnd = cellIndex === cellArray.length - 1;
 
-  var handleStop = React.useCallback(function () {
+  var handleStop = useCallback(function () {
     if (!onChange || disabled) {
       return;
     }
@@ -860,7 +853,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
     onChange(cellInfoToDateRange(modifiedCell), rangeIndex);
   }, [modifiedCell, rangeIndex, disabled, cellInfoToDateRange, onChange]);
 
-  var isActive = React.useMemo(function () {return getIsActive({ cellIndex: cellIndex, rangeIndex: rangeIndex });}, [
+  var isActive = useMemo(function () {return getIsActive({ cellIndex: cellIndex, rangeIndex: rangeIndex });}, [
   cellIndex,
   rangeIndex,
   getIsActive]);
@@ -969,7 +962,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
   ref);
 
 
-  var handleDrag = React.useCallback(
+  var handleDrag = useCallback(
   function (event, _ref3) {var y = _ref3.y,x = _ref3.x;
     if (moveAxis === 'none' || disabled) {
       return;
@@ -1020,7 +1013,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
   [grid, rect, moveAxis, disabled, cell, setModifiedCell]);
 
 
-  var handleResize = React.useCallback(
+  var handleResize = useCallback(
   function (event, direction, _ref, delta) {
     if (!isResizable || disabled) {
       return;
@@ -1062,7 +1055,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
   [grid, rect, disabled, isResizable, setModifiedCell, cell, originalRect]);
 
 
-  var handleDelete = React.useCallback(function () {
+  var handleDelete = useCallback(function () {
     if (!onChange || disabled) {
       return;
     }
@@ -1070,7 +1063,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
     onChange(undefined, rangeIndex);
   }, [onChange, disabled, rangeIndex]);
 
-  var handleOnFocus = React.useCallback(function () {
+  var handleOnFocus = useCallback(function () {
     if (!onActiveChange || disabled) {
       return;
     }
@@ -1078,7 +1071,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
     onActiveChange([rangeIndex, cellIndex]);
   }, [onActiveChange, disabled, rangeIndex, cellIndex]);
 
-  var handleOnClick = React.useCallback(function () {
+  var handleOnClick = useCallback(function () {
     if (!onClick || disabled || !isActive) {
       return;
     }
@@ -1088,7 +1081,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
 
   useMousetrap('enter', handleOnClick, ref);
 
-  var cancelClasses = React.useMemo(
+  var cancelClasses = useMemo(
   function () {return (
       classes.handle ?
       classes.handle.
@@ -1100,7 +1093,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
 
 
   return /*#__PURE__*/(
-    React__default.createElement(Draggable, {
+    React.createElement(Draggable, {
       axis: moveAxis,
       bounds: {
         top: 0,
@@ -1114,7 +1107,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
       cancel: cancelClasses,
       disabled: disabled }, /*#__PURE__*/
 
-    React__default.createElement(EventRootComponent, {
+    React.createElement(EventRootComponent, {
       role: "button",
       disabled: disabled,
       onFocus: handleOnFocus,
@@ -1141,7 +1134,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
         marginTop: '2px' } }, /*#__PURE__*/
 
 
-    React__default.createElement(Resizable, {
+    React.createElement(Resizable, {
       size: _objectSpread2(_objectSpread2({}, originalRect), {}, { width: originalRect.width - 4 }),
       key: "".concat(rangeIndex, ".").concat(cellIndex, ".").concat(cellArray.length, ".").concat(originalRect.top, ".").concat(originalRect.left),
       onResize: handleResize,
@@ -1166,7 +1159,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
         topRight: classes.handle } }, /*#__PURE__*/
 
 
-    React__default.createElement(EventContentComponent, {
+    React.createElement(EventContentComponent, {
       width: width,
       height: height,
       classes: classes,
@@ -1181,7 +1174,7 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
 
 });
 
-var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
+var Schedule = /*#__PURE__*/React.memo(function Schedule(_ref)
 
 
 
@@ -1204,16 +1197,16 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
 
 {var classes = _ref.classes,ranges = _ref.ranges,grid = _ref.grid,className = _ref.className,onChange = _ref.onChange,isResizable = _ref.isResizable,isDeletable = _ref.isDeletable,moveAxis = _ref.moveAxis,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,onActiveChange = _ref.onActiveChange,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,onClick = _ref.onClick,getIsActive = _ref.getIsActive;
   return /*#__PURE__*/(
-    React__default.createElement("div", { className: classes['range-boxes'] },
+    React.createElement("div", { className: classes['range-boxes'] },
     ranges.map(function (dateRange, rangeIndex) {
       var isPast = isBefore(dateRange[1], new Date());
       return /*#__PURE__*/(
-        React__default.createElement("span", { key: rangeIndex },
+        React.createElement("span", { key: rangeIndex },
         dateRangeToCells(dateRange).map(function (cell, cellIndex, cellArray) {var _ref2;
           var isGoogleEvent = cell.source === 'google';
 
           return /*#__PURE__*/(
-            React__default.createElement(RangeBox, {
+            React.createElement(RangeBox, {
               classes: classes,
               onActiveChange: onActiveChange,
               key: "".concat(rangeIndex, ".").concat(ranges.length, ".").concat(cellIndex, ".").concat(cellArray.length),
@@ -1255,7 +1248,7 @@ var toDay = function toDay(x) {return x * horizontalPrecision;};
 var toX = function toX(days) {return days / horizontalPrecision;};
 var DELETE_KEYS = ['del', 'backspace'];
 
-var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridScheduler(_ref)
+var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
 
 
 
@@ -1318,18 +1311,18 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 {var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled;var _useContext =
-  React.useContext(SchedulerContext),locale = _useContext.locale;
-  var originDate = React.useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
+  useContext(SchedulerContext),locale = _useContext.locale;
+  var originDate = useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
   var numVerticalCells = MINS_IN_DAY / verticalPrecision;
   var numHorizontalCells = 7 / horizontalPrecision;
-  var toMin = React.useCallback(function (y) {return y * verticalPrecision;}, [
+  var toMin = useCallback(function (y) {return y * verticalPrecision;}, [
   verticalPrecision]);
 
-  var toY = React.useCallback(function (mins) {return mins / verticalPrecision;}, [
+  var toY = useCallback(function (mins) {return mins / verticalPrecision;}, [
   verticalPrecision]);
 
 
-  var cellInfoToDateRanges = React.useMemo(function () {
+  var cellInfoToDateRanges = useMemo(function () {
     return createMapCellInfoToRecurringTimeRange({
       originDate: originDate,
       fromY: toMin,
@@ -1337,7 +1330,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
   }, [toMin, originDate]);
 
-  var cellInfoToSingleDateRange = React.useCallback(
+  var cellInfoToSingleDateRange = useCallback(
   function (cell) {var _cellInfoToDateRanges =
     cellInfoToDateRanges(cell),_cellInfoToDateRanges2 = _toArray(_cellInfoToDateRanges),first = _cellInfoToDateRanges2[0],rest = _cellInfoToDateRanges2.slice(1);
     invariant(
@@ -1350,7 +1343,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
   [cellInfoToDateRanges]);
 
 
-  var dateRangeToCells = React.useMemo(function () {
+  var dateRangeToCells = useMemo(function () {
     return createMapDateRangeToCells({
       originDate: originDate,
       numVerticalCells: numVerticalCells,
@@ -1360,8 +1353,8 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
   }, [toY, numVerticalCells, numHorizontalCells, originDate]);
 
-  var root = React.useRef(null);
-  var parent = React.useRef(null);
+  var root = useRef(null);
+  var parent = useRef(null);
 
   var size = useComponentSize(parent);var _useClickAndDrag =
 
@@ -1374,13 +1367,13 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-  React.useState(null),_useState2 = _slicedToArray(_useState, 2),pendingCreation = _useState2[0],setPendingCreation = _useState2[1];var _useState3 =
+  useState(null),_useState2 = _slicedToArray(_useState, 2),pendingCreation = _useState2[0],setPendingCreation = _useState2[1];var _useState3 =
 
-  React.useState([0, 0]),_useState4 = _slicedToArray(_useState3, 2),_useState4$ = _slicedToArray(_useState4[0], 2),totalHeight = _useState4$[0],totalWidth = _useState4$[1],setDimensions = _useState4[1];
+  useState([0, 0]),_useState4 = _slicedToArray(_useState3, 2),_useState4$ = _slicedToArray(_useState4[0], 2),totalHeight = _useState4$[0],totalWidth = _useState4$[1],setDimensions = _useState4[1];
 
   var numVisualVerticalCells = 24 * 60 / visualGridVerticalPrecision;
 
-  React.useEffect(
+  useEffect(
   function updateGridDimensionsOnSizeOrCellCountChange() {
     if (!parent.current) {
       setDimensions([0, 0]);
@@ -1392,7 +1385,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
   [size, numVisualVerticalCells]);
 
 
-  var grid = React.useMemo(function () {
+  var grid = useMemo(function () {
     if (totalHeight === null || totalWidth === null) {
       return null;
     }
@@ -1405,7 +1398,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
   }, [totalHeight, totalWidth, numHorizontalCells, numVerticalCells]);
 
-  React.useEffect(
+  useEffect(
   function updatePendingCreationOnDragBoxUpdate() {
     if (grid === null || box === null) {
       setPendingCreation(null);
@@ -1420,11 +1413,11 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
   [box, grid, cellInfoToDateRanges, toY]);var _useState5 =
 
 
-  React.useState(
+  useState(
 
   [null, null]),_useState6 = _slicedToArray(_useState5, 2),_useState6$ = _slicedToArray(_useState6[0], 2),activeRangeIndex = _useState6$[0],activeCellIndex = _useState6$[1],setActive = _useState6[1];
 
-  React.useEffect(
+  useEffect(
   function updateScheduleAfterDraggingFinished() {
     if (disabled) {
       return;
@@ -1445,7 +1438,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-  React.useEffect(
+  useEffect(
   function clearActiveBlockAfterCreation() {
     if (pendingCreation === null) {
       setActive([null, null]);
@@ -1454,7 +1447,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
   [pendingCreation]);
 
 
-  var handleEventChange = React.useCallback(
+  var handleEventChange = useCallback(
   function (newDateRange, rangeIndex) {
     if (disabled) {
       return;
@@ -1497,14 +1490,14 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
   document);
 
 
-  var getIsActive = React.useCallback(
+  var getIsActive = useCallback(
   function (_ref2) {var rangeIndex = _ref2.rangeIndex,cellIndex = _ref2.cellIndex;
     return rangeIndex === activeRangeIndex && cellIndex === activeCellIndex;
   },
   [activeCellIndex, activeRangeIndex]);
 
 
-  var handleDelete = React.useCallback(
+  var handleDelete = useCallback(
   function (e) {
     if (activeRangeIndex === null || disabled) {
       return;
@@ -1519,14 +1512,14 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
   useMousetrap(DELETE_KEYS, handleDelete, root);
 
-  React.useEffect(
+  useEffect(
   function cancelPendingCreationOnSizeChange() {
     cancel();
   },
   [size, cancel]);
 
 
-  var getDateRangeForVisualGrid = React.useMemo(function () {
+  var getDateRangeForVisualGrid = useMemo(function () {
     return createMapCellInfoToRecurringTimeRange({
       originDate: originDate,
       fromX: toDay,
@@ -1536,7 +1529,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
     });
   }, [visualGridVerticalPrecision, originDate]);
 
-  React.useEffect(
+  useEffect(
   function scrollToActiveTimeBlock() {
     if (!document.activeElement) {
       return;
@@ -1555,11 +1548,11 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
   [schedule]);var _useState7 =
 
 
-  React.useState(
+  useState(
   false),_useState8 = _slicedToArray(_useState7, 2),wasInitialScrollPerformed = _useState8[0],setWasInitialScrollPerformed = _useState8[1];
 
 
-  React.useEffect(
+  useEffect(
   function performInitialScroll() {
     if (wasInitialScrollPerformed || !root.current || !grid) {
       return;
@@ -1599,7 +1592,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-  var handleBlur = React.useCallback(
+  var handleBlur = useCallback(
   function (event) {
     if (!event.target.contains(document.activeElement)) {
       setActive([null, null]);
@@ -1608,7 +1601,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
   [setActive]);
 
 
-  var handleCellClick = React.useCallback(
+  var handleCellClick = useCallback(
   function (dayIndex, timeIndex) {return function (event) {
       if (!grid || disabled) {
         return;
@@ -1637,7 +1630,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
   return /*#__PURE__*/(
-    React__default.createElement("div", {
+    React.createElement("div", {
       ref: root,
       style: style,
       onBlur: handleBlur,
@@ -1649,22 +1642,22 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
       classes['no-scroll'], isDragging)]) }, /*#__PURE__*/
 
 
-    React__default.createElement("div", { className: classes['grid-root'] }, /*#__PURE__*/
-    React__default.createElement("div", {
+    React.createElement("div", { className: classes['grid-root'] }, /*#__PURE__*/
+    React.createElement("div", {
       "aria-hidden": true,
       className: classcat([classes.timeline, classes['sticky-left']]) }, /*#__PURE__*/
 
-    React__default.createElement("div", { className: classes.header }, /*#__PURE__*/
-    React__default.createElement("div", { className: classes['day-column'] }, /*#__PURE__*/
-    React__default.createElement("div", { className: classcat([classes.cell, classes.title]) }, "T"))), /*#__PURE__*/
+    React.createElement("div", { className: classes.header }, /*#__PURE__*/
+    React.createElement("div", { className: classes['day-column'] }, /*#__PURE__*/
+    React.createElement("div", { className: classcat([classes.cell, classes.title]) }, "T"))), /*#__PURE__*/
 
 
-    React__default.createElement("div", { className: classes.calendar }, /*#__PURE__*/
-    React__default.createElement("div", { className: classes['day-column'] }, /*#__PURE__*/
-    React__default.createElement("div", { className: classes['day-hours'] },
+    React.createElement("div", { className: classes.calendar }, /*#__PURE__*/
+    React.createElement("div", { className: classes['day-column'] }, /*#__PURE__*/
+    React.createElement("div", { className: classes['day-hours'] },
     times(numVisualVerticalCells).map(function (timeIndex) {
       return /*#__PURE__*/(
-        React__default.createElement(Cell, {
+        React.createElement(Cell, {
           classes: classes,
           getDateRangeForVisualGrid: getDateRangeForVisualGrid,
           key: timeIndex,
@@ -1673,7 +1666,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
         function (_ref4) {var start = _ref4.start,isHourStart = _ref4.isHourStart;
           if (isHourStart) {
             return /*#__PURE__*/(
-              React__default.createElement("div", { className: classes.time },
+              React.createElement("div", { className: classes.time },
               format(start, 'hh:mm', { locale: locale })));
 
 
@@ -1688,23 +1681,23 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-    React__default.createElement("div", {
+    React.createElement("div", {
       className: classcat([
       classes['sticky-top'],
       classes['day-header-row']]) }, /*#__PURE__*/
 
 
-    React__default.createElement("div", {
+    React.createElement("div", {
       role: "presentation",
       className: classcat([classes.calendar, classes.header]) },
 
     times(7).map(function (i) {return /*#__PURE__*/(
-        React__default.createElement("div", {
+        React.createElement("div", {
           key: i,
           role: "presentation",
           className: classes['day-column'] }, /*#__PURE__*/
 
-        React__default.createElement("div", {
+        React.createElement("div", {
           className: classcat([
           classes.cell,
           classes.title, _defineProperty({},
@@ -1714,13 +1707,13 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-        React__default.createElement("span", null,
+        React.createElement("span", null,
         format(addDays(originDate, i), 'ddd ', { locale: locale })), /*#__PURE__*/
 
-        React__default.createElement("span", null,
+        React.createElement("span", null,
         format(addDays(originDate, i), 'MMM ', { locale: locale })), /*#__PURE__*/
 
-        React__default.createElement("span", { className: classes.date },
+        React.createElement("span", { className: classes.date },
         format(addDays(originDate, i), 'D', { locale: locale })))));}))), /*#__PURE__*/
 
 
@@ -1728,14 +1721,14 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-    React__default.createElement("div", { className: classes['layer-container'] },
+    React.createElement("div", { className: classes['layer-container'] },
     isDragging && /*#__PURE__*/
-    React__default.createElement("div", { className: classes['drag-box'], style: dragBoxStyle },
-    hasFinishedDragging && /*#__PURE__*/React__default.createElement("div", { className: classes.popup })),
+    React.createElement("div", { className: classes['drag-box'], style: dragBoxStyle },
+    hasFinishedDragging && /*#__PURE__*/React.createElement("div", { className: classes.popup })),
 
 
     grid && pendingCreation && isDragging && /*#__PURE__*/
-    React__default.createElement(Schedule, {
+    React.createElement(Schedule, {
       classes: classes,
       dateRangeToCells: dateRangeToCells,
       cellInfoToDateRange: cellInfoToSingleDateRange,
@@ -1748,7 +1741,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
     grid && !pendingCreation && /*#__PURE__*/
-    React__default.createElement(Schedule, {
+    React.createElement(Schedule, {
       classes: classes,
       onActiveChange: setActive,
       dateRangeToCells: dateRangeToCells,
@@ -1767,16 +1760,16 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-    React__default.createElement("div", { ref: parent, role: "grid", className: classes.calendar },
+    React.createElement("div", { ref: parent, role: "grid", className: classes.calendar },
     times(7).map(function (dayIndex) {
       var isPassed = isPast(addDays(originDate, dayIndex + 1));
       return /*#__PURE__*/(
-        React__default.createElement("div", {
+        React.createElement("div", {
           role: "gridcell",
           key: dayIndex,
           className: classes['day-column'] }, /*#__PURE__*/
 
-        React__default.createElement("div", {
+        React.createElement("div", {
           className: classcat([
           classes['day-hours'], _defineProperty({},
 
@@ -1786,7 +1779,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
         times(numVisualVerticalCells).map(function (timeIndex) {
           return /*#__PURE__*/(
-            React__default.createElement(Cell, {
+            React.createElement(Cell, {
               classes: classes,
               onClick:
               !isPassed ?
@@ -1815,6 +1808,10 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 }, isEqual);
 
 var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
+
+export { DefaultEventRootComponent, SchedulerContext, TimeGridScheduler, styles_module as classes, getFormattedComponentsForDateRange as getFormattedTimeRangeComponents, getTextForDateRange, useMousetrap };
+//# sourceMappingURL=index.js.map
+D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
 
 exports.DefaultEventRootComponent = DefaultEventRootComponent;
 exports.SchedulerContext = SchedulerContext;
