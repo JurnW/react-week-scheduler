@@ -44,3 +44,5 @@ build
 dist
 .cache
 generated-types/
+index.mjs
+index.mjs.map
