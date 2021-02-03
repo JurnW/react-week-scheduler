@@ -20,7 +20,7 @@ export default {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     }),
     commonjs({
-      extensions: ['.js'],
+      extensions: ['.js', '.mjs'],
       include: 'node_modules/**',
     }),
     postcss({
@@ -30,7 +30,7 @@ export default {
     }),
     babel({
       exclude: 'node_modules/**',
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx'],
     }),
   ],
 };
