@@ -111,7 +111,6 @@
   },
   "scripts": {
     "pre-commit": "yarn common-check",
-    "prepare": "npm run build",
     "lint-staged": "lint-staged",
     "check-prettier": "prettier '**/*.{t,j}s{,x}' '**/*.{css,scss,json,md}' --list-different",
     "common-check": "run-p -c --aggregate-output lint check-prettier check-integrity",
