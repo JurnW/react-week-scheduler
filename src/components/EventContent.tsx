@@ -32,6 +32,7 @@ export const EventContent = React.memo(function EventContent({
     dateRange,
     locale,
     includeDayIfSame: false,
+    title,
   });
   const isFifteenMinuteMeeting = height < 25 ? '0 10px' : '';
 
@@ -45,18 +46,14 @@ export const EventContent = React.memo(function EventContent({
       className={classes['event-content']}
     >
       <VisuallyHidden>
-        {getTextForDateRange({ dateRange, locale })}
+        {getTextForDateRange({ dateRange, locale, title })}
       </VisuallyHidden>
       <span aria-hidden className={classes.start}>
         {isStart && start}
       </span>
-      {title ? (
-        <span>{title}</span>
-      ) : (
-        <span aria-hidden className={classes.end}>
-          {isEnd && end}
-        </span>
-      )}
+      <span aria-hidden className={classes.end}>
+        {title ? title : isEnd && end}
+      </span>
     </div>
   );
 });
