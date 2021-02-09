@@ -5,6 +5,8 @@ import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
 import format from 'date-fns/format';
 import isDateEqual from 'date-fns/is_equal';
+import en from 'date-fns/locale/en';
+import ja from 'date-fns/locale/ja';
 import startOfDay from 'date-fns/start_of_day';
 import invariant from 'invariant';
 import isEqual from 'lodash/isEqual';
@@ -12,14 +14,12 @@ import times from 'lodash/times';
 import { ExtendedKeyboardEvent } from 'mousetrap';
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
-import { SchedulerContext } from '../context';
 import { useClickAndDrag } from '../hooks/useClickAndDrag';
 import { useMousetrap } from '../hooks/useMousetrap';
 import {
@@ -63,6 +63,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   eventContentComponent,
   eventRootComponent,
   disabled,
+  localization,
 }: {
   originDate?: Date;
 
@@ -110,8 +111,9 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   eventContentComponent?: ScheduleProps['eventContentComponent'];
   eventRootComponent?: ScheduleProps['eventRootComponent'];
   disabled?: boolean;
+  localization: string;
 }) {
-  const { locale } = useContext(SchedulerContext);
+  const locale = localization === 'ja' ? ja : en;
   const originDate = useMemo(() => startOfDay(_originDate), [_originDate]);
   const numVerticalCells = MINS_IN_DAY / verticalPrecision;
   const numHorizontalCells = 7 / horizontalPrecision;

@@ -24,7 +24,6 @@ import 'resize-observer-polyfill/dist/ResizeObserver.global';
 import useUndo from 'use-undo';
 import { DefaultEventRootComponent } from '../src/components/DefaultEventRootComponent';
 import { TimeGridScheduler } from '../src/components/TimeGridScheduler';
-import { SchedulerContext } from '../src/context';
 import { useMousetrap } from '../src/hooks/useMousetrap';
 import { classes as defaultClasses } from '../src/styles';
 import { EventRootProps, ScheduleType } from '../src/types';
@@ -347,20 +346,19 @@ function App() {
         }}
       >
         <Fragment key={`${cellHeight},${cellWidth}`}>
-          <SchedulerContext.Provider value={{ locale: locales[locale] }}>
-            <TimeGridScheduler
-              key={originDate.toString()}
-              classes={classes}
-              originDate={originDate}
-              schedule={scheduleState.present}
-              onChange={setSchedule}
-              verticalPrecision={verticalPrecision}
-              visualGridVerticalPrecision={visualGridVerticalPrecision}
-              cellClickPrecision={cellClickPrecision}
-              eventRootComponent={EventRoot}
-              disabled={disabled}
-            />
-          </SchedulerContext.Provider>
+          <TimeGridScheduler
+            key={originDate.toString()}
+            classes={classes}
+            originDate={originDate}
+            schedule={scheduleState.present}
+            onChange={setSchedule}
+            verticalPrecision={verticalPrecision}
+            visualGridVerticalPrecision={visualGridVerticalPrecision}
+            cellClickPrecision={cellClickPrecision}
+            eventRootComponent={EventRoot}
+            disabled={disabled}
+            localization={'en'}
+          />
         </Fragment>
       </CustomProperties>
     </>
