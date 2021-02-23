@@ -14,12 +14,13 @@ var addDays = _interopDefault(require('date-fns/add_days'));
 var addHours = _interopDefault(require('date-fns/add_hours'));
 var format = _interopDefault(require('date-fns/format'));
 var isDateEqual = _interopDefault(require('date-fns/is_equal'));
+var en = _interopDefault(require('date-fns/locale/en'));
+var ja = _interopDefault(require('date-fns/locale/ja'));
 var startOfDay = _interopDefault(require('date-fns/start_of_day'));
 var invariant = _interopDefault(require('invariant'));
 var isEqual = _interopDefault(require('lodash/isEqual'));
 var times = _interopDefault(require('lodash/times'));
 var scrollIntoView = _interopDefault(require('scroll-into-view-if-needed'));
-var en = _interopDefault(require('date-fns/locale/en'));
 var rxjs = require('rxjs');
 var operators = require('rxjs/operators');
 var Mousetrap = _interopDefault(require('mousetrap'));
@@ -236,8 +237,6 @@ ref)
 {var isActive = _ref.isActive,handleDelete = _ref.handleDelete,cellIndex = _ref.cellIndex,rangeIndex = _ref.rangeIndex,classes = _ref.classes,disabled = _ref.disabled,props = _objectWithoutProperties(_ref, ["isActive", "handleDelete", "cellIndex", "rangeIndex", "classes", "disabled"]);
   return /*#__PURE__*/React__default.createElement("div", _extends({ ref: ref, "aria-disabled": disabled }, props));
 }));
-
-var SchedulerContext = /*#__PURE__*/React.createContext({ locale: en });
 
 var createPageMapCoordsToContainer = function createPageMapCoordsToContainer(container) {
   return function (event) {
@@ -692,6 +691,8 @@ var Cell = /*#__PURE__*/React__default.memo(function Cell(_ref)
 
 });
 
+var SchedulerContext = /*#__PURE__*/React.createContext({ locale: en });
+
 var formatTemplate = 'ddd h:mma';
 
 var dropSame = function dropSame(
@@ -699,9 +700,10 @@ dates,
 template)
 
 
-{var takeSecond = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;var locale = arguments.length > 3 ? arguments[3] : undefined;var _dates$map =
+
+{var takeSecond = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;var locale = arguments.length > 3 ? arguments[3] : undefined;var title = arguments.length > 4 ? arguments[4] : undefined;var _dates$map =
   dates.map(function (date) {return format(date, template, { locale: locale });}),_dates$map2 = _slicedToArray(_dates$map, 2),first = _dates$map2[0],second = _dates$map2[1];
-  if (first !== second) {
+  if (first !== second || title) {
     return [first, second];
   }
 
@@ -731,18 +733,20 @@ locale)
 
 
 
+
 var getFormattedComponentsForDateRange = function getFormattedComponentsForDateRange(_ref)
 
 
 
 
 
-{var dateRange = _ref.dateRange,locale = _ref.locale,template = _ref.template,template2 = _ref.template2,_ref$includeDayIfSame = _ref.includeDayIfSame,includeDayIfSame = _ref$includeDayIfSame === void 0 ? true : _ref$includeDayIfSame;
+
+{var dateRange = _ref.dateRange,locale = _ref.locale,template = _ref.template,template2 = _ref.template2,_ref$includeDayIfSame = _ref.includeDayIfSame,includeDayIfSame = _ref$includeDayIfSame === void 0 ? true : _ref$includeDayIfSame,title = _ref.title;
   var start = dateRange[0];
   var end = dateRange[1];
 
   if (isSameDay(start, end) && !template) {var _dropSame =
-    dropSame([start, end], 'a', true, locale),_dropSame2 = _slicedToArray(_dropSame, 2),firstM = _dropSame2[0],secondM = _dropSame2[1];
+    dropSame([start, end], 'a', true, locale, title),_dropSame2 = _slicedToArray(_dropSame, 2),firstM = _dropSame2[0],secondM = _dropSame2[1];
     var day = includeDayIfSame ? "".concat(format(start, 'ddd', { locale: locale }), " ") : '';
     return ["".concat(
     day).concat(formatHour(start, {
@@ -775,7 +779,8 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
   getFormattedComponentsForDateRange({
     dateRange: dateRange,
     locale: locale,
-    includeDayIfSame: false }),_getFormattedComponen2 = _slicedToArray(_getFormattedComponen, 2),start = _getFormattedComponen2[0],end = _getFormattedComponen2[1];
+    includeDayIfSame: false,
+    title: title }),_getFormattedComponen2 = _slicedToArray(_getFormattedComponen, 2),start = _getFormattedComponen2[0],end = _getFormattedComponen2[1];
 
   var isFifteenMinuteMeeting = height < 25 ? '0 10px' : '';
 
@@ -789,17 +794,13 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
       className: classes['event-content'] }, /*#__PURE__*/
 
     React__default.createElement(VisuallyHidden, null,
-    getTextForDateRange({ dateRange: dateRange, locale: locale })), /*#__PURE__*/
+    getTextForDateRange({ dateRange: dateRange, locale: locale, title: title })), /*#__PURE__*/
 
     React__default.createElement("span", { "aria-hidden": true, className: classes.start },
-    isStart && start),
-
-    title ? /*#__PURE__*/
-    React__default.createElement("span", null, title) : /*#__PURE__*/
+    isStart && start), /*#__PURE__*/
 
     React__default.createElement("span", { "aria-hidden": true, className: classes.end },
-    isEnd && end)));
-
+    title ? title : isEnd && end)));
 
 
 
@@ -1317,8 +1318,10 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled;var _useContext =
-  React.useContext(SchedulerContext),locale = _useContext.locale;
+
+
+{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization;
+  var locale = localization === 'ja' ? ja : en;
   var originDate = React.useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
   var numVerticalCells = MINS_IN_DAY / verticalPrecision;
   var numHorizontalCells = 7 / horizontalPrecision;
