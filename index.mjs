@@ -3,6 +3,7 @@ import useComponentSize from '@rehooks/component-size';
 import classcat from 'classcat';
 import isToday from 'date-fns/is_today';
 import isPast from 'date-fns/is_past';
+import addMinutes from 'date-fns/add_minutes';
 import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
 import format from 'date-fns/format';
@@ -20,7 +21,6 @@ import Mousetrap from 'mousetrap';
 import clamp from 'lodash/clamp';
 import floor from 'lodash/floor';
 import round from 'lodash/round';
-import addMinutes from 'date-fns/add_minutes';
 import compareAsc from 'date-fns/compare_asc';
 import endOfDay from 'date-fns/end_of_day';
 import isBefore from 'date-fns/is_before';
@@ -1243,6 +1243,71 @@ var Schedule = /*#__PURE__*/React.memo(function Schedule(_ref)
 
 });
 
+var IndicatorLine = /*#__PURE__*/React.memo(function IndicatorLine(_ref)
+
+
+
+
+
+
+
+{var classes = _ref.classes,grid = _ref.grid,cell = _ref.cell,_ref$eventRootCompone = _ref.eventRootComponent,EventRootComponent = _ref$eventRootCompone === void 0 ? DefaultEventRootComponent : _ref$eventRootCompone;
+  var rect = useMemo(function () {return grid.getRectFromCell(cell);}, [cell, grid]);var
+  top = rect.top,left = rect.left,width = rect.width,height = rect.height;
+
+  return /*#__PURE__*/(
+    React.createElement(Draggable, {
+      bounds: {
+        top: 0,
+        bottom: grid.totalHeight - height,
+        left: 0,
+        right: grid.totalWidth },
+
+      position: { x: left, y: top } }, /*#__PURE__*/
+
+    React.createElement(EventRootComponent, {
+      className: classcat([classes.indicator]),
+      style: {
+        width: width,
+        height: 2 } })));
+
+
+
+
+});
+
+var TimeIndicator = /*#__PURE__*/React.memo(function TimeIndicator(_ref)
+
+
+
+
+
+
+
+
+
+
+
+
+{var classes = _ref.classes,currentTime = _ref.currentTime,grid = _ref.grid,className = _ref.className,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,eventRootComponent = _ref.eventRootComponent;
+  return /*#__PURE__*/(
+    React.createElement("div", null,
+    dateRangeToCells(currentTime).map(function (cell) {
+      return /*#__PURE__*/(
+        React.createElement(IndicatorLine, {
+          classes: classes,
+          cellInfoToDateRange: cellInfoToDateRange,
+          className: classcat([className]),
+          grid: grid,
+          cell: cell,
+          eventRootComponent: eventRootComponent }));
+
+
+    })));
+
+
+});
+
 var MINS_IN_DAY = 24 * 60;
 var horizontalPrecision = 1;
 var toDay = function toDay(x) {return x * horizontalPrecision;};
@@ -1323,6 +1388,12 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
 
   var toY = useCallback(function (mins) {return mins / verticalPrecision;}, [
   verticalPrecision]);
+
+  var currentTime = [
+  new Date(),
+  addMinutes(new Date(), 1),
+  '',
+  ''];
 
 
   var cellInfoToDateRanges = useMemo(function () {
@@ -1760,7 +1831,16 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
       eventContentComponent: eventContentComponent,
       eventRootComponent: eventRootComponent,
       getIsActive: getIsActive,
-      disabled: disabled }), /*#__PURE__*/
+      disabled: disabled }),
+
+
+    grid && /*#__PURE__*/
+    React.createElement(TimeIndicator, {
+      classes: classes,
+      dateRangeToCells: dateRangeToCells,
+      cellInfoToDateRange: cellInfoToSingleDateRange,
+      currentTime: currentTime,
+      grid: grid }), /*#__PURE__*/
 
 
 
@@ -1811,7 +1891,7 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","indicator":"styles-module_indicator__37i_p","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
 
 export { DefaultEventRootComponent, SchedulerContext, TimeGridScheduler, styles_module as classes, getFormattedComponentsForDateRange as getFormattedTimeRangeComponents, getTextForDateRange, useMousetrap };
 //# sourceMappingURL=index.mjs.map
