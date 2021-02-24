@@ -300,6 +300,7 @@
   background: #2c5282;
   z-index: var(--z-index-event);
   position: relative;
+  pointer-events: none;
   &:before {
     content: '';
     position: absolute;
