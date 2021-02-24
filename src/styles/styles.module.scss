@@ -296,6 +296,22 @@
   }
 }
 
+.indicator {
+  background: #2c5282;
+  z-index: var(--z-index-event);
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -7px;
+    background: #2c5282;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+  }
+}
+
 .hours-container {
   display: flex;
 }
