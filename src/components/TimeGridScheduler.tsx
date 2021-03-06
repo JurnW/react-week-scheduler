@@ -114,7 +114,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   eventRootComponent?: ScheduleProps['eventRootComponent'];
   disabled?: boolean;
   localization: string;
-  currentTime: [Date, Date, string, string];
+  currentTime: [string, string, string, string];
 }) {
   const locale = localization === 'ja' ? ja : en;
   const originDate = useMemo(() => startOfDay(_originDate), [_originDate]);
@@ -571,7 +571,9 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
               classes={classes}
               dateRangeToCells={dateRangeToCells}
               cellInfoToDateRange={cellInfoToSingleDateRange}
-              currentTime={currentTime}
+              currentTime={
+                (currentTime as unknown) as [Date, Date, string, string]
+              }
               grid={grid}
             />
           )}

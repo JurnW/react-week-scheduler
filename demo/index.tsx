@@ -46,9 +46,9 @@ const classes = mapValues(
     classcat([value, demoClasses[key]]),
 );
 
-const currentTime: [Date, Date, string, string] = [
-  new Date(),
-  addMinutes(new Date(), 1),
+const currentTime: [string, string, string, string] = [
+  new Date().toString(),
+  addMinutes(new Date(), 1).toString(),
   '',
   '',
 ];
