@@ -1,6 +1,6 @@
 import useComponentSize from '@rehooks/component-size';
 import classcat from 'classcat';
-import { addMinutes, isPast, isToday } from 'date-fns';
+import { isPast, isToday } from 'date-fns';
 import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
 import format from 'date-fns/format';
@@ -65,6 +65,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   eventRootComponent,
   disabled,
   localization,
+  currentTime,
 }: {
   originDate?: Date;
 
@@ -113,6 +114,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   eventRootComponent?: ScheduleProps['eventRootComponent'];
   disabled?: boolean;
   localization: string;
+  currentTime: [Date, Date, string, string];
 }) {
   const locale = localization === 'ja' ? ja : en;
   const originDate = useMemo(() => startOfDay(_originDate), [_originDate]);
@@ -124,12 +126,6 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   const toY = useCallback((mins: number): number => mins / verticalPrecision, [
     verticalPrecision,
   ]);
-  const currentTime: DateRange = [
-    new Date(),
-    addMinutes(new Date(), 1),
-    '',
-    '',
-  ];
 
   const cellInfoToDateRanges = useMemo(() => {
     return createMapCellInfoToRecurringTimeRange({
@@ -571,6 +567,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
           )}
           {grid && (
             <TimeIndicator
+              key={`time-${currentTime}`}
               classes={classes}
               dateRangeToCells={dateRangeToCells}
               cellInfoToDateRange={cellInfoToSingleDateRange}

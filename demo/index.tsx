@@ -1,5 +1,6 @@
 import Tippy from '@tippy.js/react';
 import classcat from 'classcat';
+import addMinutes from 'date-fns/add_minutes';
 import compareAsc from 'date-fns/compare_asc';
 import format from 'date-fns/format';
 import getDay from 'date-fns/get_day';
@@ -44,6 +45,13 @@ const classes = mapValues(
   (value, key: keyof typeof defaultClasses) =>
     classcat([value, demoClasses[key]]),
 );
+
+const currentTime: [Date, Date, string, string] = [
+  new Date(),
+  addMinutes(new Date(), 1),
+  '',
+  '',
+];
 
 const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
   {
@@ -358,6 +366,7 @@ function App() {
             eventRootComponent={EventRoot}
             disabled={disabled}
             localization={'en'}
+            currentTime={currentTime}
           />
         </Fragment>
       </CustomProperties>

@@ -17,3 +17,5 @@ export const DefaultEventRootComponent = React.memo(
     return <div ref={ref} aria-disabled={disabled} {...props} />;
   }),
 );
+
+DefaultEventRootComponent.displayName = 'DefaultEventRootComponent';

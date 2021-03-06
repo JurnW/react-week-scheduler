@@ -26,6 +26,7 @@ export const IndicatorLine = React.memo(function IndicatorLine({
         right: grid.totalWidth,
       }}
       position={{ x: left, y: top }}
+      key={`draggable-${width}.${height}.${top}.${left}`}
     >
       <EventRootComponent
         className={classcat([classes.indicator])}
@@ -33,6 +34,7 @@ export const IndicatorLine = React.memo(function IndicatorLine({
           width: width,
           height: 2,
         }}
+        key={`eventroot-${width}.${height}.${top}.${left}`}
       ></EventRootComponent>
     </Draggable>
   );
