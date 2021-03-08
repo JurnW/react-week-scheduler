@@ -32,12 +32,11 @@ export const TimeIndicator = React.memo(function TimeIndicator({
   // }, [currentTime]);
 
   return (
-    //TODO: remove update test
-    <div key={`currentTime-${currentTime[0]}`} className="updateCheck">
-      {dateRangeToCells(currentTime).map(cell => {
+    <div>
+      {dateRangeToCells(currentTime).map((cell, index) => {
         return (
           <IndicatorLine
-            key={`indicator-${currentTime[0]}`}
+            key={`indicator-${index}`}
             classes={classes}
             cellInfoToDateRange={cellInfoToDateRange}
             className={classcat([className])}
