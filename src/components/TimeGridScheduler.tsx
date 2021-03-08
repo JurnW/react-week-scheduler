@@ -38,7 +38,7 @@ import {
 import { createMapDateRangeToCells } from '../utils/createMapDateRangeToCells';
 import { getEarliestTimeRange } from '../utils/getEarliestTimeRange';
 import { getSpan } from '../utils/getSpan';
-import { mergeEvents, mergeRanges } from '../utils/mergeEvents';
+import { mergeRanges } from '../utils/mergeEvents';
 import { Cell } from './Cell';
 import { Schedule, ScheduleProps } from './Schedule';
 import { TimeIndicator } from './TimeIndicator';
@@ -230,7 +230,9 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
       }
 
       if (hasFinishedDragging) {
-        onChange(mergeEvents(schedule, pendingCreation));
+        if (pendingCreation) {
+          onChange([...schedule, ...pendingCreation]);
+        }
         setPendingCreation(null);
       }
     },
@@ -539,7 +541,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
               dateRangeToCells={dateRangeToCells}
               cellInfoToDateRange={cellInfoToSingleDateRange}
               className={classes['is-pending-creation']}
-              ranges={mergeEvents(schedule, pendingCreation)}
+              ranges={[...schedule, ...pendingCreation]}
               grid={grid}
               moveAxis="none"
               eventContentComponent={eventContentComponent}
