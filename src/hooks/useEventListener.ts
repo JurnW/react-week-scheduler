@@ -6,7 +6,7 @@ export function useEventListener<
 >(
   ref: React.RefObject<Element>,
   event: K,
-  listener: (this: Element, event: HTMLElementEventMap[K]) => void,
+  listener: (this: Element, event: any) => void,
   options?: boolean | AddEventListenerOptions,
   { enabled = true } = {},
 ) {

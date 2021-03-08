@@ -308,11 +308,7 @@ isDisabled)
 
     var touchStartWithDelay$ = touchStart$.pipe(
     operators.mergeMap(function (start) {return (
-        rxjs.of(start).pipe(
-        operators.delay(300),
-        operators.takeUntil(touchMove$),
-        prevent));}));
-
+        rxjs.of(start).pipe(operators.delay(300), operators.takeUntil(touchMove$), prevent));}));
 
 
 
@@ -360,6 +356,8 @@ isDisabled)
         var bottom = Math.max(startY, endY);
         var left = Math.min(startX, endX);
         var right = Math.max(startX, endX);
+        var source = '';
+        var title = '';
 
         return {
           startX: startX,
@@ -371,7 +369,9 @@ isDisabled)
           left: left,
           right: right,
           width: right - left,
-          height: bottom - top };
+          height: bottom - top,
+          source: source,
+          title: title };
 
       }),
 
@@ -1309,13 +1309,12 @@ var TimeIndicator = /*#__PURE__*/React__default.memo(function TimeIndicator(_ref
   //   console.log(currentTime);
   // }, [currentTime]);
 
-  return /*#__PURE__*/ (
-    //TODO: remove update test
-    React__default.createElement("div", { key: "currentTime-".concat(currentTime[0]), className: "updateCheck" },
-    dateRangeToCells(currentTime).map(function (cell) {
+  return /*#__PURE__*/(
+    React__default.createElement("div", null,
+    dateRangeToCells(currentTime).map(function (cell, index) {
       return /*#__PURE__*/(
         React__default.createElement(IndicatorLine, {
-          key: "indicator-".concat(currentTime[0]),
+          key: "indicator-".concat(index),
           classes: classes,
           cellInfoToDateRange: cellInfoToDateRange,
           className: classcat([className]),

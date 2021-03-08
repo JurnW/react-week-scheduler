@@ -1,40 +1,40 @@
-import React, { useState, useEffect, useCallback, useRef, createContext, useContext, useMemo } from 'react';
+import VisuallyHidden from '@reach/visually-hidden';
 import useComponentSize from '@rehooks/component-size';
 import classcat from 'classcat';
-import isToday from 'date-fns/is_today';
-import isPast from 'date-fns/is_past';
 import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
-import format from 'date-fns/format';
-import isDateEqual from 'date-fns/is_equal';
-import en from 'date-fns/locale/en';
-import ja from 'date-fns/locale/ja';
-import startOfDay from 'date-fns/start_of_day';
-import invariant from 'invariant';
-import isEqual from 'lodash/isEqual';
-import times from 'lodash/times';
-import scrollIntoView from 'scroll-into-view-if-needed';
-import { fromEvent, of, merge } from 'rxjs';
-import { mergeMap, delay, takeUntil, filter, map, tap, startWith } from 'rxjs/operators';
-import Mousetrap from 'mousetrap';
-import clamp from 'lodash/clamp';
-import floor from 'lodash/floor';
-import round from 'lodash/round';
 import addMinutes from 'date-fns/add_minutes';
 import compareAsc from 'date-fns/compare_asc';
-import endOfDay from 'date-fns/end_of_day';
-import isBefore from 'date-fns/is_before';
-import min from 'date-fns/min';
-import range from 'lodash/range';
 import differenceInDays from 'date-fns/difference_in_days';
 import differenceInMinutes from 'date-fns/difference_in_minutes';
-import setDay from 'date-fns/set_day';
-import _mergeRanges from 'merge-ranges';
+import endOfDay from 'date-fns/end_of_day';
+import format from 'date-fns/format';
 import getMinutes from 'date-fns/get_minutes';
-import Resizable from 're-resizable';
-import Draggable from 'react-draggable';
-import VisuallyHidden from '@reach/visually-hidden';
+import isBefore from 'date-fns/is_before';
+import isDateEqual from 'date-fns/is_equal';
+import isPast from 'date-fns/is_past';
 import isSameDay from 'date-fns/is_same_day';
+import isToday from 'date-fns/is_today';
+import en from 'date-fns/locale/en';
+import ja from 'date-fns/locale/ja';
+import min from 'date-fns/min';
+import setDay from 'date-fns/set_day';
+import startOfDay from 'date-fns/start_of_day';
+import invariant from 'invariant';
+import clamp from 'lodash/clamp';
+import floor from 'lodash/floor';
+import isEqual from 'lodash/isEqual';
+import range from 'lodash/range';
+import round from 'lodash/round';
+import times from 'lodash/times';
+import _mergeRanges from 'merge-ranges';
+import Mousetrap from 'mousetrap';
+import Resizable from 're-resizable';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import Draggable from 'react-draggable';
+import { fromEvent, merge, of } from 'rxjs';
+import { delay, filter, map, mergeMap, startWith, takeUntil, tap } from 'rxjs/operators';
+import scrollIntoView from 'scroll-into-view-if-needed';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -301,11 +301,7 @@ isDisabled)
 
     var touchStartWithDelay$ = touchStart$.pipe(
     mergeMap(function (start) {return (
-        of(start).pipe(
-        delay(300),
-        takeUntil(touchMove$),
-        prevent));}));
-
+        of(start).pipe(delay(300), takeUntil(touchMove$), prevent));}));
 
 
 
@@ -353,6 +349,8 @@ isDisabled)
         var bottom = Math.max(startY, endY);
         var left = Math.min(startX, endX);
         var right = Math.max(startX, endX);
+        var source = '';
+        var title = '';
 
         return {
           startX: startX,
@@ -364,7 +362,9 @@ isDisabled)
           left: left,
           right: right,
           width: right - left,
-          height: bottom - top };
+          height: bottom - top,
+          source: source,
+          title: title };
 
       }),
 
@@ -1302,13 +1302,12 @@ var TimeIndicator = /*#__PURE__*/React.memo(function TimeIndicator(_ref)
   //   console.log(currentTime);
   // }, [currentTime]);
 
-  return /*#__PURE__*/ (
-    //TODO: remove update test
-    React.createElement("div", { key: "currentTime-".concat(currentTime[0]), className: "updateCheck" },
-    dateRangeToCells(currentTime).map(function (cell) {
+  return /*#__PURE__*/(
+    React.createElement("div", null,
+    dateRangeToCells(currentTime).map(function (cell, index) {
       return /*#__PURE__*/(
         React.createElement(IndicatorLine, {
-          key: "indicator-".concat(currentTime[0]),
+          key: "indicator-".concat(index),
           classes: classes,
           cellInfoToDateRange: cellInfoToDateRange,
           className: classcat([className]),

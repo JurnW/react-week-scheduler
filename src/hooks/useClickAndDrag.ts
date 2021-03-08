@@ -52,11 +52,7 @@ export function useClickAndDrag(
 
     const touchStartWithDelay$ = touchStart$.pipe(
       mergeMap(start =>
-        of(start).pipe(
-          delay(300),
-          takeUntil(touchMove$),
-          prevent,
-        ),
+        of(start).pipe(delay(300), takeUntil(touchMove$), prevent),
       ),
     );
 
@@ -104,6 +100,8 @@ export function useClickAndDrag(
               const bottom = Math.max(startY, endY);
               const left = Math.min(startX, endX);
               const right = Math.max(startX, endX);
+              const source = '';
+              const title = '';
 
               return {
                 startX,
@@ -116,6 +114,8 @@ export function useClickAndDrag(
                 right,
                 width: right - left,
                 height: bottom - top,
+                source,
+                title,
               };
             },
           ),
