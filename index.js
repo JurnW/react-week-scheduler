@@ -10,7 +10,6 @@ var useComponentSize = _interopDefault(require('@rehooks/component-size'));
 var classcat = _interopDefault(require('classcat'));
 var isToday = _interopDefault(require('date-fns/is_today'));
 var isPast = _interopDefault(require('date-fns/is_past'));
-var addMinutes = _interopDefault(require('date-fns/add_minutes'));
 var addDays = _interopDefault(require('date-fns/add_days'));
 var addHours = _interopDefault(require('date-fns/add_hours'));
 var format = _interopDefault(require('date-fns/format'));
@@ -28,6 +27,7 @@ var Mousetrap = _interopDefault(require('mousetrap'));
 var clamp = _interopDefault(require('lodash/clamp'));
 var floor = _interopDefault(require('lodash/floor'));
 var round = _interopDefault(require('lodash/round'));
+var addMinutes = _interopDefault(require('date-fns/add_minutes'));
 var compareAsc = _interopDefault(require('date-fns/compare_asc'));
 var endOfDay = _interopDefault(require('date-fns/end_of_day'));
 var isBefore = _interopDefault(require('date-fns/is_before'));
@@ -237,6 +237,9 @@ ref)
 {var isActive = _ref.isActive,handleDelete = _ref.handleDelete,cellIndex = _ref.cellIndex,rangeIndex = _ref.rangeIndex,classes = _ref.classes,disabled = _ref.disabled,props = _objectWithoutProperties(_ref, ["isActive", "handleDelete", "cellIndex", "rangeIndex", "classes", "disabled"]);
   return /*#__PURE__*/React__default.createElement("div", _extends({ ref: ref, "aria-disabled": disabled }, props));
 }));
+
+
+DefaultEventRootComponent.displayName = 'DefaultEventRootComponent';
 
 var createPageMapCoordsToContainer = function createPageMapCoordsToContainer(container) {
   return function (event) {
@@ -1270,14 +1273,16 @@ var IndicatorLine = /*#__PURE__*/React__default.memo(function IndicatorLine(_ref
         left: 0,
         right: grid.totalWidth },
 
-      position: { x: left, y: top } }, /*#__PURE__*/
+      position: { x: left, y: top },
+      key: "draggable-".concat(width, ".").concat(height, ".").concat(top, ".").concat(left) }, /*#__PURE__*/
 
     React__default.createElement(EventRootComponent, {
       className: classcat([classes.indicator]),
       style: {
         width: width,
-        height: 2 } })));
+        height: 2 },
 
+      key: "eventroot-".concat(width, ".").concat(height, ".").concat(top, ".").concat(left) })));
 
 
 
@@ -1297,11 +1302,20 @@ var TimeIndicator = /*#__PURE__*/React__default.memo(function TimeIndicator(_ref
 
 
 {var classes = _ref.classes,currentTime = _ref.currentTime,grid = _ref.grid,className = _ref.className,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,eventRootComponent = _ref.eventRootComponent;
-  return /*#__PURE__*/(
-    React__default.createElement("div", null,
+  // const [cellInfo, setCellInfo] = useState(dateRangeToCells(currentTime));
+
+  // useEffect(() => {
+  //   setCellInfo(dateRangeToCells(currentTime));
+  //   console.log(currentTime);
+  // }, [currentTime]);
+
+  return /*#__PURE__*/ (
+    //TODO: remove update test
+    React__default.createElement("div", { key: "currentTime-".concat(currentTime[0]), className: "updateCheck" },
     dateRangeToCells(currentTime).map(function (cell) {
       return /*#__PURE__*/(
         React__default.createElement(IndicatorLine, {
+          key: "indicator-".concat(currentTime[0]),
           classes: classes,
           cellInfoToDateRange: cellInfoToDateRange,
           className: classcat([className]),
@@ -1385,7 +1399,9 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization;
+
+
+{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization,currentTime = _ref.currentTime;
   var locale = localization === 'ja' ? ja : en;
   var originDate = React.useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
   var numVerticalCells = MINS_IN_DAY / verticalPrecision;
@@ -1395,12 +1411,6 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
   var toY = React.useCallback(function (mins) {return mins / verticalPrecision;}, [
   verticalPrecision]);
-
-  var currentTime = [
-  new Date(),
-  addMinutes(new Date(), 1),
-  '',
-  ''];
 
 
   var cellInfoToDateRanges = React.useMemo(function () {
@@ -1555,7 +1565,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
       newSchedule[rangeIndex] = newDateRange;
     }
 
-    newSchedule = mergeRanges(newSchedule);
+    // newSchedule = mergeRanges(newSchedule);
 
     onChange(newSchedule);
   },
@@ -1815,7 +1825,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
       dateRangeToCells: dateRangeToCells,
       cellInfoToDateRange: cellInfoToSingleDateRange,
       className: classes['is-pending-creation'],
-      ranges: mergeEvents(schedule, pendingCreation),
+      ranges: [].concat(_toConsumableArray(schedule), _toConsumableArray(pendingCreation)),
       grid: grid,
       moveAxis: "none",
       eventContentComponent: eventContentComponent,
@@ -1843,10 +1853,13 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
     grid && /*#__PURE__*/
     React__default.createElement(TimeIndicator, {
+      key: "time-".concat(currentTime),
       classes: classes,
       dateRangeToCells: dateRangeToCells,
       cellInfoToDateRange: cellInfoToSingleDateRange,
-      currentTime: currentTime,
+      currentTime:
+      currentTime,
+
       grid: grid }), /*#__PURE__*/
 
 
