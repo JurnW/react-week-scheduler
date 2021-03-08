@@ -6,10 +6,10 @@ import { createMapCellInfoToContiguousDateRange } from './createMapCellInfoToCon
 
 const constrainToOneDay = ([start, end]: DateRange): DateRange => {
   if (!isSameDay(end, start)) {
-    return [start, setDay(end, getDay(start))];
+    return [start, setDay(end, getDay(start)), '', ''];
   }
 
-  return [start, end];
+  return [start, end, '', ''];
 };
 
 export const createMapCellInfoToSingleDayRange: MapCellInfoToDateRange = options => {

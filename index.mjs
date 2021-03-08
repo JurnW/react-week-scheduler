@@ -3,7 +3,6 @@ import useComponentSize from '@rehooks/component-size';
 import classcat from 'classcat';
 import isToday from 'date-fns/is_today';
 import isPast from 'date-fns/is_past';
-import addMinutes from 'date-fns/add_minutes';
 import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
 import format from 'date-fns/format';
@@ -21,6 +20,7 @@ import Mousetrap from 'mousetrap';
 import clamp from 'lodash/clamp';
 import floor from 'lodash/floor';
 import round from 'lodash/round';
+import addMinutes from 'date-fns/add_minutes';
 import compareAsc from 'date-fns/compare_asc';
 import endOfDay from 'date-fns/end_of_day';
 import isBefore from 'date-fns/is_before';
@@ -231,6 +231,9 @@ ref)
   return /*#__PURE__*/React.createElement("div", _extends({ ref: ref, "aria-disabled": disabled }, props));
 }));
 
+
+DefaultEventRootComponent.displayName = 'DefaultEventRootComponent';
+
 var createPageMapCoordsToContainer = function createPageMapCoordsToContainer(container) {
   return function (event) {
     var clientX;
@@ -298,11 +301,7 @@ isDisabled)
 
     var touchStartWithDelay$ = touchStart$.pipe(
     mergeMap(function (start) {return (
-        of(start).pipe(
-        delay(300),
-        takeUntil(touchMove$),
-        prevent));}));
-
+        of(start).pipe(delay(300), takeUntil(touchMove$), prevent));}));
 
 
 
@@ -350,6 +349,8 @@ isDisabled)
         var bottom = Math.max(startY, endY);
         var left = Math.min(startX, endX);
         var right = Math.max(startX, endX);
+        var source = '';
+        var title = '';
 
         return {
           startX: startX,
@@ -361,7 +362,9 @@ isDisabled)
           left: left,
           right: right,
           width: right - left,
-          height: bottom - top };
+          height: bottom - top,
+          source: source,
+          title: title };
 
       }),
 
@@ -1263,14 +1266,16 @@ var IndicatorLine = /*#__PURE__*/React.memo(function IndicatorLine(_ref)
         left: 0,
         right: grid.totalWidth },
 
-      position: { x: left, y: top } }, /*#__PURE__*/
+      position: { x: left, y: top },
+      key: "draggable-".concat(width, ".").concat(height, ".").concat(top, ".").concat(left) }, /*#__PURE__*/
 
     React.createElement(EventRootComponent, {
       className: classcat([classes.indicator]),
       style: {
         width: width,
-        height: 2 } })));
+        height: 2 },
 
+      key: "eventroot-".concat(width, ".").concat(height, ".").concat(top, ".").concat(left) })));
 
 
 
@@ -1290,11 +1295,19 @@ var TimeIndicator = /*#__PURE__*/React.memo(function TimeIndicator(_ref)
 
 
 {var classes = _ref.classes,currentTime = _ref.currentTime,grid = _ref.grid,className = _ref.className,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,eventRootComponent = _ref.eventRootComponent;
+  // const [cellInfo, setCellInfo] = useState(dateRangeToCells(currentTime));
+
+  // useEffect(() => {
+  //   setCellInfo(dateRangeToCells(currentTime));
+  //   console.log(currentTime);
+  // }, [currentTime]);
+
   return /*#__PURE__*/(
     React.createElement("div", null,
-    dateRangeToCells(currentTime).map(function (cell) {
+    dateRangeToCells(currentTime).map(function (cell, index) {
       return /*#__PURE__*/(
         React.createElement(IndicatorLine, {
+          key: "indicator-".concat(index),
           classes: classes,
           cellInfoToDateRange: cellInfoToDateRange,
           className: classcat([className]),
@@ -1378,7 +1391,9 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
 
 
 
-{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization;
+
+
+{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization,currentTime = _ref.currentTime;
   var locale = localization === 'ja' ? ja : en;
   var originDate = useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
   var numVerticalCells = MINS_IN_DAY / verticalPrecision;
@@ -1388,12 +1403,6 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
 
   var toY = useCallback(function (mins) {return mins / verticalPrecision;}, [
   verticalPrecision]);
-
-  var currentTime = [
-  new Date(),
-  addMinutes(new Date(), 1),
-  '',
-  ''];
 
 
   var cellInfoToDateRanges = useMemo(function () {
@@ -1836,10 +1845,13 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
 
     grid && /*#__PURE__*/
     React.createElement(TimeIndicator, {
+      key: "time-".concat(currentTime),
       classes: classes,
       dateRangeToCells: dateRangeToCells,
       cellInfoToDateRange: cellInfoToSingleDateRange,
-      currentTime: currentTime,
+      currentTime:
+      currentTime,
+
       grid: grid }), /*#__PURE__*/
 
 
