@@ -1,5 +1,5 @@
 import classcat from 'classcat';
-import { isBefore } from 'date-fns';
+import { isBefore, isEqual, isWithinRange } from 'date-fns';
 import React from 'react';
 import {
   CellInfo,
@@ -49,6 +49,43 @@ export const Schedule = React.memo(function Schedule({
   className?: string;
   classes: ClassNames;
 } & ScheduleProps) {
+  // function dateRangeOverlaps(a_start, a_end, b_start, b_end) {
+  //   if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
+  //   if (a_start <= b_end && b_end <= a_end) return true; // b ends in a
+  //   if (b_start < a_start && a_end < b_end) return true; // a in b
+  //   return false;
+  // }
+  // function multipleDateRangeOverlaps(a, b) {
+  //   var i, j;
+  //   for (i = 0; i < arguments.length - 2; i += 2) {
+  //     for (j = i + 2; j < arguments.length; j += 2) {
+  //       console.log(
+  //         arguments[i],
+  //         arguments[i + 1],
+  //         arguments[j],
+  //         arguments[j + 1],
+  //       );
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+
+  const bookedTimes: any = [];
+  ranges.map((t, tIndex) => {
+    ranges.map((range: any, rangeIndex: number) => {
+      const collidesWithMeeting =
+        isEqual(t[0], new Date(range[1])) || isEqual(t[1], new Date(range[0]));
+      if (
+        tIndex !== rangeIndex &&
+        isWithinRange(t[0], new Date(range[0]), new Date(range[1])) &&
+        !collidesWithMeeting
+      ) {
+        bookedTimes.push(tIndex, rangeIndex);
+      }
+    });
+  });
+
   return (
     <div className={classes['range-boxes']}>
       {ranges.map((dateRange, rangeIndex) => {
@@ -57,6 +94,8 @@ export const Schedule = React.memo(function Schedule({
           <span key={rangeIndex}>
             {dateRangeToCells(dateRange).map((cell, cellIndex, cellArray) => {
               const isGoogleEvent = cell.source === 'google';
+              const isDouble = bookedTimes.includes(rangeIndex);
+              const isSecondDouble = bookedTimes.indexOf(rangeIndex) % 2 === 0;
 
               return (
                 <RangeBox
@@ -75,6 +114,7 @@ export const Schedule = React.memo(function Schedule({
                     {
                       [classes['is-past']]: isPast,
                       [classes['is-google']]: isGoogleEvent,
+                      [classes['is-double']]: isDouble,
                     },
                   ])}
                   onChange={onChange}
@@ -85,6 +125,8 @@ export const Schedule = React.memo(function Schedule({
                   eventContentComponent={eventContentComponent}
                   eventRootComponent={eventRootComponent}
                   disabled={isGoogleEvent}
+                  isDouble={isDouble}
+                  isSecondDouble={isSecondDouble}
                 />
               );
             })}

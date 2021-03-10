@@ -38,7 +38,6 @@ import {
 import { createMapDateRangeToCells } from '../utils/createMapDateRangeToCells';
 import { getEarliestTimeRange } from '../utils/getEarliestTimeRange';
 import { getSpan } from '../utils/getSpan';
-import { mergeRanges } from '../utils/mergeEvents';
 import { Cell } from './Cell';
 import { Schedule, ScheduleProps } from './Schedule';
 import { TimeIndicator } from './TimeIndicator';
@@ -280,8 +279,6 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
         }
         newSchedule[rangeIndex] = newDateRange;
       }
-
-      newSchedule = mergeRanges(newSchedule);
 
       onChange(newSchedule);
     },

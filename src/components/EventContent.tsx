@@ -1,5 +1,6 @@
 // @ts-ignore
 import VisuallyHidden from '@reach/visually-hidden';
+import classcat from 'classcat';
 import React, { useContext } from 'react';
 import { SchedulerContext } from '../context';
 import { ClassNames, DateRange } from '../types';
@@ -43,7 +44,12 @@ export const EventContent = React.memo(function EventContent({
         height: height - 4,
         padding: isFifteenMinuteMeeting,
       }}
-      className={classes['event-content']}
+      className={classcat([
+        classes['event-content'],
+        {
+          [classes['external-meeting']]: title,
+        },
+      ])}
     >
       <VisuallyHidden>
         {getTextForDateRange({ dateRange, locale, title })}

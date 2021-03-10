@@ -33,12 +33,16 @@ export const RangeBox = React.memo(function RangeBox({
   eventContentComponent: EventContentComponent = EventContent,
   eventRootComponent: EventRootComponent = DefaultEventRootComponent,
   disabled,
+  isDouble,
+  isSecondDouble,
 }: ScheduleProps & {
   cellIndex: number;
   cellArray: CellInfo[];
   className?: string;
   rangeIndex: number;
   cell: CellInfo;
+  isDouble: boolean;
+  isSecondDouble: boolean;
 }) {
   const ref = useRef(null);
   const [modifiedCell, setModifiedCell] = useState(cell);
@@ -57,7 +61,8 @@ export const RangeBox = React.memo(function RangeBox({
     modifiedCell,
   ]);
 
-  const { top, left, width, height } = rect;
+  let { top, left, width, height } = rect;
+  width = isDouble ? width / 2 : width;
 
   const isStart = cellIndex === 0;
   const isEnd = cellIndex === cellArray.length - 1;
@@ -316,7 +321,7 @@ export const RangeBox = React.memo(function RangeBox({
         top: 0,
         bottom: grid.totalHeight - height,
         left: 0,
-        right: grid.totalWidth,
+        right: isDouble ? grid.totalWidth / 2 : grid.totalWidth,
       }}
       position={{ x: left, y: top }}
       onDrag={handleDrag}
@@ -347,12 +352,17 @@ export const RangeBox = React.memo(function RangeBox({
         style={{
           width: width - 4,
           height: height - 4,
-          marginLeft: '2px',
+          marginLeft: isSecondDouble ? `${grid.cellWidth / 2}px` : '2px',
           marginTop: '2px',
         }}
       >
         <Resizable
-          size={{ ...originalRect, width: originalRect.width - 4 }}
+          size={{
+            ...originalRect,
+            width: isDouble
+              ? originalRect.width / 2 - 4
+              : originalRect.width - 4,
+          }}
           key={`${rangeIndex}.${cellIndex}.${cellArray.length}.${originalRect.top}.${originalRect.left}`}
           onResize={handleResize}
           onResizeStop={handleStop}
@@ -384,6 +394,7 @@ export const RangeBox = React.memo(function RangeBox({
             isStart={isStart}
             isEnd={isEnd}
             title={cell.title}
+            isDouble={isDouble}
           />
         </Resizable>
       </EventRootComponent>
