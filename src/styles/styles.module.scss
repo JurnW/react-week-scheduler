@@ -457,11 +457,10 @@
       content: ' ';
     }
     .end {
+      display: inline-block;
+      height: 50%;
       font-weight: normal;
-      white-space: nowrap;
       overflow: hidden;
-      display: block;
-      text-overflow: ellipsis;
     }
   }
 
