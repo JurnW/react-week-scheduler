@@ -395,6 +395,7 @@ export const RangeBox = React.memo(function RangeBox({
             isStart={isStart}
             isEnd={isEnd}
             title={cell.title}
+            numberOfConflicts={numberOfConflicts}
           />
         </Resizable>
       </EventRootComponent>

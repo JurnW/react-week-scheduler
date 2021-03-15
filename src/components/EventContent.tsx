@@ -17,6 +17,7 @@ export type EventContentProps = {
   isStart: boolean;
   isEnd: boolean;
   title: string;
+  numberOfConflicts: number;
 };
 
 export const EventContent = React.memo(function EventContent({
@@ -27,6 +28,7 @@ export const EventContent = React.memo(function EventContent({
   isStart,
   isEnd,
   title,
+  numberOfConflicts,
 }: EventContentProps) {
   const { locale } = useContext(SchedulerContext);
   const [start, end] = getFormattedComponentsForDateRange({
@@ -48,18 +50,25 @@ export const EventContent = React.memo(function EventContent({
         classes['event-content'],
         {
           [classes['external-meeting']]: title,
+          [classes['hide-separator']]: numberOfConflicts > 2,
         },
       ])}
     >
       <VisuallyHidden>
         {getTextForDateRange({ dateRange, locale, title })}
       </VisuallyHidden>
-      <span aria-hidden className={classes.start}>
-        {isStart && start}
-      </span>
-      <span aria-hidden className={classes.end}>
-        {title ? title : isEnd && end}
-      </span>
+      {numberOfConflicts < 4 && (
+        <React.Fragment>
+          <span aria-hidden className={classes.start}>
+            {isStart && start}
+          </span>
+          {numberOfConflicts < 3 && (
+            <span aria-hidden className={classes.end}>
+              {title ? title : isEnd && end}
+            </span>
+          )}
+        </React.Fragment>
+      )}
     </div>
   );
 });

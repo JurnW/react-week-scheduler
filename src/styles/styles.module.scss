@@ -452,6 +452,12 @@
     }
   }
 
+  .hide-separator {
+    .start:after {
+      content: ' ';
+    }
+  }
+
   .external-meeting {
     .start:after {
       content: ' ';
