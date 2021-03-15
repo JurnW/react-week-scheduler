@@ -33,16 +33,16 @@ export const RangeBox = React.memo(function RangeBox({
   eventContentComponent: EventContentComponent = EventContent,
   eventRootComponent: EventRootComponent = DefaultEventRootComponent,
   disabled,
-  isDouble,
-  isSecondDouble,
+  numberOfConflicts,
+  meetingPosition,
 }: ScheduleProps & {
   cellIndex: number;
   cellArray: CellInfo[];
   className?: string;
   rangeIndex: number;
   cell: CellInfo;
-  isDouble: boolean;
-  isSecondDouble: boolean;
+  numberOfConflicts: number;
+  meetingPosition: number;
 }) {
   const ref = useRef(null);
   const [modifiedCell, setModifiedCell] = useState(cell);
@@ -62,7 +62,7 @@ export const RangeBox = React.memo(function RangeBox({
   ]);
 
   let { top, left, width, height } = rect;
-  width = isDouble ? width / 2 : width;
+  width = width / numberOfConflicts;
 
   const isStart = cellIndex === 0;
   const isEnd = cellIndex === cellArray.length - 1;
@@ -321,7 +321,7 @@ export const RangeBox = React.memo(function RangeBox({
         top: 0,
         bottom: grid.totalHeight - height,
         left: 0,
-        right: isDouble ? grid.totalWidth / 2 : grid.totalWidth,
+        right: grid.totalWidth / numberOfConflicts,
       }}
       position={{ x: left, y: top }}
       onDrag={handleDrag}
@@ -352,16 +352,17 @@ export const RangeBox = React.memo(function RangeBox({
         style={{
           width: width - 4,
           height: height - 4,
-          marginLeft: isSecondDouble ? `${grid.cellWidth / 2}px` : '2px',
+          marginLeft:
+            numberOfConflicts === 1
+              ? '2px'
+              : `${width * meetingPosition - width + 2}px`,
           marginTop: '2px',
         }}
       >
         <Resizable
           size={{
             ...originalRect,
-            width: isDouble
-              ? originalRect.width / 2 - 4
-              : originalRect.width - 4,
+            width: originalRect.width / numberOfConflicts - 4,
           }}
           key={`${rangeIndex}.${cellIndex}.${cellArray.length}.${originalRect.top}.${originalRect.left}`}
           onResize={handleResize}
@@ -394,7 +395,6 @@ export const RangeBox = React.memo(function RangeBox({
             isStart={isStart}
             isEnd={isEnd}
             title={cell.title}
-            isDouble={isDouble}
           />
         </Resizable>
       </EventRootComponent>

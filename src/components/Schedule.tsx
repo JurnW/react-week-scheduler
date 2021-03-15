@@ -1,5 +1,5 @@
 import classcat from 'classcat';
-import { isBefore, isEqual, isWithinRange } from 'date-fns';
+import { isBefore } from 'date-fns';
 import React from 'react';
 import {
   CellInfo,
@@ -49,42 +49,77 @@ export const Schedule = React.memo(function Schedule({
   className?: string;
   classes: ClassNames;
 } & ScheduleProps) {
-  // function dateRangeOverlaps(a_start, a_end, b_start, b_end) {
-  //   if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
-  //   if (a_start <= b_end && b_end <= a_end) return true; // b ends in a
-  //   if (b_start < a_start && a_end < b_end) return true; // a in b
-  //   return false;
-  // }
-  // function multipleDateRangeOverlaps(a, b) {
-  //   var i, j;
-  //   for (i = 0; i < arguments.length - 2; i += 2) {
-  //     for (j = i + 2; j < arguments.length; j += 2) {
-  //       console.log(
-  //         arguments[i],
-  //         arguments[i + 1],
-  //         arguments[j],
-  //         arguments[j + 1],
-  //       );
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
+  const overlappingMeetings: any = [];
 
-  const bookedTimes: any = [];
-  ranges.map((t, tIndex) => {
-    ranges.map((range: any, rangeIndex: number) => {
-      const collidesWithMeeting =
-        isEqual(t[0], new Date(range[1])) || isEqual(t[1], new Date(range[0]));
-      if (
-        tIndex !== rangeIndex &&
-        isWithinRange(t[0], new Date(range[0]), new Date(range[1])) &&
-        !collidesWithMeeting
-      ) {
-        bookedTimes.push(tIndex, rangeIndex);
+  ranges.map((currentMeeting, currentMeetingIndex) => {
+    ranges.map((otherMeeting, otherMeetingIndex) => {
+      const sameIndex = currentMeetingIndex === otherMeetingIndex;
+      const timeRangeOverlaps =
+        currentMeeting[0] < otherMeeting[1] &&
+        currentMeeting[1] > otherMeeting[0];
+      if (!sameIndex && timeRangeOverlaps) {
+        overlappingMeetings.push({
+          [currentMeetingIndex]: otherMeetingIndex.toString(),
+        });
       }
     });
   });
+
+  const meetingConflicts = overlappingMeetings.reduce(
+    (accum: { [x: string]: any }, obj: { [x: string]: any }) => {
+      for (let key in obj) {
+        accum[key] = accum[key] ? [...accum[key], obj[key]] : [obj[key]];
+      }
+      return accum;
+    },
+    [],
+  );
+
+  console.log(meetingConflicts);
+
+  function countUnique(iterable: Iterable<number>) {
+    return new Set(iterable).size;
+  }
+
+  const calculateMeetingPlacement: any = (rangeIndex: number) => {
+    let numberOfConflicts = 1;
+    let meetingPosition = 1;
+
+    if (!meetingConflicts.hasOwnProperty(rangeIndex)) {
+      return { numberOfConflicts, meetingPosition };
+    }
+
+    meetingConflicts[rangeIndex].map((currentMeeting: number) => {
+      if (
+        currentMeeting !== rangeIndex &&
+        meetingConflicts[rangeIndex].length > 1
+      ) {
+        console.log(rangeIndex, ' has multiple conflicts');
+        let totalConflicts: any[] = [];
+        meetingConflicts[rangeIndex].map(() => {
+          meetingConflicts[rangeIndex].map((currentConflict: number) => {
+            totalConflicts.push(...meetingConflicts[currentConflict]);
+          });
+
+          numberOfConflicts =
+            countUnique(
+              totalConflicts.filter(index => index !== currentMeeting),
+            ) + 1;
+        });
+      } else {
+        console.log(rangeIndex + ' has just one conflict');
+        numberOfConflicts = 2;
+      }
+    });
+
+    return { numberOfConflicts, meetingPosition };
+  };
+  // Create a new function that takes just the meetingIndex✅
+  // Look up this meetingIndex in the meetingConflicts array✅
+  // If it doesn't exist then return position 1, 0 conflicts (full width) ✅
+  // If it does then get the array of conflicts from that meeting e.g. [0, 2] ✅
+  // Loop over this array and for each element, check if they conflict with the other elements in the same array. ✅
+  // for each conflict, increase the position by 1. If they don't confict, return 0
 
   return (
     <div className={classes['range-boxes']}>
@@ -94,8 +129,14 @@ export const Schedule = React.memo(function Schedule({
           <span key={rangeIndex}>
             {dateRangeToCells(dateRange).map((cell, cellIndex, cellArray) => {
               const isGoogleEvent = cell.source === 'google';
-              const isDouble = bookedTimes.includes(rangeIndex);
-              const isSecondDouble = bookedTimes.indexOf(rangeIndex) % 2 === 0;
+              const {
+                numberOfConflicts,
+                meetingPosition,
+              } = calculateMeetingPlacement(rangeIndex);
+              console.log(
+                'Final width and position: ' + numberOfConflicts,
+                meetingPosition,
+              );
 
               return (
                 <RangeBox
@@ -114,7 +155,6 @@ export const Schedule = React.memo(function Schedule({
                     {
                       [classes['is-past']]: isPast,
                       [classes['is-google']]: isGoogleEvent,
-                      [classes['is-double']]: isDouble,
                     },
                   ])}
                   onChange={onChange}
@@ -125,8 +165,8 @@ export const Schedule = React.memo(function Schedule({
                   eventContentComponent={eventContentComponent}
                   eventRootComponent={eventRootComponent}
                   disabled={isGoogleEvent}
-                  isDouble={isDouble}
-                  isSecondDouble={isSecondDouble}
+                  numberOfConflicts={numberOfConflicts}
+                  meetingPosition={meetingPosition}
                 />
               );
             })}

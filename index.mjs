@@ -1,40 +1,39 @@
-import VisuallyHidden from '@reach/visually-hidden';
+import React, { useState, useEffect, useCallback, useRef, createContext, useContext, useMemo } from 'react';
 import useComponentSize from '@rehooks/component-size';
 import classcat from 'classcat';
+import isToday from 'date-fns/is_today';
+import isPast from 'date-fns/is_past';
 import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
-import addMinutes from 'date-fns/add_minutes';
-import compareAsc from 'date-fns/compare_asc';
-import differenceInDays from 'date-fns/difference_in_days';
-import differenceInMinutes from 'date-fns/difference_in_minutes';
-import endOfDay from 'date-fns/end_of_day';
 import format from 'date-fns/format';
-import getMinutes from 'date-fns/get_minutes';
-import isBefore from 'date-fns/is_before';
 import isDateEqual from 'date-fns/is_equal';
-import isPast from 'date-fns/is_past';
-import isSameDay from 'date-fns/is_same_day';
-import isToday from 'date-fns/is_today';
 import en from 'date-fns/locale/en';
 import ja from 'date-fns/locale/ja';
-import min from 'date-fns/min';
-import setDay from 'date-fns/set_day';
 import startOfDay from 'date-fns/start_of_day';
 import invariant from 'invariant';
+import isEqual from 'lodash/isEqual';
+import times from 'lodash/times';
+import scrollIntoView from 'scroll-into-view-if-needed';
+import { fromEvent, of, merge } from 'rxjs';
+import { mergeMap, delay, takeUntil, filter, map, tap, startWith } from 'rxjs/operators';
+import Mousetrap from 'mousetrap';
 import clamp from 'lodash/clamp';
 import floor from 'lodash/floor';
-import isEqual from 'lodash/isEqual';
-import range from 'lodash/range';
 import round from 'lodash/round';
-import times from 'lodash/times';
-import _mergeRanges from 'merge-ranges';
-import Mousetrap from 'mousetrap';
+import addMinutes from 'date-fns/add_minutes';
+import compareAsc from 'date-fns/compare_asc';
+import endOfDay from 'date-fns/end_of_day';
+import isBefore from 'date-fns/is_before';
+import min from 'date-fns/min';
+import range from 'lodash/range';
+import differenceInDays from 'date-fns/difference_in_days';
+import differenceInMinutes from 'date-fns/difference_in_minutes';
+import setDay from 'date-fns/set_day';
+import getMinutes from 'date-fns/get_minutes';
 import Resizable from 're-resizable';
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import Draggable from 'react-draggable';
-import { fromEvent, merge, of } from 'rxjs';
-import { delay, filter, map, mergeMap, startWith, takeUntil, tap } from 'rxjs/operators';
-import scrollIntoView from 'scroll-into-view-if-needed';
+import VisuallyHidden from '@reach/visually-hidden';
+import isSameDay from 'date-fns/is_same_day';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -627,33 +626,6 @@ ranges)
   0];
 }
 
-function mergeRanges(event) {
-  return _mergeRanges(
-  _toConsumableArray(event).map(
-  function (d) {return (
-      [new Date(d[0]), new Date(d[1]), d[2], d[3]]);}));
-
-
-
-
-
-
-
-}
-
-function mergeEvents(
-event1,
-event2)
-{
-  if (event2 === null) {
-    return event1;
-  }
-
-  return mergeRanges([].concat(_toConsumableArray(event1), _toConsumableArray(event2))).sort(function (range1, range2) {return (
-      compareAsc(range1[0], range2[0]));});
-
-}
-
 var Cell = /*#__PURE__*/React.memo(function Cell(_ref)
 
 
@@ -787,7 +759,12 @@ var EventContent = /*#__PURE__*/React.memo(function EventContent(_ref)
         height: height - 4,
         padding: isFifteenMinuteMeeting },
 
-      className: classes['event-content'] }, /*#__PURE__*/
+      className: classcat([
+      classes['event-content'], _defineProperty({},
+
+      classes['external-meeting'], title)]) }, /*#__PURE__*/
+
+
 
     React.createElement(VisuallyHidden, null,
     getTextForDateRange({ dateRange: dateRange, locale: locale, title: title })), /*#__PURE__*/
@@ -826,7 +803,11 @@ var RangeBox = /*#__PURE__*/React.memo(function RangeBox(_ref2)
 
 
 
-{var _ref4;var classes = _ref2.classes,grid = _ref2.grid,rangeIndex = _ref2.rangeIndex,cellIndex = _ref2.cellIndex,cellArray = _ref2.cellArray,cell = _ref2.cell,className = _ref2.className,onChange = _ref2.onChange,cellInfoToDateRange = _ref2.cellInfoToDateRange,isResizable = _ref2.isResizable,moveAxis = _ref2.moveAxis,onActiveChange = _ref2.onActiveChange,onClick = _ref2.onClick,getIsActive = _ref2.getIsActive,_ref2$eventContentCom = _ref2.eventContentComponent,EventContentComponent = _ref2$eventContentCom === void 0 ? EventContent : _ref2$eventContentCom,_ref2$eventRootCompon = _ref2.eventRootComponent,EventRootComponent = _ref2$eventRootCompon === void 0 ? DefaultEventRootComponent : _ref2$eventRootCompon,disabled = _ref2.disabled;
+
+
+
+
+{var _ref4;var classes = _ref2.classes,grid = _ref2.grid,rangeIndex = _ref2.rangeIndex,cellIndex = _ref2.cellIndex,cellArray = _ref2.cellArray,cell = _ref2.cell,className = _ref2.className,onChange = _ref2.onChange,cellInfoToDateRange = _ref2.cellInfoToDateRange,isResizable = _ref2.isResizable,moveAxis = _ref2.moveAxis,onActiveChange = _ref2.onActiveChange,onClick = _ref2.onClick,getIsActive = _ref2.getIsActive,_ref2$eventContentCom = _ref2.eventContentComponent,EventContentComponent = _ref2$eventContentCom === void 0 ? EventContent : _ref2$eventContentCom,_ref2$eventRootCompon = _ref2.eventRootComponent,EventRootComponent = _ref2$eventRootCompon === void 0 ? DefaultEventRootComponent : _ref2$eventRootCompon,disabled = _ref2.disabled,numberOfConflicts = _ref2.numberOfConflicts,meetingPosition = _ref2.meetingPosition;
   var ref = useRef(null);var _useState =
   useState(cell),_useState2 = _slicedToArray(_useState, 2),modifiedCell = _useState2[0],setModifiedCell = _useState2[1];
   var originalRect = useMemo(function () {return grid.getRectFromCell(cell);}, [cell, grid]);
@@ -845,6 +826,7 @@ var RangeBox = /*#__PURE__*/React.memo(function RangeBox(_ref2)
 
 
   top = rect.top,left = rect.left,width = rect.width,height = rect.height;
+  width = width / numberOfConflicts;
 
   var isStart = cellIndex === 0;
   var isEnd = cellIndex === cellArray.length - 1;
@@ -1103,7 +1085,7 @@ var RangeBox = /*#__PURE__*/React.memo(function RangeBox(_ref2)
         top: 0,
         bottom: grid.totalHeight - height,
         left: 0,
-        right: grid.totalWidth },
+        right: grid.totalWidth / numberOfConflicts },
 
       position: { x: left, y: top },
       onDrag: handleDrag,
@@ -1134,12 +1116,18 @@ var RangeBox = /*#__PURE__*/React.memo(function RangeBox(_ref2)
       style: {
         width: width - 4,
         height: height - 4,
-        marginLeft: '2px',
+        marginLeft:
+        numberOfConflicts === 1 ?
+        '2px' : "".concat(
+        width * meetingPosition - width + 2, "px"),
         marginTop: '2px' } }, /*#__PURE__*/
 
 
     React.createElement(Resizable, {
-      size: _objectSpread2(_objectSpread2({}, originalRect), {}, { width: originalRect.width - 4 }),
+      size: _objectSpread2(_objectSpread2({},
+      originalRect), {}, {
+        width: originalRect.width / numberOfConflicts - 4 }),
+
       key: "".concat(rangeIndex, ".").concat(cellIndex, ".").concat(cellArray.length, ".").concat(originalRect.top, ".").concat(originalRect.left),
       onResize: handleResize,
       onResizeStop: handleStop,
@@ -1200,6 +1188,78 @@ var Schedule = /*#__PURE__*/React.memo(function Schedule(_ref)
 
 
 {var classes = _ref.classes,ranges = _ref.ranges,grid = _ref.grid,className = _ref.className,onChange = _ref.onChange,isResizable = _ref.isResizable,isDeletable = _ref.isDeletable,moveAxis = _ref.moveAxis,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,onActiveChange = _ref.onActiveChange,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,onClick = _ref.onClick,getIsActive = _ref.getIsActive;
+  var overlappingMeetings = [];
+
+  ranges.map(function (currentMeeting, currentMeetingIndex) {
+    ranges.map(function (otherMeeting, otherMeetingIndex) {
+      var sameIndex = currentMeetingIndex === otherMeetingIndex;
+      var timeRangeOverlaps =
+      currentMeeting[0] < otherMeeting[1] &&
+      currentMeeting[1] > otherMeeting[0];
+      if (!sameIndex && timeRangeOverlaps) {
+        overlappingMeetings.push(_defineProperty({},
+        currentMeetingIndex, otherMeetingIndex.toString()));
+
+      }
+    });
+  });
+
+  var meetingConflicts = overlappingMeetings.reduce(
+  function (accum, obj) {
+    for (var key in obj) {
+      accum[key] = accum[key] ? [].concat(_toConsumableArray(accum[key]), [obj[key]]) : [obj[key]];
+    }
+    return accum;
+  },
+  []);
+
+
+  console.log(meetingConflicts);
+
+  function countUnique(iterable) {
+    return new Set(iterable).size;
+  }
+
+  var calculateMeetingPlacement = function calculateMeetingPlacement(rangeIndex) {
+    var numberOfConflicts = 1;
+    var meetingPosition = 1;
+
+    if (!meetingConflicts.hasOwnProperty(rangeIndex)) {
+      return { numberOfConflicts: numberOfConflicts, meetingPosition: meetingPosition };
+    }
+
+    meetingConflicts[rangeIndex].map(function (currentMeeting) {
+      if (
+      currentMeeting !== rangeIndex &&
+      meetingConflicts[rangeIndex].length > 1)
+      {
+        console.log(rangeIndex, ' has multiple conflicts');
+        var totalConflicts = [];
+        meetingConflicts[rangeIndex].map(function () {
+          meetingConflicts[rangeIndex].map(function (currentConflict) {
+            totalConflicts.push.apply(totalConflicts, _toConsumableArray(meetingConflicts[currentConflict]));
+          });
+
+          numberOfConflicts =
+          countUnique(
+          totalConflicts.filter(function (index) {return index !== currentMeeting;})) +
+          1;
+        });
+      } else {
+        console.log(rangeIndex + ' has just one conflict');
+        numberOfConflicts = 2;
+      }
+    });
+
+    return { numberOfConflicts: numberOfConflicts, meetingPosition: meetingPosition };
+  };
+  // Create a new function that takes just the meetingIndex✅
+  // Look up this meetingIndex in the meetingConflicts array✅
+  // If it doesn't exist then return position 1, 0 conflicts (full width) ✅
+  // If it does then get the array of conflicts from that meeting e.g. [0, 2] ✅
+  // Loop over this array and for each element, check if they conflict with the other elements in the same array. ✅
+  // for each conflict, increase the position by 1. If they don't confict, return 0
+
   return /*#__PURE__*/(
     React.createElement("div", { className: classes['range-boxes'] },
     ranges.map(function (dateRange, rangeIndex) {
@@ -1207,7 +1267,15 @@ var Schedule = /*#__PURE__*/React.memo(function Schedule(_ref)
       return /*#__PURE__*/(
         React.createElement("span", { key: rangeIndex },
         dateRangeToCells(dateRange).map(function (cell, cellIndex, cellArray) {var _ref2;
-          var isGoogleEvent = cell.source === 'google';
+          var isGoogleEvent = cell.source === 'google';var _calculateMeetingPlac =
+
+
+
+          calculateMeetingPlacement(rangeIndex),numberOfConflicts = _calculateMeetingPlac.numberOfConflicts,meetingPosition = _calculateMeetingPlac.meetingPosition;
+          console.log(
+          'Final width and position: ' + numberOfConflicts,
+          meetingPosition);
+
 
           return /*#__PURE__*/(
             React.createElement(RangeBox, {
@@ -1235,7 +1303,9 @@ var Schedule = /*#__PURE__*/React.memo(function Schedule(_ref)
               getIsActive: getIsActive,
               eventContentComponent: eventContentComponent,
               eventRootComponent: eventRootComponent,
-              disabled: isGoogleEvent }));
+              disabled: isGoogleEvent,
+              numberOfConflicts: numberOfConflicts,
+              meetingPosition: meetingPosition }));
 
 
         })));
@@ -1508,7 +1578,9 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
     }
 
     if (hasFinishedDragging) {
-      onChange(mergeEvents(schedule, pendingCreation));
+      if (pendingCreation) {
+        onChange([].concat(_toConsumableArray(schedule), _toConsumableArray(pendingCreation)));
+      }
       setPendingCreation(null);
     }
   },
@@ -1556,8 +1628,6 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
       }
       newSchedule[rangeIndex] = newDateRange;
     }
-
-    // newSchedule = mergeRanges(newSchedule);
 
     onChange(newSchedule);
   },
@@ -1903,7 +1973,7 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","indicator":"styles-module_indicator__37i_p","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","indicator":"styles-module_indicator__37i_p","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","external-meeting":"styles-module_external-meeting__UUOM9","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
 
 export { DefaultEventRootComponent, SchedulerContext, TimeGridScheduler, styles_module as classes, getFormattedComponentsForDateRange as getFormattedTimeRangeComponents, getTextForDateRange, useMousetrap };
 //# sourceMappingURL=index.mjs.map

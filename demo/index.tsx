@@ -54,31 +54,41 @@ const currentTime: [string, string, string, string] = [
 ];
 
 const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
+  // {
+  //   timerange: ['2020-11-09 01:30', '2020-11-09 02:30'],
+  //   source: 'google',
+  //   title: 'Meeting title',
+  // },
+  // {
+  //   timerange: ['2020-11-09 02:00', '2020-11-09 02:30'],
+  //   source: 'google',
+  //   title: 'Meeting title',
+  // },
   {
-    timerange: ['2020-11-09 01:30', '2020-11-09 02:30'],
-    source: 'google',
-    title: 'Meeting title',
-  },
-  {
-    timerange: ['2020-11-09 02:00', '2020-11-09 02:30'],
-    source: 'google',
-    title: 'Meeting title',
-  },
-  {
-    timerange: ['2021-03-12 03:30', '2021-03-12 05:30'],
+    timerange: ['2021-03-19 03:30', '2021-03-19 05:30'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-12 04:30', '2021-03-12 05:30'],
+    timerange: ['2021-03-19 05:00', '2021-03-19 06:00'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2020-11-14 03:30', '2020-11-14 04:30'],
-    source: 'google',
-    title: 'Meeting title that is quite a bit longer',
+    timerange: ['2021-03-19 05:45', '2021-03-19 06:30'],
+    source: 'local',
+    title: '',
   },
+  {
+    timerange: ['2021-03-19 07:00', '2021-03-19 08:00'],
+    source: 'local',
+    title: '',
+  },
+  // {
+  //   timerange: ['2020-11-14 03:30', '2020-11-14 04:30'],
+  //   source: 'google',
+  //   title: 'Meeting title that is quite a bit longer',
+  // },
 ];
 
 const defaultSchedule: [Date, Date, string, string][] = rangeStrings.map(

@@ -354,6 +354,15 @@
   .styles-module_range-boxes__ib1Nb .styles-module_event-content__3sakH > * {
     width: 100%; }
 
+.styles-module_range-boxes__ib1Nb .styles-module_external-meeting__UUOM9 .styles-module_start__3CzHL:after {
+  content: ' '; }
+
+.styles-module_range-boxes__ib1Nb .styles-module_external-meeting__UUOM9 .styles-module_end__2L7Oy {
+  display: inline-block;
+  height: 50%;
+  font-weight: normal;
+  overflow: hidden; }
+
 .styles-module_range-boxes__ib1Nb .styles-module_start__3CzHL {
   display: inline; }
   .styles-module_range-boxes__ib1Nb .styles-module_start__3CzHL:after {
