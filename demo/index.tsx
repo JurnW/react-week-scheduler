@@ -70,12 +70,12 @@ const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
     title: '',
   },
   {
-    timerange: ['2021-03-19 05:00', '2021-03-19 06:00'],
+    timerange: ['2021-03-19 04:45', '2021-03-19 05:30'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-19 05:45', '2021-03-19 06:30'],
+    timerange: ['2021-03-19 05:00', '2021-03-19 06:00'],
     source: 'local',
     title: '',
   },

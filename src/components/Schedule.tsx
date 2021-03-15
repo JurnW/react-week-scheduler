@@ -77,9 +77,9 @@ export const Schedule = React.memo(function Schedule({
 
   console.log(meetingConflicts);
 
-  function countUnique(iterable: Iterable<number>) {
+  const countUnique = (iterable: Iterable<number>) => {
     return new Set(iterable).size;
-  }
+  };
 
   const calculateMeetingPlacement: any = (rangeIndex: number) => {
     let numberOfConflicts = 1;
@@ -94,9 +94,12 @@ export const Schedule = React.memo(function Schedule({
         currentMeeting !== rangeIndex &&
         meetingConflicts[rangeIndex].length > 1
       ) {
-        console.log(rangeIndex, ' has multiple conflicts');
+        console.log(`${rangeIndex} has multiple conflicts`);
         let totalConflicts: any[] = [];
-        meetingConflicts[rangeIndex].map(() => {
+        let positionArray: any[] = [];
+
+        meetingConflicts[rangeIndex].map((range: number) => {
+          positionArray.push(rangeIndex > range);
           meetingConflicts[rangeIndex].map((currentConflict: number) => {
             totalConflicts.push(...meetingConflicts[currentConflict]);
           });
@@ -106,20 +109,16 @@ export const Schedule = React.memo(function Schedule({
               totalConflicts.filter(index => index !== currentMeeting),
             ) + 1;
         });
+        meetingPosition = positionArray.filter(c => c === true).length + 1;
       } else {
-        console.log(rangeIndex + ' has just one conflict');
         numberOfConflicts = 2;
+        meetingPosition =
+          rangeIndex < Number(...meetingConflicts[rangeIndex]) ? 1 : 2;
       }
     });
 
     return { numberOfConflicts, meetingPosition };
   };
-  // Create a new function that takes just the meetingIndex✅
-  // Look up this meetingIndex in the meetingConflicts array✅
-  // If it doesn't exist then return position 1, 0 conflicts (full width) ✅
-  // If it does then get the array of conflicts from that meeting e.g. [0, 2] ✅
-  // Loop over this array and for each element, check if they conflict with the other elements in the same array. ✅
-  // for each conflict, increase the position by 1. If they don't confict, return 0
 
   return (
     <div className={classes['range-boxes']}>
