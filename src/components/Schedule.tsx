@@ -49,7 +49,7 @@ export const Schedule = React.memo(function Schedule({
   className?: string;
   classes: ClassNames;
 } & ScheduleProps) {
-  const overlappingMeetings: any = [];
+  const overlappingMeetings: { [x: number]: string }[] = [];
 
   ranges.map((currentMeeting, currentMeetingIndex) => {
     ranges.map((otherMeeting, otherMeetingIndex) => {
@@ -75,13 +75,11 @@ export const Schedule = React.memo(function Schedule({
     [],
   );
 
-  console.log(meetingConflicts);
-
   const countUnique = (iterable: Iterable<number>) => {
     return new Set(iterable).size;
   };
 
-  const calculateMeetingPlacement: any = (rangeIndex: number) => {
+  const calculateMeetingPlacement = (rangeIndex: number) => {
     let numberOfConflicts = 1;
     let meetingPosition = 1;
 
@@ -94,9 +92,8 @@ export const Schedule = React.memo(function Schedule({
         currentMeeting !== rangeIndex &&
         meetingConflicts[rangeIndex].length > 1
       ) {
-        console.log(`${rangeIndex} has multiple conflicts`);
-        let totalConflicts: any[] = [];
-        let positionArray: any[] = [];
+        let totalConflicts: number[] = [];
+        let positionArray: boolean[] = [];
 
         meetingConflicts[rangeIndex].map((range: number) => {
           positionArray.push(rangeIndex > range);
@@ -112,8 +109,20 @@ export const Schedule = React.memo(function Schedule({
         meetingPosition = positionArray.filter(c => c === true).length + 1;
       } else {
         numberOfConflicts = 2;
-        meetingPosition =
-          rangeIndex < Number(...meetingConflicts[rangeIndex]) ? 1 : 2;
+        const numberOfExistingOverlaps = meetingConflicts[rangeIndex][0];
+
+        if (meetingConflicts[numberOfExistingOverlaps].length > 2) {
+          meetingPosition =
+            meetingConflicts[numberOfExistingOverlaps].length + 1;
+        } else {
+          meetingPosition =
+            rangeIndex < Number(...meetingConflicts[rangeIndex]) ? 1 : 2;
+        }
+
+        numberOfConflicts = Math.max(
+          2,
+          meetingConflicts[numberOfExistingOverlaps].length + 1,
+        );
       }
     });
 
@@ -132,10 +141,6 @@ export const Schedule = React.memo(function Schedule({
                 numberOfConflicts,
                 meetingPosition,
               } = calculateMeetingPlacement(rangeIndex);
-              console.log(
-                'Final width and position: ' + numberOfConflicts,
-                meetingPosition,
-              );
 
               return (
                 <RangeBox

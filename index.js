@@ -749,7 +749,8 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
 
 
 
-{var width = _ref.width,height = _ref.height,classes = _ref.classes,dateRange = _ref.dateRange,isStart = _ref.isStart,isEnd = _ref.isEnd,title = _ref.title;var _useContext =
+
+{var _ref2;var width = _ref.width,height = _ref.height,classes = _ref.classes,dateRange = _ref.dateRange,isStart = _ref.isStart,isEnd = _ref.isEnd,title = _ref.title,numberOfConflicts = _ref.numberOfConflicts;var _useContext =
   React.useContext(SchedulerContext),locale = _useContext.locale;var _getFormattedComponen =
   getFormattedComponentsForDateRange({
     dateRange: dateRange,
@@ -767,20 +768,27 @@ var EventContent = /*#__PURE__*/React__default.memo(function EventContent(_ref)
         padding: isFifteenMinuteMeeting },
 
       className: classcat([
-      classes['event-content'], _defineProperty({},
+      classes['event-content'], (_ref2 = {}, _defineProperty(_ref2,
 
-      classes['external-meeting'], title)]) }, /*#__PURE__*/
+      classes['external-meeting'], title), _defineProperty(_ref2,
+      classes['hide-separator'], numberOfConflicts > 2), _ref2)]) }, /*#__PURE__*/
 
 
 
     React__default.createElement(VisuallyHidden, null,
-    getTextForDateRange({ dateRange: dateRange, locale: locale, title: title })), /*#__PURE__*/
+    getTextForDateRange({ dateRange: dateRange, locale: locale, title: title })),
 
+    numberOfConflicts < 4 && /*#__PURE__*/
+    React__default.createElement(React__default.Fragment, null, /*#__PURE__*/
     React__default.createElement("span", { "aria-hidden": true, className: classes.start },
-    isStart && start), /*#__PURE__*/
+    isStart && start),
 
+    numberOfConflicts < 3 && /*#__PURE__*/
     React__default.createElement("span", { "aria-hidden": true, className: classes.end },
-    title ? title : isEnd && end)));
+    title ? title : isEnd && end))));
+
+
+
 
 
 
@@ -1165,7 +1173,8 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
       dateRange: modifiedDateRange,
       isStart: isStart,
       isEnd: isEnd,
-      title: cell.title })))));
+      title: cell.title,
+      numberOfConflicts: numberOfConflicts })))));
 
 
 
@@ -1221,11 +1230,9 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
   []);
 
 
-  console.log(meetingConflicts);
-
-  function countUnique(iterable) {
+  var countUnique = function countUnique(iterable) {
     return new Set(iterable).size;
-  }
+  };
 
   var calculateMeetingPlacement = function calculateMeetingPlacement(rangeIndex) {
     var numberOfConflicts = 1;
@@ -1240,9 +1247,11 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
       currentMeeting !== rangeIndex &&
       meetingConflicts[rangeIndex].length > 1)
       {
-        console.log(rangeIndex, ' has multiple conflicts');
         var totalConflicts = [];
-        meetingConflicts[rangeIndex].map(function () {
+        var positionArray = [];
+
+        meetingConflicts[rangeIndex].map(function (range) {
+          positionArray.push(rangeIndex > range);
           meetingConflicts[rangeIndex].map(function (currentConflict) {
             totalConflicts.push.apply(totalConflicts, _toConsumableArray(meetingConflicts[currentConflict]));
           });
@@ -1252,20 +1261,28 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
           totalConflicts.filter(function (index) {return index !== currentMeeting;})) +
           1;
         });
+        meetingPosition = positionArray.filter(function (c) {return c === true;}).length + 1;
       } else {
-        console.log(rangeIndex + ' has just one conflict');
         numberOfConflicts = 2;
+        var numberOfExistingOverlaps = meetingConflicts[rangeIndex][0];
+
+        if (meetingConflicts[numberOfExistingOverlaps].length > 2) {
+          meetingPosition =
+          meetingConflicts[numberOfExistingOverlaps].length + 1;
+        } else {
+          meetingPosition =
+          rangeIndex < Number.apply(void 0, _toConsumableArray(meetingConflicts[rangeIndex])) ? 1 : 2;
+        }
+
+        numberOfConflicts = Math.max(
+        2,
+        meetingConflicts[numberOfExistingOverlaps].length + 1);
+
       }
     });
 
     return { numberOfConflicts: numberOfConflicts, meetingPosition: meetingPosition };
   };
-  // Create a new function that takes just the meetingIndex✅
-  // Look up this meetingIndex in the meetingConflicts array✅
-  // If it doesn't exist then return position 1, 0 conflicts (full width) ✅
-  // If it does then get the array of conflicts from that meeting e.g. [0, 2] ✅
-  // Loop over this array and for each element, check if they conflict with the other elements in the same array. ✅
-  // for each conflict, increase the position by 1. If they don't confict, return 0
 
   return /*#__PURE__*/(
     React__default.createElement("div", { className: classes['range-boxes'] },
@@ -1279,10 +1296,6 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
 
 
           calculateMeetingPlacement(rangeIndex),numberOfConflicts = _calculateMeetingPlac.numberOfConflicts,meetingPosition = _calculateMeetingPlac.meetingPosition;
-          console.log(
-          'Final width and position: ' + numberOfConflicts,
-          meetingPosition);
-
 
           return /*#__PURE__*/(
             React__default.createElement(RangeBox, {
@@ -1980,7 +1993,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","indicator":"styles-module_indicator__37i_p","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","external-meeting":"styles-module_external-meeting__UUOM9","start":"styles-module_start__3CzHL","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","indicator":"styles-module_indicator__37i_p","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","hide-separator":"styles-module_hide-separator__3lgW-","start":"styles-module_start__3CzHL","external-meeting":"styles-module_external-meeting__UUOM9","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT"};
 
 exports.DefaultEventRootComponent = DefaultEventRootComponent;
 exports.SchedulerContext = SchedulerContext;
