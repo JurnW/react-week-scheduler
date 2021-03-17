@@ -1483,11 +1483,14 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization,currentTime = _ref.currentTime;
+
+
+{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization,isMobile = _ref.isMobile,currentTime = _ref.currentTime;
   var locale = localization === 'ja' ? ja : en;
+  var numberOfDays = isMobile ? 1 : 7;
   var originDate = React.useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
   var numVerticalCells = MINS_IN_DAY / verticalPrecision;
-  var numHorizontalCells = 7 / horizontalPrecision;
+  var numHorizontalCells = numberOfDays / horizontalPrecision;
   var toMin = React.useCallback(function (y) {return y * verticalPrecision;}, [
   verticalPrecision]);
 
@@ -1865,7 +1868,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
       role: "presentation",
       className: classcat([classes.calendar, classes.header]) },
 
-    times(7).map(function (i) {return /*#__PURE__*/(
+    times(numberOfDays).map(function (i) {return /*#__PURE__*/(
         React__default.createElement("div", {
           key: i,
           role: "presentation",
@@ -1947,7 +1950,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
     React__default.createElement("div", { ref: parent, role: "grid", className: classes.calendar },
-    times(7).map(function (dayIndex) {
+    times(numberOfDays).map(function (dayIndex) {
       var isPassed = isPast(addDays(originDate, dayIndex + 1));
       return /*#__PURE__*/(
         React__default.createElement("div", {
