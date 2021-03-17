@@ -75,7 +75,7 @@ const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
     title: '',
   },
   {
-    timerange: ['2021-03-19 05:00', '2021-03-19 06:00'],
+    timerange: ['2021-03-16 05:00', '2021-03-16 06:00'],
     source: 'local',
     title: '',
   },
@@ -377,7 +377,7 @@ function App() {
           <TimeGridScheduler
             key={originDate.toString()}
             classes={classes}
-            originDate={originDate}
+            originDate={new Date()} //TODO: Pass originDate as variable
             schedule={scheduleState.present}
             onChange={setSchedule}
             verticalPrecision={verticalPrecision}
@@ -387,6 +387,7 @@ function App() {
             disabled={disabled}
             localization={'en'}
             currentTime={currentTime}
+            isMobile={true}
           />
         </Fragment>
       </CustomProperties>

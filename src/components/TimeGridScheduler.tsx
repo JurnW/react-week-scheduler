@@ -64,6 +64,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   eventRootComponent,
   disabled,
   localization,
+  isMobile,
   currentTime,
 }: {
   originDate?: Date;
@@ -113,12 +114,14 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   eventRootComponent?: ScheduleProps['eventRootComponent'];
   disabled?: boolean;
   localization: string;
+  isMobile: boolean;
   currentTime: [string, string, string, string];
 }) {
   const locale = localization === 'ja' ? ja : en;
+  const numberOfDays = isMobile ? 1 : 7;
   const originDate = useMemo(() => startOfDay(_originDate), [_originDate]);
   const numVerticalCells = MINS_IN_DAY / verticalPrecision;
-  const numHorizontalCells = 7 / horizontalPrecision;
+  const numHorizontalCells = numberOfDays / horizontalPrecision;
   const toMin = useCallback((y: number) => y * verticalPrecision, [
     verticalPrecision,
   ]);
@@ -496,7 +499,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
             role="presentation"
             className={classcat([classes.calendar, classes.header])}
           >
-            {times(7).map(i => (
+            {times(numberOfDays).map(i => (
               <div
                 key={i}
                 role="presentation"
@@ -578,7 +581,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
           )}
 
           <div ref={parent} role="grid" className={classes.calendar}>
-            {times(7).map(dayIndex => {
+            {times(numberOfDays).map(dayIndex => {
               const isPassed = isPast(addDays(originDate, dayIndex + 1));
               return (
                 <div
