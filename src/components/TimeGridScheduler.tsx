@@ -569,7 +569,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
           )}
           {grid && (
             <TimeIndicator
-              key={`test-time-${currentTime}`}
+              key={`time-${currentTime}`}
               classes={classes}
               dateRangeToCells={dateRangeToCells}
               cellInfoToDateRange={cellInfoToSingleDateRange}

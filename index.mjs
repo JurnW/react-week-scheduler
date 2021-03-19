@@ -1931,7 +1931,7 @@ var TimeGridScheduler = /*#__PURE__*/React.memo(function TimeGridScheduler(_ref)
 
     grid && /*#__PURE__*/
     React.createElement(TimeIndicator, {
-      key: "time-".concat(currentTime),
+      key: "test-time-".concat(currentTime),
       classes: classes,
       dateRangeToCells: dateRangeToCells,
       cellInfoToDateRange: cellInfoToSingleDateRange,
