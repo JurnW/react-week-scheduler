@@ -1,5 +1,6 @@
 import classcat from 'classcat';
-import React, { useRef } from 'react';
+import { getHours, getMinutes } from 'date-fns';
+import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 // @ts-ignore
 import Clock from '../components/assets/clock-icon';
@@ -9,9 +10,22 @@ interface Props {
   isOpen?: boolean;
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDelete: () => void;
+  rangeString: [Date, Date, string, string];
 }
 export const Modal: React.FC<Props> = (props: Props) => {
-  const { isOpen, handleOpen, handleDelete } = props;
+  const { isOpen, handleOpen, handleDelete, rangeString } = props;
+  const [startHours, setStartHours] = useState(getHours(rangeString[0]));
+  const [startMinutes, setStartMinutes] = useState(
+    getMinutes(rangeString[0])
+      .toString()
+      .padStart(2, '0'),
+  );
+  const [endHours, setEndHours] = useState(getHours(rangeString[1]));
+  const [endMinutes, setEndMinutes] = useState(
+    getMinutes(rangeString[1])
+      .toString()
+      .padStart(2, '0'),
+  );
 
   const wrapperRef = useRef(null);
 
@@ -53,7 +67,8 @@ export const Modal: React.FC<Props> = (props: Props) => {
             <Clock />
             <label htmlFor="start-time">Start time</label>{' '}
             <input
-              defaultValue={11}
+              defaultValue={startHours}
+              onChange={e => setStartHours(Number(e.target.value))}
               pattern="[0-9]*"
               type="text"
               name="hours"
@@ -61,23 +76,27 @@ export const Modal: React.FC<Props> = (props: Props) => {
             ></input>
             <span>:</span>
             <div className={classcat([classes['dropdown']])}>
-              <span className={classcat([classes['dropdown-label']])}>15</span>
               <select
                 name="minutes"
                 className={classcat([classes['dropdown-select']])}
+                onChange={e => setStartMinutes(e.target.value)}
               >
-                <option value="0">0 Minutes</option>
+                <option value="00">0 Minutes</option>
                 <option value="15">15 Minutes</option>
                 <option value="30">30 Minutes</option>
                 <option value="45">45 Minutes</option>
               </select>
+              <span className={classcat([classes['dropdown-label']])}>
+                {startMinutes}
+              </span>
             </div>
           </div>
           <div className={classcat([classes['time-row']])}>
             <Clock />
             <label htmlFor="end-time">End time</label>{' '}
             <input
-              defaultValue={11}
+              defaultValue={endHours}
+              onChange={e => setEndHours(Number(e.target.value))}
               pattern="[0-9]*"
               type="text"
               name="hours"
@@ -85,16 +104,19 @@ export const Modal: React.FC<Props> = (props: Props) => {
             ></input>
             <span>:</span>
             <div className={classcat([classes['dropdown']])}>
-              <span className={classcat([classes['dropdown-label']])}>15</span>
               <select
                 name="minutes"
                 className={classcat([classes['dropdown-select']])}
+                onChange={e => setEndMinutes(e.target.value)}
               >
-                <option value="0">0 Minutes</option>
+                <option value="00">0 Minutes</option>
                 <option value="15">15 Minutes</option>
                 <option value="30">30 Minutes</option>
                 <option value="45">45 Minutes</option>
               </select>
+              <span className={classcat([classes['dropdown-label']])}>
+                {endMinutes}
+              </span>
             </div>
           </div>
           <button className={classcat([classes['save-btn']])}>

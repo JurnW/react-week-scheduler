@@ -945,6 +945,9 @@ $spacers: (
         height: 48px;
         border-radius: 8px;
         outline: none;
+        &:focus:active + span:after {
+          transform: rotate(270deg);
+        }
       }
     }
   }
