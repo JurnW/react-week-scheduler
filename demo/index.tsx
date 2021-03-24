@@ -24,6 +24,7 @@ import ReactDOM from 'react-dom';
 import 'resize-observer-polyfill/dist/ResizeObserver.global';
 import useUndo from 'use-undo';
 import { DefaultEventRootComponent } from '../src/components/DefaultEventRootComponent';
+import { Modal } from '../src/components/Modal';
 import { TimeGridScheduler } from '../src/components/TimeGridScheduler';
 import { useMousetrap } from '../src/hooks/useMousetrap';
 import { classes as defaultClasses } from '../src/styles';
@@ -65,12 +66,12 @@ const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
   //   title: 'Meeting title',
   // },
   {
-    timerange: ['2021-03-19 03:30', '2021-03-19 05:30'],
+    timerange: ['2021-03-22 03:30', '2021-03-22 05:30'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-19 04:45', '2021-03-19 05:30'],
+    timerange: ['2021-03-22 04:45', '2021-03-22 05:30'],
     source: 'local',
     title: '',
   },
@@ -80,7 +81,7 @@ const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
     title: '',
   },
   {
-    timerange: ['2021-03-19 07:00', '2021-03-19 08:00'],
+    timerange: ['2021-03-22 07:00', '2021-03-22 08:00'],
     source: 'local',
     title: '',
   },
@@ -105,27 +106,39 @@ const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
   { handleDelete, disabled, ...props },
   ref,
 ) {
+  const [isOpen, handleOpen] = useState(false);
   return (
-    <Tippy
-      arrow
-      interactive
-      isEnabled={!disabled}
-      hideOnClick={false}
-      className={demoClasses.tooltip}
-      content={
-        <button disabled={disabled} onClick={handleDelete}>
-          <DeleteIcon className={demoClasses.icon} />
-          Delete
-        </button>
-      }
-    >
-      <DefaultEventRootComponent
-        handleDelete={handleDelete}
-        disabled={disabled}
-        {...props}
-        ref={ref}
-      />
-    </Tippy>
+    <>
+      <Modal isOpen={isOpen} handleOpen={handleOpen} />
+      <Tippy
+        arrow
+        interactive
+        isEnabled={!disabled}
+        hideOnClick={false}
+        className={demoClasses.tooltip}
+        content={
+          <button disabled={disabled} onClick={handleDelete}>
+            <DeleteIcon className={demoClasses.icon} />
+            Delete
+          </button>
+        }
+      >
+        <div
+          onClick={e => {
+            e.preventDefault();
+            // console.log(`Range: ${props.rangeIndex}`);
+            handleOpen(!isOpen);
+          }}
+        >
+          <DefaultEventRootComponent
+            handleDelete={handleDelete}
+            disabled={disabled}
+            {...props}
+            ref={ref}
+          />
+        </div>
+      </Tippy>
+    </>
   );
 });
 
