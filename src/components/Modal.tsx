@@ -53,7 +53,7 @@ export const Modal: React.FC<Props> = (props: Props) => {
             <Clock />
             <label htmlFor="start-time">Start time</label>{' '}
             <input
-              placeholder={'11'}
+              defaultValue={11}
               pattern="[0-9]*"
               type="text"
               name="hours"
@@ -77,7 +77,7 @@ export const Modal: React.FC<Props> = (props: Props) => {
             <Clock />
             <label htmlFor="end-time">End time</label>{' '}
             <input
-              placeholder={'11'}
+              defaultValue={11}
               pattern="[0-9]*"
               type="text"
               name="hours"

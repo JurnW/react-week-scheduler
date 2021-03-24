@@ -903,7 +903,6 @@ $spacers: (
         font-size: 16px;
         line-height: 22px;
         color: #2c5282;
-        text-align: center;
         border: 1px solid #cbd4e0;
         padding: 12px;
         box-sizing: border-box;
@@ -917,6 +916,7 @@ $spacers: (
       justify-self: right;
     }
     .time-input {
+      text-align: center;
       margin-left: auto;
       width: 48px;
     }
