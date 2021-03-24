@@ -8,9 +8,10 @@ import { classes } from '../styles';
 interface Props {
   isOpen?: boolean;
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDelete: () => void;
 }
 export const Modal: React.FC<Props> = (props: Props) => {
-  const { isOpen, handleOpen } = props;
+  const { isOpen, handleOpen, handleDelete } = props;
 
   const wrapperRef = useRef(null);
 
@@ -20,7 +21,6 @@ export const Modal: React.FC<Props> = (props: Props) => {
         className={classcat([
           classes.modal,
           classes['modal-wrapper'],
-          classes['edit-meeting-popup'],
           {
             [classes['show-up-to-laptops']]: isOpen,
           },
@@ -34,6 +34,7 @@ export const Modal: React.FC<Props> = (props: Props) => {
             className={classcat([classes['remove-btn']])}
             onClick={e => {
               e.preventDefault();
+              handleDelete();
               handleOpen(false);
             }}
           >

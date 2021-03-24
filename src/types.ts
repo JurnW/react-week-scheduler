@@ -16,6 +16,7 @@ export type EventRootProps = {
   isActive: boolean;
   disabled?: boolean;
   handleDelete(): void;
+  isMobile?: boolean;
 };
 
 export type ScheduleType = DateRange[];

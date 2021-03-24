@@ -103,19 +103,24 @@ const defaultSchedule: [Date, Date, string, string][] = rangeStrings.map(
 );
 
 const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
-  { handleDelete, disabled, ...props },
+  { handleDelete, disabled, isMobile, ...props },
   ref,
 ) {
   const [isOpen, handleOpen] = useState(false);
   return (
     <>
-      <Modal isOpen={isOpen} handleOpen={handleOpen} />
+      <Modal
+        isOpen={isOpen}
+        handleOpen={handleOpen}
+        handleDelete={handleDelete}
+      />
       <Tippy
         arrow
         interactive
         isEnabled={!disabled}
         hideOnClick={false}
         className={demoClasses.tooltip}
+        visible={!true} //TODO: replace with props
         content={
           <button disabled={disabled} onClick={handleDelete}>
             <DeleteIcon className={demoClasses.icon} />
@@ -126,7 +131,6 @@ const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
         <div
           onClick={e => {
             e.preventDefault();
-            // console.log(`Range: ${props.rangeIndex}`);
             handleOpen(!isOpen);
           }}
         >
@@ -400,7 +404,7 @@ function App() {
             disabled={disabled}
             localization={'en'}
             currentTime={currentTime}
-            isMobile={true}
+            isMobile={true} //TODO: replace with props
           />
         </Fragment>
       </CustomProperties>
