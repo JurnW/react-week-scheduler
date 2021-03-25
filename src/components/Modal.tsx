@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 // @ts-ignore
 import Clock from '../components/assets/clock-icon';
+import useOutsideClick from '../hooks/useOutsideClick';
 import { classes } from '../styles';
 
 interface Props {
@@ -14,20 +15,24 @@ interface Props {
 }
 export const Modal: React.FC<Props> = (props: Props) => {
   const { isOpen, handleOpen, handleDelete, rangeString } = props;
-  const [startHours, setStartHours] = useState(getHours(rangeString[0]));
-  const [startMinutes, setStartMinutes] = useState(
-    getMinutes(rangeString[0])
-      .toString()
-      .padStart(2, '0'),
+
+  const padLeft = (number: number) => number.toString().padStart(2, '0');
+  const [startHours, setStartHours] = useState(
+    padLeft(getHours(rangeString[0])),
   );
-  const [endHours, setEndHours] = useState(getHours(rangeString[1]));
+  const [startMinutes, setStartMinutes] = useState(
+    padLeft(getMinutes(rangeString[0])),
+  );
+  const [endHours, setEndHours] = useState(padLeft(getHours(rangeString[1])));
   const [endMinutes, setEndMinutes] = useState(
-    getMinutes(rangeString[1])
-      .toString()
-      .padStart(2, '0'),
+    padLeft(getMinutes(rangeString[1])),
   );
 
-  const wrapperRef = useRef(null);
+  const clickRef = useRef(null);
+
+  useOutsideClick(clickRef, () => {
+    handleOpen(false);
+  });
 
   return ReactDOM.createPortal(
     <div className="layout">
@@ -40,7 +45,7 @@ export const Modal: React.FC<Props> = (props: Props) => {
           },
         ])}
         style={{ display: isOpen ? 'block' : 'none' }}
-        ref={wrapperRef}
+        ref={clickRef}
       >
         <div className={classcat([classes['header']])}>
           <span className={classcat([classes['title']])}>Edit time slot</span>
@@ -68,7 +73,7 @@ export const Modal: React.FC<Props> = (props: Props) => {
             <label htmlFor="start-time">Start time</label>{' '}
             <input
               defaultValue={startHours}
-              onChange={e => setStartHours(Number(e.target.value))}
+              onChange={e => setStartHours(e.target.value)}
               pattern="[0-9]*"
               type="text"
               name="hours"
@@ -96,7 +101,7 @@ export const Modal: React.FC<Props> = (props: Props) => {
             <label htmlFor="end-time">End time</label>{' '}
             <input
               defaultValue={endHours}
-              onChange={e => setEndHours(Number(e.target.value))}
+              onChange={e => setEndHours(e.target.value)}
               pattern="[0-9]*"
               type="text"
               name="hours"

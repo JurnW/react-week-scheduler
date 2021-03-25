@@ -35,6 +35,7 @@ export const RangeBox = React.memo(function RangeBox({
   disabled,
   numberOfConflicts,
   meetingPosition,
+  range,
 }: ScheduleProps & {
   cellIndex: number;
   cellArray: CellInfo[];
@@ -43,6 +44,7 @@ export const RangeBox = React.memo(function RangeBox({
   cell: CellInfo;
   numberOfConflicts: number;
   meetingPosition: number;
+  range: [Date, Date, string, string];
 }) {
   const ref = useRef(null);
   const [modifiedCell, setModifiedCell] = useState(cell);
@@ -336,7 +338,7 @@ export const RangeBox = React.memo(function RangeBox({
         onClick={handleOnClick}
         handleDelete={handleDelete}
         cellIndex={cellIndex}
-        rangeIndex={rangeIndex}
+        range={range}
         isActive={isActive}
         classes={classes}
         className={classcat([

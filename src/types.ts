@@ -12,11 +12,11 @@ export type EventRootProps = {
   classes: ClassNames;
   style?: React.CSSProperties;
   cellIndex: number;
-  rangeIndex: number;
   isActive: boolean;
   disabled?: boolean;
   handleDelete(): void;
   isMobile?: boolean;
+  range: [Date, Date, string, string];
 };
 
 export type ScheduleType = DateRange[];
