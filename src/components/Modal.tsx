@@ -122,9 +122,10 @@ export const Modal: React.FC<Props> = (props: Props) => {
               <select
                 name="minutes"
                 className={classcat([classes['dropdown-select']])}
+                value={Number(startMinutes)}
                 onChange={e => setStartMinutes(e.target.value)}
               >
-                <option value="00">0 Minutes</option>
+                <option value="00">00 Minutes</option>
                 <option value="15">15 Minutes</option>
                 <option value="30">30 Minutes</option>
                 <option value="45">45 Minutes</option>
@@ -150,9 +151,10 @@ export const Modal: React.FC<Props> = (props: Props) => {
               <select
                 name="minutes"
                 className={classcat([classes['dropdown-select']])}
+                value={Number(endMinutes)}
                 onChange={e => setEndMinutes(e.target.value)}
               >
-                <option value="00">0 Minutes</option>
+                <option value="00">00 Minutes</option>
                 <option value="15">15 Minutes</option>
                 <option value="30">30 Minutes</option>
                 <option value="45">45 Minutes</option>
