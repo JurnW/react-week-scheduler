@@ -401,7 +401,7 @@ function App() {
           <TimeGridScheduler
             key={originDate.toString()}
             classes={classes}
-            originDate={new Date()} //TODO: Pass originDate as variable
+            originDate={new Date()} // passed from Attendar App
             schedule={scheduleState.present}
             onChange={setSchedule}
             verticalPrecision={verticalPrecision}
@@ -411,7 +411,7 @@ function App() {
             disabled={disabled}
             localization={'en'}
             currentTime={currentTime}
-            isMobile={true} //TODO: replace with props
+            isMobile={true} // change boolean to toggle mobile view
           />
         </Fragment>
       </CustomProperties>
