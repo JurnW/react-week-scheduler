@@ -154,7 +154,7 @@ export const Schedule = React.memo(function Schedule({
                   cellArray={cellArray}
                   cellIndex={cellIndex}
                   rangeIndex={rangeIndex}
-                  range={ranges[rangeIndex]}
+                  ranges={ranges}
                   className={classcat([
                     className,
                     {

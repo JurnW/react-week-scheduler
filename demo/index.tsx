@@ -66,22 +66,22 @@ const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
   //   title: 'Meeting title',
   // },
   {
-    timerange: ['2021-03-25 03:30', '2021-03-25 05:30'],
+    timerange: ['2021-03-26 03:30', '2021-03-26 05:30'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-25 04:45', '2021-03-25 05:30'],
+    timerange: ['2021-03-26 04:45', '2021-03-26 05:30'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-24 07:00', '2021-03-24 08:00'],
+    timerange: ['2021-03-26 07:00', '2021-03-26 08:00'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-24 18:00', '2021-03-24 19:30'],
+    timerange: ['2021-03-26 18:00', '2021-03-26 19:30'],
     source: 'local',
     title: '',
   },
@@ -103,7 +103,7 @@ const defaultSchedule: [Date, Date, string, string][] = rangeStrings.map(
 );
 
 const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
-  { handleDelete, disabled, isMobile, range, ...props },
+  { handleDelete, disabled, isMobile, ranges, rangeIndex, onChange, ...props },
   ref,
 ) {
   const [isOpen, setIsOpen] = useState(false);
@@ -114,7 +114,9 @@ const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
         isOpen={isOpen}
         handleOpen={setIsOpen}
         handleDelete={handleDelete}
-        rangeString={range}
+        ranges={ranges}
+        rangeIndex={rangeIndex}
+        onChange={onChange}
       />
       <Tippy
         arrow
@@ -139,7 +141,9 @@ const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
           <DefaultEventRootComponent
             handleDelete={handleDelete}
             disabled={disabled}
-            range={range}
+            ranges={ranges}
+            rangeIndex={rangeIndex}
+            onChange={onChange}
             {...props}
             ref={ref}
           />

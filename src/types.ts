@@ -16,7 +16,9 @@ export type EventRootProps = {
   disabled?: boolean;
   handleDelete(): void;
   isMobile?: boolean;
-  range: [Date, Date, string, string];
+  ranges: ScheduleType;
+  rangeIndex: number;
+  onChange: OnChangeCallback;
 };
 
 export type ScheduleType = DateRange[];

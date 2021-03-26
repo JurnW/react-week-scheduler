@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import Draggable, { DraggableEventHandler } from 'react-draggable';
 import { useMousetrap } from '../hooks/useMousetrap';
-import { CellInfo } from '../types';
+import { CellInfo, OnChangeCallback, ScheduleType } from '../types';
 import { DefaultEventRootComponent } from './DefaultEventRootComponent';
 import { EventContent } from './EventContent';
 import { ScheduleProps } from './Schedule';
@@ -35,7 +35,7 @@ export const RangeBox = React.memo(function RangeBox({
   disabled,
   numberOfConflicts,
   meetingPosition,
-  range,
+  ranges,
 }: ScheduleProps & {
   cellIndex: number;
   cellArray: CellInfo[];
@@ -44,7 +44,8 @@ export const RangeBox = React.memo(function RangeBox({
   cell: CellInfo;
   numberOfConflicts: number;
   meetingPosition: number;
-  range: [Date, Date, string, string];
+  ranges: ScheduleType;
+  onChange: OnChangeCallback | undefined;
 }) {
   const ref = useRef(null);
   const [modifiedCell, setModifiedCell] = useState(cell);
@@ -338,7 +339,9 @@ export const RangeBox = React.memo(function RangeBox({
         onClick={handleOnClick}
         handleDelete={handleDelete}
         cellIndex={cellIndex}
-        range={range}
+        ranges={ranges}
+        rangeIndex={rangeIndex}
+        onChange={onChange}
         isActive={isActive}
         classes={classes}
         className={classcat([

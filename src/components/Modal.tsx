@@ -1,31 +1,43 @@
 import classcat from 'classcat';
-import { getHours, getMinutes } from 'date-fns';
+import { getHours, getMinutes, setHours, setMinutes } from 'date-fns';
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 // @ts-ignore
 import Clock from '../components/assets/clock-icon';
 import useOutsideClick from '../hooks/useOutsideClick';
 import { classes } from '../styles';
+import { OnChangeCallback, ScheduleType } from '../types';
 
 interface Props {
   isOpen?: boolean;
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDelete: () => void;
-  rangeString: [Date, Date, string, string];
+  ranges: ScheduleType;
+  rangeIndex: number;
+  onChange: OnChangeCallback;
 }
 export const Modal: React.FC<Props> = (props: Props) => {
-  const { isOpen, handleOpen, handleDelete, rangeString } = props;
-
+  const {
+    isOpen,
+    handleOpen,
+    handleDelete,
+    ranges,
+    rangeIndex,
+    onChange,
+  } = props;
   const padLeft = (number: number) => number.toString().padStart(2, '0');
+
   const [startHours, setStartHours] = useState(
-    padLeft(getHours(rangeString[0])),
+    padLeft(getHours(ranges[rangeIndex][0])),
   );
   const [startMinutes, setStartMinutes] = useState(
-    padLeft(getMinutes(rangeString[0])),
+    padLeft(getMinutes(ranges[rangeIndex][0])),
   );
-  const [endHours, setEndHours] = useState(padLeft(getHours(rangeString[1])));
+  const [endHours, setEndHours] = useState(
+    padLeft(getHours(ranges[rangeIndex][1])),
+  );
   const [endMinutes, setEndMinutes] = useState(
-    padLeft(getMinutes(rangeString[1])),
+    padLeft(getMinutes(ranges[rangeIndex][1])),
   );
 
   const clickRef = useRef(null);
@@ -33,6 +45,32 @@ export const Modal: React.FC<Props> = (props: Props) => {
   useOutsideClick(clickRef, () => {
     handleOpen(false);
   });
+
+  const saveResult = (index: number) => {
+    let startTime = setMinutes(
+      setHours(ranges[rangeIndex][0], Number(startHours)),
+      Number(startMinutes),
+    );
+    let endTime = setMinutes(
+      setHours(ranges[rangeIndex][1], Number(endHours)),
+      Number(endMinutes),
+    );
+
+    if (
+      ranges[rangeIndex][0] === startTime &&
+      ranges[rangeIndex][1] === endTime
+    ) {
+      return;
+    }
+    const newDate: [Date, Date, string, string] = [
+      startTime,
+      endTime,
+      'local',
+      '',
+    ];
+
+    onChange(newDate, index);
+  };
 
   return ReactDOM.createPortal(
     <div className="layout">
@@ -124,7 +162,10 @@ export const Modal: React.FC<Props> = (props: Props) => {
               </span>
             </div>
           </div>
-          <button className={classcat([classes['save-btn']])}>
+          <button
+            className={classcat([classes['save-btn']])}
+            onClick={() => saveResult(rangeIndex)}
+          >
             Save changes
           </button>
         </div>
