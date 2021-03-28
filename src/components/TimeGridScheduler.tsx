@@ -374,6 +374,10 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
           '',
         ],
       );
+
+      if (range[0] === undefined) {
+        return;
+      }
       const rect = grid.getRectFromCell(range[0]);
       const { top, bottom } = rect;
 
