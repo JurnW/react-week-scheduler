@@ -26,6 +26,7 @@ import useUndo from 'use-undo';
 import { DefaultEventRootComponent } from '../src/components/DefaultEventRootComponent';
 import { Modal } from '../src/components/Modal';
 import { TimeGridScheduler } from '../src/components/TimeGridScheduler';
+import useCheckMobileScreen from '../src/hooks/useCheckMobile';
 import { useMousetrap } from '../src/hooks/useMousetrap';
 import { classes as defaultClasses } from '../src/styles';
 import { EventRootProps, ScheduleType } from '../src/types';
@@ -241,6 +242,7 @@ function App() {
   const [cellWidth, setCellWidth] = useState(250);
   const [disabled, setDisabled] = useState(false);
   const [locale, setLocale] = useState('en');
+  const isMobile = useCheckMobileScreen();
 
   useEffect(() => {
     setSchedule(defaultAdjustedSchedule);
@@ -411,7 +413,7 @@ function App() {
             disabled={disabled}
             localization={'en'}
             currentTime={currentTime}
-            isMobile={true} // change boolean to toggle mobile view
+            isMobile={isMobile}
           />
         </Fragment>
       </CustomProperties>
