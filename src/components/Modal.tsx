@@ -26,6 +26,10 @@ export const Modal: React.FC<Props> = (props: Props) => {
     onChange,
   } = props;
   const padLeft = (number: number) => number.toString().padStart(2, '0');
+  const [nameError, setNameError] = useState<Array<{
+    field: string;
+    error: string;
+  }> | null>(null);
 
   const [startHours, setStartHours] = useState(
     padLeft(getHours(ranges[rangeIndex][0])),
@@ -72,6 +76,54 @@ export const Modal: React.FC<Props> = (props: Props) => {
     onChange(newDate, index);
   };
 
+  const validateHours = (rangeIndex: number) => {
+    const errors = [];
+    const hourFields = [
+      ['startHours', startHours],
+      ['endHours', endHours],
+    ];
+
+    if (
+      Number(startHours) + Number(startMinutes) >
+      Number(endHours) + Number(endMinutes)
+    ) {
+      errors.push({
+        field: '',
+        error: 'The start time can not exceed the end time',
+      });
+    }
+
+    for (const field of hourFields) {
+      if (field[1] === '') {
+        errors.push({
+          field: field[0],
+          error: "This field can't be empty",
+        });
+      } else if (field[1].match(/^[0-9]+$/) === null) {
+        errors.push({
+          field: field[0],
+          error: 'Please input a number',
+        });
+      } else if (Number(field[1]) < 0 || Number(field[1]) > 24) {
+        errors.push({
+          field: field[0],
+          error: 'Please input a number between 0-24',
+        });
+      }
+    }
+
+    if (errors.length !== 0) {
+      setNameError(errors);
+    } else {
+      setNameError(null);
+      saveResult(rangeIndex);
+    }
+  };
+
+  // useEffect(() => {
+  //   formValidation();
+  // }, [startHours, endHours]);
+
   return ReactDOM.createPortal(
     <div className="layout">
       <div
@@ -111,11 +163,19 @@ export const Modal: React.FC<Props> = (props: Props) => {
             <label htmlFor="start-time">Start time</label>{' '}
             <input
               defaultValue={startHours}
+              required
               onChange={e => setStartHours(e.target.value)}
               pattern="[0-9]*"
               type="text"
-              name="hours"
-              className={classcat([classes['time-input']])}
+              name="startHours"
+              className={classcat([
+                classes['time-input'],
+                {
+                  [classes['input-error']]:
+                    nameError?.filter(o => o.field === 'startHours').length ===
+                    1,
+                },
+              ])}
             ></input>
             <span>:</span>
             <div className={classcat([classes['dropdown']])}>
@@ -140,11 +200,18 @@ export const Modal: React.FC<Props> = (props: Props) => {
             <label htmlFor="end-time">End time</label>{' '}
             <input
               defaultValue={endHours}
+              required
               onChange={e => setEndHours(e.target.value)}
               pattern="[0-9]*"
               type="text"
               name="hours"
-              className={classcat([classes['time-input']])}
+              className={classcat([
+                classes['time-input'],
+                {
+                  [classes['input-error']]:
+                    nameError?.filter(o => o.field === 'endHours').length === 1,
+                },
+              ])}
             ></input>
             <span>:</span>
             <div className={classcat([classes['dropdown']])}>
@@ -164,9 +231,13 @@ export const Modal: React.FC<Props> = (props: Props) => {
               </span>
             </div>
           </div>
+          {nameError && <span>{nameError[0].error}</span>}
           <button
             className={classcat([classes['save-btn']])}
-            onClick={() => saveResult(rangeIndex)}
+            // disabled={error.length > 0}
+            onClick={() => {
+              validateHours(rangeIndex);
+            }}
           >
             Save changes
           </button>
