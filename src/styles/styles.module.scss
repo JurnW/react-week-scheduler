@@ -865,7 +865,6 @@ $spacers: (
   }
   .modal-body {
     max-height: 90vh;
-    overflow-y: scroll;
     position: relative;
     &-noscroll {
       overflow-y: auto;
@@ -886,7 +885,7 @@ $spacers: (
     }
     .time-row {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       margin-bottom: $spacing-unit * 4;
       svg {
         margin-right: 15px;
@@ -910,6 +909,9 @@ $spacers: (
         + span {
           margin: 0 12px;
         }
+        &.input-error {
+          border: 1px solid red;
+        }
       }
     }
     .input-container {
@@ -917,6 +919,7 @@ $spacers: (
     }
     .time-input {
       text-align: center;
+      margin-top: 0;
       margin-left: auto;
       width: 48px;
     }
@@ -945,6 +948,7 @@ $spacers: (
         height: 48px;
         border-radius: 8px;
         outline: none;
+        border: none;
         &:focus:active + span:after {
           transform: rotate(270deg);
         }
@@ -956,8 +960,6 @@ $spacers: (
     height: 32px;
     border-radius: 8px;
     text-align: center;
-    vertical-align: bottom;
-    line-height: 32px;
     background-color: rgba($text-color-quiet, 0.1);
     margin-left: $spacing-unit * 4;
     border: none;
