@@ -19,6 +19,7 @@
   --color-event-google-background: hsl(216, 38%, 95%);
   --color-event-past-google-background: hsl(216, 45%, 98%);
   --color-event-hover-background: hsl(173, 40%, 51%);
+  --color-primary-blue: hsl(213, 49%, 34%);
   --color-event-shadow-1: hsla(202, 100%, 16%, 0.5);
   --color-event-shadow-2: rgba(217, 217, 217, 0.5);
   --color-header-shadow-1: hsla(0, 0%, 50%, 0.2);
@@ -275,7 +276,7 @@
 
   &.is-google {
     background: var(--color-event-google-background);
-    color: #2c5282;
+    color: var(--color-primary-blue);
     border: 1px solid var(--color-event-google-background);
     box-shadow: none;
     cursor: default;
@@ -297,7 +298,7 @@
 }
 
 .indicator {
-  background: #2c5282;
+  background: var(--color-primary-blue);
   z-index: var(--z-index-event);
   position: relative;
   pointer-events: none;
@@ -306,7 +307,7 @@
     position: absolute;
     top: -6px;
     left: -7px;
-    background: #2c5282;
+    background: var(--color-primary-blue);
     width: 14px;
     height: 14px;
     border-radius: 50%;
@@ -378,7 +379,7 @@
     color: var(--color-header-text-current);
     .date {
       color: white;
-      background: #2c5282;
+      background: var(--color-primary-blue);
       width: 24px;
       height: 24px;
       border-radius: 50%;
@@ -545,6 +546,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 
 $base-font-family: 'Work Sans', sans-serif;
+$bozon-font-family: 'Bozon', sans-serif;
+$poppings-font-family: 'Poppins', sans-serif;
 $base-font-size: 17px !default;
 $mobile-font-size: 15px !default;
 $lead-font-size: 19px !default;
@@ -574,15 +577,8 @@ $warning-color: #e54918;
 $accent-color: #ffe682;
 $ifneedbe-color: #ff8f66;
 
-$google-color: #4285f4;
-$apple-color: #000000;
-$office-color: #ea3e23;
-
-$google-session-color: #dae7fc;
-$office-session-color: #e54918 15%;
-$apple-session-color: #f2f2f2;
-
 $primary-color: #2d8176;
+$primary-color: #2c5282;
 
 $table-text-align: left !default;
 
@@ -765,10 +761,7 @@ $spacers: (
     line-height: $base-line-height;
   }
 }
-
-#react-cool-portal .layout {
-  display: inline;
-}
+// Start here
 
 .modal {
   animation: slideIn 0.3s ease-out;
@@ -776,68 +769,21 @@ $spacers: (
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 360px;
+  height: 272px;
   overflow: auto;
   display: none;
   z-index: 100;
   color: inherit;
   &-wrapper {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 360px;
-    z-index: 100;
     background-color: $background-color-alt;
     animation: fadeIn 0.3s linear;
     padding: 24px;
     border: 1px solid #e2e8f0;
     box-shadow: 0px -8px 16px rgba(74, 87, 104, 0.1);
     border-radius: 20px 20px 0px 0px;
-    &-fadeout {
-      animation-name: fadeOut;
-      .modal {
-        animation-name: slideOut;
-      }
-    }
   }
   &.is-opened {
     display: block;
-  }
-  &-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    background-color: rgba($text-color-quiet, 0.7);
-  }
-  &-window {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%) translateY(-50%);
-    z-index: 102;
-    background-color: white;
-    max-width: 980px;
-    @include mq('tablet', max) {
-      width: 90%;
-    }
-    border-radius: $border-radius-base;
-    margin: 0 auto;
-    &-focus {
-      max-width: 480px;
-      @include mq('tablet') {
-        width: 480px;
-      }
-    }
-    &-tight {
-      max-width: 720px;
-    }
-    &-small {
-      max-width: 840px;
-    }
   }
   .header {
     display: flex;
@@ -849,7 +795,7 @@ $spacers: (
       font-weight: 600;
       color: inherit;
       padding: 8px 12px;
-      background: #ffffff;
+      background: $background-color-alt;
       border: 1px solid #cbd4e0;
       box-shadow: 0px 1px 3px rgba(26, 34, 44, 0.1);
       border-radius: 8px;
@@ -857,7 +803,7 @@ $spacers: (
     }
   }
   .title {
-    font-family: 'Bozon', sans-serif;
+    font-family: $bozon-font-family;
     margin-bottom: 0;
     padding-right: 20px;
     font-size: 16px;
@@ -866,18 +812,15 @@ $spacers: (
   .modal-body {
     max-height: 90vh;
     position: relative;
-    &-noscroll {
-      overflow-y: auto;
-    }
     .save-btn {
-      font-family: 'Poppins', sans-serif;
+      font-family: $poppings-font-family;
       font-size: 14px;
       margin: 24px auto;
       display: flex;
       text-align: center;
       padding: 9px 16px;
-      color: #fff;
-      background: #2c5282;
+      color: $background-color-alt;
+      background: $primary-color;
       border-radius: 8px;
       border: none;
       width: 100%;
@@ -892,16 +835,16 @@ $spacers: (
         align-self: center;
       }
       label {
-        font-family: 'Bozon', sans-serif;
+        font-family: $bozon-font-family;
         font-weight: 600;
         white-space: nowrap;
       }
       input,
       .dropdown-label {
-        font-family: 'Poppins', sans-serif;
+        font-family: $poppings-font-family;
         font-size: 16px;
         line-height: 22px;
-        color: #2c5282;
+        color: $primary-color;
         border: 1px solid #cbd4e0;
         padding: 12px;
         box-sizing: border-box;
@@ -910,7 +853,7 @@ $spacers: (
           margin: 0 12px;
         }
         &.input-error {
-          border: 1px solid red;
+          border: 1px solid $warning-color;
         }
       }
     }
@@ -931,7 +874,7 @@ $spacers: (
         pointer-events: none;
         position: absolute;
         width: 80px;
-        background-color: #fff;
+        background-color: $background-color-alt;
         z-index: 999;
         text-align: initial;
         &::after {

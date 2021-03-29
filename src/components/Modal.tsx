@@ -1,6 +1,6 @@
 import classcat from 'classcat';
 import { getHours, getMinutes, setHours, setMinutes } from 'date-fns';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 // @ts-ignore
 import Clock from '../components/assets/clock-icon';
@@ -120,9 +120,36 @@ export const Modal: React.FC<Props> = (props: Props) => {
     }
   };
 
-  // useEffect(() => {
-  //   formValidation();
-  // }, [startHours, endHours]);
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+    // Check if it overlaps any other range
+
+    // Check if it is shorter than meetingDuration
+    let startTime = setMinutes(
+      setHours(ranges[rangeIndex][0], Number(startHours)),
+      Number(startMinutes),
+    );
+    let endTime = setMinutes(
+      setHours(ranges[rangeIndex][1], Number(endHours)),
+      Number(endMinutes),
+    );
+
+    console.log(new Date(startTime));
+
+    // const currentDuration = intervalToDuration({
+    //   start: new Date(startTime),
+    //   end: new Date(endTime),
+    // });
+
+    // console.log(currentDuration);
+
+    // get start time date
+    // get end time date
+    // calculate meeting duration
+    // compare to meetingDuration props
+  }, [startHours, startMinutes, endHours, endMinutes]);
 
   return ReactDOM.createPortal(
     <div className="layout">
@@ -231,7 +258,9 @@ export const Modal: React.FC<Props> = (props: Props) => {
               </span>
             </div>
           </div>
-          {nameError && <span>{nameError[0].error}</span>}
+          {nameError && (
+            <span style={{ color: '#e54918' }}>{nameError[0].error}</span>
+          )}
           <button
             className={classcat([classes['save-btn']])}
             // disabled={error.length > 0}
@@ -247,3 +276,6 @@ export const Modal: React.FC<Props> = (props: Props) => {
     document.body,
   );
 };
+function intervalToDuration(arg0: { start: Date; end: Date }) {
+  throw new Error('Function not implemented.');
+}
