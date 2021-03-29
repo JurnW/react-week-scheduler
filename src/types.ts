@@ -19,6 +19,7 @@ export type EventRootProps = {
   ranges: ScheduleType;
   rangeIndex: number;
   onChange: OnChangeCallback;
+  meetingDuration: number;
 };
 
 export type ScheduleType = DateRange[];

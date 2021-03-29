@@ -1,7 +1,15 @@
 import classcat from 'classcat';
-import { getHours, getMinutes, setHours, setMinutes } from 'date-fns';
+import {
+  differenceInMilliseconds,
+  getHours,
+  getMinutes,
+  setHours,
+  setMinutes,
+} from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+// @ts-ignore
+import Alert from '../components/assets/alert-icon';
 // @ts-ignore
 import Clock from '../components/assets/clock-icon';
 import useOutsideClick from '../hooks/useOutsideClick';
@@ -15,6 +23,7 @@ interface Props {
   ranges: ScheduleType;
   rangeIndex: number;
   onChange: OnChangeCallback;
+  meetingDuration: number;
 }
 export const Modal: React.FC<Props> = (props: Props) => {
   const {
@@ -24,12 +33,16 @@ export const Modal: React.FC<Props> = (props: Props) => {
     ranges,
     rangeIndex,
     onChange,
+    meetingDuration,
   } = props;
-  const padLeft = (number: number) => number.toString().padStart(2, '0');
-  const [nameError, setNameError] = useState<Array<{
-    field: string;
-    error: string;
-  }> | null>(null);
+  const padLeft = (number: number | string) =>
+    number.toString().padStart(2, '0');
+  const [nameError, setNameError] = useState<
+    Array<{
+      field: string;
+      error: string;
+    }>
+  >([]);
 
   const [startHours, setStartHours] = useState(
     padLeft(getHours(ranges[rangeIndex][0])),
@@ -43,6 +56,19 @@ export const Modal: React.FC<Props> = (props: Props) => {
   const [endMinutes, setEndMinutes] = useState(
     padLeft(getMinutes(ranges[rangeIndex][1])),
   );
+  const startTime = setMinutes(
+    setHours(ranges[rangeIndex][0], Number(startHours)),
+    Number(startMinutes),
+  );
+  const endTime = setMinutes(
+    setHours(ranges[rangeIndex][1], Number(endHours)),
+    Number(endMinutes),
+  );
+  const durationInWords = (minutes: number) => {
+    var hrs = Math.floor(minutes / 60);
+    var mins = minutes % 60;
+    return `(${hrs > 0 ? `${hrs}h ` : ''}${mins}m)`;
+  };
 
   const clickRef = useRef(null);
 
@@ -51,15 +77,6 @@ export const Modal: React.FC<Props> = (props: Props) => {
   });
 
   const saveResult = (index: number) => {
-    let startTime = setMinutes(
-      setHours(ranges[rangeIndex][0], Number(startHours)),
-      Number(startMinutes),
-    );
-    let endTime = setMinutes(
-      setHours(ranges[rangeIndex][1], Number(endHours)),
-      Number(endMinutes),
-    );
-
     if (
       ranges[rangeIndex][0] === startTime &&
       ranges[rangeIndex][1] === endTime
@@ -76,22 +93,17 @@ export const Modal: React.FC<Props> = (props: Props) => {
     onChange(newDate, index);
   };
 
-  const validateHours = (rangeIndex: number) => {
+  const validateTimes = (rangeIndex: number) => {
     const errors = [];
     const hourFields = [
       ['startHours', startHours],
       ['endHours', endHours],
     ];
 
-    if (
-      Number(startHours) + Number(startMinutes) >
-      Number(endHours) + Number(endMinutes)
-    ) {
-      errors.push({
-        field: '',
-        error: 'The start time can not exceed the end time',
-      });
-    }
+    const currentDuration = differenceInMilliseconds(
+      new Date(endTime),
+      new Date(startTime),
+    );
 
     for (const field of hourFields) {
       if (field[1] === '') {
@@ -112,43 +124,33 @@ export const Modal: React.FC<Props> = (props: Props) => {
       }
     }
 
+    if (Number(startHours + startMinutes) > Number(endHours + endMinutes)) {
+      errors.push({
+        field: '',
+        error: 'The start time can not exceed the end time',
+      });
+    }
+
+    if (currentDuration < meetingDuration * 60000) {
+      errors.push({
+        field: 'duration',
+        error: 'Availability can not be shorter than the meeting duration',
+      });
+    }
+
     if (errors.length !== 0) {
       setNameError(errors);
     } else {
-      setNameError(null);
+      setNameError([]);
       saveResult(rangeIndex);
     }
   };
 
   useEffect(() => {
-    if (!isOpen) {
+    if (!isOpen || startHours.length !== 2 || endHours.length !== 2) {
       return;
     }
-    // Check if it overlaps any other range
-
-    // Check if it is shorter than meetingDuration
-    let startTime = setMinutes(
-      setHours(ranges[rangeIndex][0], Number(startHours)),
-      Number(startMinutes),
-    );
-    let endTime = setMinutes(
-      setHours(ranges[rangeIndex][1], Number(endHours)),
-      Number(endMinutes),
-    );
-
-    console.log(new Date(startTime));
-
-    // const currentDuration = intervalToDuration({
-    //   start: new Date(startTime),
-    //   end: new Date(endTime),
-    // });
-
-    // console.log(currentDuration);
-
-    // get start time date
-    // get end time date
-    // calculate meeting duration
-    // compare to meetingDuration props
+    // TODO:Check if it overlaps any other range
   }, [startHours, startMinutes, endHours, endMinutes]);
 
   return ReactDOM.createPortal(
@@ -258,14 +260,21 @@ export const Modal: React.FC<Props> = (props: Props) => {
               </span>
             </div>
           </div>
-          {nameError && (
-            <span style={{ color: '#e54918' }}>{nameError[0].error}</span>
+          {nameError[0] && (
+            <div className={classcat([classes['error-notice']])}>
+              <Alert />
+              <span>{`${nameError[0].error} ${
+                nameError[0].field === 'duration'
+                  ? durationInWords(meetingDuration)
+                  : null
+              }`}</span>
+            </div>
           )}
           <button
             className={classcat([classes['save-btn']])}
             // disabled={error.length > 0}
             onClick={() => {
-              validateHours(rangeIndex);
+              validateTimes(rangeIndex);
             }}
           >
             Save changes
@@ -276,6 +285,3 @@ export const Modal: React.FC<Props> = (props: Props) => {
     document.body,
   );
 };
-function intervalToDuration(arg0: { start: Date; end: Date }) {
-  throw new Error('Function not implemented.');
-}

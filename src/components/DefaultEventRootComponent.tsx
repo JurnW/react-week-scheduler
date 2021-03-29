@@ -11,6 +11,7 @@ export const DefaultEventRootComponent = React.memo(
       disabled,
       ranges,
       rangeIndex,
+      meetingDuration,
       onChange,
       ...props
     },

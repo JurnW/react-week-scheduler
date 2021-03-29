@@ -66,6 +66,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   localization,
   isMobile,
   currentTime,
+  meetingDuration,
 }: {
   originDate?: Date;
 
@@ -116,6 +117,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
   localization: string;
   isMobile: boolean;
   currentTime: [string, string, string, string];
+  meetingDuration: number;
 }) {
   const locale = localization === 'ja' ? ja : en;
   const numberOfDays = isMobile ? 1 : 7;
@@ -546,6 +548,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
               cellInfoToDateRange={cellInfoToSingleDateRange}
               className={classes['is-pending-creation']}
               ranges={[...schedule, ...pendingCreation]}
+              meetingDuration={meetingDuration}
               grid={grid}
               moveAxis="none"
               eventContentComponent={eventContentComponent}
@@ -564,6 +567,7 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
               onChange={handleEventChange}
               onClick={onEventClick}
               ranges={schedule}
+              meetingDuration={meetingDuration}
               grid={grid}
               eventContentComponent={eventContentComponent}
               eventRootComponent={eventRootComponent}

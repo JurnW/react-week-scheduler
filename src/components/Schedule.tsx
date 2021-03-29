@@ -25,6 +25,7 @@ export type ScheduleProps = {
   eventContentComponent?: any;
   eventRootComponent?: any;
   disabled?: boolean;
+  meetingDuration: number;
 };
 
 export const Schedule = React.memo(function Schedule({
@@ -43,6 +44,7 @@ export const Schedule = React.memo(function Schedule({
   eventRootComponent,
   onClick,
   getIsActive,
+  meetingDuration,
 }: {
   dateRangeToCells(range: DateRange): CellInfo[];
   ranges: ScheduleType;
@@ -155,6 +157,7 @@ export const Schedule = React.memo(function Schedule({
                   cellIndex={cellIndex}
                   rangeIndex={rangeIndex}
                   ranges={ranges}
+                  meetingDuration={meetingDuration}
                   className={classcat([
                     className,
                     {

@@ -104,7 +104,16 @@ const defaultSchedule: [Date, Date, string, string][] = rangeStrings.map(
 );
 
 const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
-  { handleDelete, disabled, isMobile, ranges, rangeIndex, onChange, ...props },
+  {
+    handleDelete,
+    disabled,
+    isMobile,
+    ranges,
+    rangeIndex,
+    onChange,
+    meetingDuration,
+    ...props
+  },
   ref,
 ) {
   const [isOpen, setIsOpen] = useState(false);
@@ -117,6 +126,7 @@ const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
         handleDelete={handleDelete}
         ranges={ranges}
         rangeIndex={rangeIndex}
+        meetingDuration={meetingDuration}
         onChange={onChange}
       />
       <Tippy
@@ -144,6 +154,7 @@ const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
             disabled={disabled}
             ranges={ranges}
             rangeIndex={rangeIndex}
+            meetingDuration={meetingDuration}
             onChange={onChange}
             {...props}
             ref={ref}
@@ -414,6 +425,7 @@ function App() {
             localization={'en'}
             currentTime={currentTime}
             isMobile={isMobile}
+            meetingDuration={90}
           />
         </Fragment>
       </CustomProperties>
