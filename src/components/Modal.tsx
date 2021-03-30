@@ -248,7 +248,8 @@ export const Modal: React.FC<Props> = (props: Props) => {
                 classes['time-input'],
                 {
                   [classes['input-error']]:
-                    nameError?.filter(o => o.field === 'endHours').length === 1,
+                    nameError?.filter(o => o.field === 'endHours').length ===
+                      1 || durationTooShort,
                 },
               ])}
             ></input>
