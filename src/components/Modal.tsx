@@ -12,6 +12,8 @@ import ReactDOM from 'react-dom';
 import Alert from '../components/assets/alert-icon';
 // @ts-ignore
 import Clock from '../components/assets/clock-icon';
+// @ts-ignore
+import InformationIcon from '../components/assets/information-icon';
 import useOutsideClick from '../hooks/useOutsideClick';
 import { classes } from '../styles';
 import { OnChangeCallback, ScheduleType } from '../types';
@@ -71,6 +73,8 @@ export const Modal: React.FC<Props> = (props: Props) => {
   };
   const durationTooShort =
     nameError?.filter(o => o.field === 'duration').length === 1;
+  const overlapWarning =
+    nameError?.filter(o => o.field === 'overlap').length === 1;
 
   const clickRef = useRef(null);
 
@@ -154,13 +158,26 @@ export const Modal: React.FC<Props> = (props: Props) => {
       });
     }
 
+    const hasConflicts = ranges.map((meeting, meetingIndex) => {
+      const sameIndex = rangeIndex === meetingIndex;
+      const timeRangeOverlaps =
+        new Date(startTime) < meeting[1] && new Date(endTime) > meeting[0];
+      return !sameIndex && timeRangeOverlaps;
+    });
+
+    if (hasConflicts.includes(true)) {
+      errors.push({
+        field: 'overlap',
+        error:
+          'Please note: This availability overlaps another one of your events',
+      });
+    }
+
     if (errors.length !== 0) {
       setNameError(errors);
     } else {
       setNameError([]);
     }
-
-    // TODO:Check if it overlaps any other range
   }, [startHours, startMinutes, endHours, endMinutes]);
 
   return ReactDOM.createPortal(
@@ -272,10 +289,17 @@ export const Modal: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           {nameError[0] && (
-            <div className={classcat([classes['error-notice']])}>
-              <Alert />
+            <div
+              className={classcat([
+                classes['notice'],
+                {
+                  [classes['notice-warning']]: overlapWarning,
+                },
+              ])}
+            >
+              {overlapWarning ? <InformationIcon /> : <Alert />}
               <span>{`${nameError[0].error} ${
-                durationTooShort ? durationInWords(meetingDuration) : null
+                durationTooShort ? durationInWords(meetingDuration) : ''
               }`}</span>
             </div>
           )}

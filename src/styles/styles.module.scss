@@ -883,20 +883,24 @@ $spacers: (
         }
       }
     }
-    .error-notice {
+    .notice {
       display: flex;
       font-family: $poppings-font-family;
-      background: #fff2f0;
       border-radius: 8px;
-      color: #fa4f4f;
       padding: 12px;
       font-weight: 600;
       font-size: 14px;
       line-height: 22px;
+      color: #fa4f4f;
+      background: #fff2f0;
       svg {
         margin-right: 12px;
         align-self: center;
         width: 43px;
+      }
+      &-warning {
+        color: #527bb4;
+        background: #e4ecf8;
       }
     }
     .save-btn {
