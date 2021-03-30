@@ -2,7 +2,6 @@ import Tippy from '@tippy.js/react';
 import classcat from 'classcat';
 import addMinutes from 'date-fns/add_minutes';
 import compareAsc from 'date-fns/compare_asc';
-import format from 'date-fns/format';
 import getDay from 'date-fns/get_day';
 import getHours from 'date-fns/get_hours';
 import getMinutes from 'date-fns/get_minutes';
@@ -14,8 +13,6 @@ import setDay from 'date-fns/set_day';
 import setHours from 'date-fns/set_hours';
 import setMinutes from 'date-fns/set_minutes';
 import startOfWeek from 'date-fns/start_of_week';
-// @ts-ignore
-import humanizeDuration from 'humanize-duration';
 import mapValues from 'lodash/mapValues';
 import 'pepjs';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
@@ -32,7 +29,6 @@ import { classes as defaultClasses } from '../src/styles';
 import { EventRootProps, ScheduleType } from '../src/types';
 // @ts-ignore
 import DeleteIcon from './assets/outline-delete-24px.svg';
-import { Key } from './components/Key/Key';
 import demoClasses from './index.module.scss';
 
 const locales = {
@@ -261,175 +257,32 @@ function App() {
   }, [defaultAdjustedSchedule, setSchedule, resetSchedule]);
 
   return (
-    <>
-      <div className={demoClasses['buttons-wrapper']}>
-        <button
-          type="button"
-          disabled={!canUndoSchedule}
-          onClick={undoSchedule}
-        >
-          ⟲ Undo
-        </button>
-        <button
-          type="button"
-          disabled={!canRedoSchedule}
-          onClick={redoSchedule}
-        >
-          Redo ⟳
-        </button>
-        <label htmlFor="vertical_precision">
-          Precision:
-          <select
-            name="vertical_precision"
-            id="vertical_precision"
-            value={verticalPrecision}
-            onChange={({ target: { value } }) =>
-              setVerticalPrecision(Number(value))
-            }
-          >
-            {[5, 10, 15, 30, 60].map(value => (
-              <option key={value} value={value}>
-                {humanizeDuration(value * 60 * 1000)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label htmlFor="disabled">
-          <input
-            id="disabled"
-            type="checkbox"
-            name="disabled"
-            checked={disabled}
-            onChange={e => setDisabled(Boolean(e.target.checked))}
-          />
-          Disabled
-        </label>
-        <label style={{ display: 'none' }} htmlFor="start_of_week">
-          Start of week:
-          <select
-            name="start_of_week"
-            id="start_of_week"
-            value={weekStart}
-            onChange={({ target: { value } }) => setWeekStart(Number(value))}
-          >
-            {[0, 1, 2, 3, 4, 5, 6].map(value => (
-              <option key={value} value={value}>
-                {format(setDay(new Date(), value), 'ddd', {
-                  locale: locales[locale],
-                })}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label htmlFor="visual_grid_vertical_precision">
-          Grid increments:
-          <select
-            name="visual_grid_vertical_precision"
-            id="visual_grid_vertical_precision"
-            value={visualGridVerticalPrecision}
-            onChange={({ target: { value } }) =>
-              setVisualGridVerticalPrecision(Number(value))
-            }
-          >
-            {[15, 30, 60].map(value => (
-              <option key={value} value={value}>
-                {humanizeDuration(value * 60 * 1000)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label htmlFor="min_cell_click_precision">
-          Min click precision:
-          <select
-            name="min_cell_click_precision"
-            id="min_cell_click_precision"
-            value={cellClickPrecision}
-            onChange={({ target: { value } }) =>
-              setCellClickPrecision(Number(value))
-            }
-          >
-            {[15, 30, 60].map(value => (
-              <option key={value} value={value}>
-                {humanizeDuration(value * 60 * 1000)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label htmlFor="locale">
-          Locale:
-          <select
-            name="locale"
-            id="locale"
-            value={locale}
-            onChange={({ target: { value } }) => {
-              setLocale(value);
-            }}
-          >
-            {['en', 'ar', 'ja', 'de'].map(value => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label htmlFor="cell_height">
-          Cell height:
-          <input
-            id="cell_height"
-            name="cell_height"
-            type="range"
-            max={100}
-            step={10}
-            min={30}
-            value={cellHeight}
-            onChange={({ target: { value } }) => setCellHeight(Number(value))}
-          />
-        </label>
-        <label htmlFor="cell_width">
-          Preferred cell width:
-          <input
-            id="cell_width"
-            name="cell_width"
-            type="range"
-            max={300}
-            step={25}
-            min={150}
-            value={cellWidth}
-            onChange={({ target: { value } }) => setCellWidth(Number(value))}
-          />
-        </label>
-        <div>
-          Tip: use <Key>Delete</Key> key to remove time blocks. <Key>↑</Key> and{' '}
-          <Key>↓</Key> to move.
-        </div>
-      </div>
-      <CustomProperties
-        global={false}
-        properties={{
-          '--cell-height': `${cellHeight}px`,
-          '--cell-width': `${cellWidth}px`,
-        }}
-      >
-        <Fragment key={`${cellHeight},${cellWidth}`}>
-          <TimeGridScheduler
-            key={originDate.toString()}
-            classes={classes}
-            originDate={new Date()} // passed from Attendar App
-            schedule={scheduleState.present}
-            onChange={setSchedule}
-            verticalPrecision={verticalPrecision}
-            visualGridVerticalPrecision={visualGridVerticalPrecision}
-            cellClickPrecision={cellClickPrecision}
-            eventRootComponent={EventRoot}
-            disabled={disabled}
-            localization={'en'}
-            currentTime={currentTime}
-            isMobile={isMobile}
-            meetingDuration={30}
-          />
-        </Fragment>
-      </CustomProperties>
-    </>
+    <CustomProperties
+      global={false}
+      properties={{
+        '--cell-height': `${cellHeight}px`,
+        '--cell-width': `${cellWidth}px`,
+      }}
+    >
+      <Fragment key={`${cellHeight},${cellWidth}`}>
+        <TimeGridScheduler
+          key={originDate.toString()}
+          classes={classes}
+          originDate={new Date()} // passed from Attendar App
+          schedule={scheduleState.present}
+          onChange={setSchedule}
+          verticalPrecision={verticalPrecision}
+          visualGridVerticalPrecision={visualGridVerticalPrecision}
+          cellClickPrecision={cellClickPrecision}
+          eventRootComponent={EventRoot}
+          disabled={disabled}
+          localization={'en'}
+          currentTime={currentTime}
+          isMobile={isMobile}
+          meetingDuration={30}
+        />
+      </Fragment>
+    </CustomProperties>
   );
 }
 
