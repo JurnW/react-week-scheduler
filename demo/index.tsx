@@ -21,7 +21,6 @@ import ReactDOM from 'react-dom';
 import 'resize-observer-polyfill/dist/ResizeObserver.global';
 import useUndo from 'use-undo';
 import { DefaultEventRootComponent } from '../src/components/DefaultEventRootComponent';
-import { Modal } from '../src/components/Modal';
 import { TimeGridScheduler } from '../src/components/TimeGridScheduler';
 import useCheckMobileScreen from '../src/hooks/useCheckMobile';
 import { useMousetrap } from '../src/hooks/useMousetrap';
@@ -112,52 +111,32 @@ const EventRoot = React.forwardRef<any, EventRootProps>(function EventRoot(
   },
   ref,
 ) {
-  const [isOpen, setIsOpen] = useState(false);
-
+  console.log(isMobile);
   return (
-    <>
-      <Modal
-        isOpen={isOpen}
-        handleOpen={setIsOpen}
+    <Tippy
+      arrow
+      interactive
+      hideOnClick={false}
+      // className={demoClasses.tooltip}
+      className={classcat([demoClasses.tooltip, classes['hide-up-to-tablets']])}
+      content={
+        <button disabled={disabled} onClick={handleDelete}>
+          <DeleteIcon className={demoClasses.icon} />
+          Delete
+        </button>
+      }
+    >
+      <DefaultEventRootComponent
         handleDelete={handleDelete}
+        disabled={disabled}
         ranges={ranges}
         rangeIndex={rangeIndex}
         meetingDuration={meetingDuration}
         onChange={onChange}
+        {...props}
+        ref={ref}
       />
-      <Tippy
-        arrow
-        interactive
-        isEnabled={!disabled}
-        hideOnClick={false}
-        className={demoClasses.tooltip}
-        visible={!true} //TODO: replace with props
-        content={
-          <button disabled={disabled} onClick={handleDelete}>
-            <DeleteIcon className={demoClasses.icon} />
-            Delete
-          </button>
-        }
-      >
-        <div
-          onClick={e => {
-            e.preventDefault();
-            setIsOpen(!isOpen);
-          }}
-        >
-          <DefaultEventRootComponent
-            handleDelete={handleDelete}
-            disabled={disabled}
-            ranges={ranges}
-            rangeIndex={rangeIndex}
-            meetingDuration={meetingDuration}
-            onChange={onChange}
-            {...props}
-            ref={ref}
-          />
-        </div>
-      </Tippy>
-    </>
+    </Tippy>
   );
 });
 
@@ -276,7 +255,7 @@ function App() {
           cellClickPrecision={cellClickPrecision}
           eventRootComponent={EventRoot}
           disabled={disabled}
-          localization={'en'}
+          localization={locale}
           currentTime={currentTime}
           isMobile={isMobile}
           meetingDuration={30}

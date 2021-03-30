@@ -964,6 +964,29 @@ $spacers: (
     }
   }
 }
+
 .hide {
-  display: none;
+  display: none !important;
+  &-up-to {
+    &-desktops {
+      @include mq('desktop', max) {
+        display: none !important;
+      }
+    }
+    &-laptops {
+      @include mq('tablet-wide', max) {
+        display: none !important;
+      }
+    }
+    &-tablets {
+      @include mq('tablet', max) {
+        display: none !important;
+      }
+    }
+    &-phones {
+      @include mq('phone', max) {
+        display: none !important;
+      }
+    }
+  }
 }

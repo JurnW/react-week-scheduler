@@ -24,7 +24,7 @@ interface Props {
   handleDelete: () => void;
   ranges: ScheduleType;
   rangeIndex: number;
-  onChange: OnChangeCallback;
+  onChange: OnChangeCallback | undefined;
   meetingDuration: number;
 }
 export const Modal: React.FC<Props> = (props: Props) => {
@@ -96,7 +96,9 @@ export const Modal: React.FC<Props> = (props: Props) => {
       '',
     ];
 
-    onChange(newDate, index);
+    if (onChange) {
+      onChange(newDate, index);
+    }
   };
 
   const validateTimes = (rangeIndex: number) => {
@@ -187,7 +189,7 @@ export const Modal: React.FC<Props> = (props: Props) => {
           classes.modal,
           classes['modal-wrapper'],
           {
-            [classes['show-up-to-laptops']]: isOpen,
+            [classes['show-up-to-tablets']]: isOpen,
           },
         ])}
         style={{ display: isOpen ? 'block' : 'none' }}

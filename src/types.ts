@@ -19,6 +19,7 @@ export type EventRootProps = {
   ranges: ScheduleType;
   rangeIndex: number;
   onChange: OnChangeCallback;
+  onClick(): void;
   meetingDuration: number;
 };
 

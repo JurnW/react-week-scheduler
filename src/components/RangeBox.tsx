@@ -9,6 +9,8 @@ import React, {
   useState,
 } from 'react';
 import Draggable, { DraggableEventHandler } from 'react-draggable';
+// @ts-ignore
+import { Modal } from '../../src/components/Modal';
 import { useMousetrap } from '../hooks/useMousetrap';
 import { CellInfo, OnChangeCallback, ScheduleType } from '../types';
 import { DefaultEventRootComponent } from './DefaultEventRootComponent';
@@ -51,6 +53,7 @@ export const RangeBox = React.memo(function RangeBox({
 }) {
   const ref = useRef(null);
   const [modifiedCell, setModifiedCell] = useState(cell);
+  const [isOpen, setIsOpen] = useState(false);
   const originalRect = useMemo(() => grid.getRectFromCell(cell), [cell, grid]);
   const rect = useMemo(() => grid.getRectFromCell(modifiedCell), [
     modifiedCell,
@@ -320,93 +323,107 @@ export const RangeBox = React.memo(function RangeBox({
   );
 
   return (
-    <Draggable
-      axis={moveAxis}
-      bounds={{
-        top: 0,
-        bottom: grid.totalHeight - height,
-        left: 0,
-        right: grid.totalWidth / numberOfConflicts,
-      }}
-      position={{ x: left, y: top }}
-      onDrag={handleDrag}
-      onStop={handleStop}
-      cancel={cancelClasses}
-      disabled={disabled}
-    >
-      <EventRootComponent
-        role="button"
-        disabled={disabled}
-        onFocus={handleOnFocus}
-        onClick={handleOnClick}
+    <>
+      <Modal
+        isOpen={isOpen}
+        handleOpen={setIsOpen}
         handleDelete={handleDelete}
-        cellIndex={cellIndex}
         ranges={ranges}
         rangeIndex={rangeIndex}
         meetingDuration={meetingDuration}
         onChange={onChange}
-        isActive={isActive}
-        classes={classes}
-        className={classcat([
-          classes.event,
-          classes['range-boxes'],
-          className,
-          {
-            [classes['is-draggable']]: !disabled && moveAxis !== 'none',
-            [classes['is-disabled']]: disabled,
-          },
-        ])}
-        ref={ref}
-        style={{
-          width: width - 4,
-          height: height - 4,
-          marginLeft:
-            numberOfConflicts === 1
-              ? '2px'
-              : `${width * meetingPosition - width + 2}px`,
-          marginTop: '2px',
+      />
+      <Draggable
+        axis={moveAxis}
+        bounds={{
+          top: 0,
+          bottom: grid.totalHeight - height,
+          left: 0,
+          right: grid.totalWidth / numberOfConflicts,
         }}
+        position={{ x: left, y: top }}
+        onDrag={handleDrag}
+        onStop={handleStop}
+        cancel={cancelClasses}
+        disabled={disabled}
       >
-        <Resizable
-          size={{
-            ...originalRect,
-            width: originalRect.width / numberOfConflicts - 4,
+        <EventRootComponent
+          role="button"
+          disabled={disabled}
+          onFocus={handleOnFocus}
+          onClick={() => {
+            handleOnClick;
+            setIsOpen(!isOpen);
           }}
-          key={`${rangeIndex}.${cellIndex}.${cellArray.length}.${originalRect.top}.${originalRect.left}`}
-          onResize={handleResize}
-          onResizeStop={handleStop}
-          handleWrapperClass={classes['handle-wrapper']}
-          enable={
-            isResizable && !disabled
-              ? {
-                  top: true,
-                  bottom: true,
-                }
-              : {}
-          }
-          handleClasses={{
-            bottom: classcat([classes.handle, classes.bottom]),
-            bottomLeft: classes.handle,
-            bottomRight: classes.handle,
-            left: classes.handle,
-            right: classes.handle,
-            top: classcat([classes.handle, classes.top]),
-            topLeft: classes.handle,
-            topRight: classes.handle,
+          handleDelete={handleDelete}
+          cellIndex={cellIndex}
+          ranges={ranges}
+          rangeIndex={rangeIndex}
+          meetingDuration={meetingDuration}
+          onChange={onChange}
+          isActive={isActive}
+          classes={classes}
+          className={classcat([
+            classes.event,
+            classes['range-boxes'],
+            className,
+            {
+              [classes['is-draggable']]: !disabled && moveAxis !== 'none',
+              [classes['is-disabled']]: disabled,
+            },
+          ])}
+          ref={ref}
+          style={{
+            width: width - 4,
+            height: height - 4,
+            marginLeft:
+              numberOfConflicts === 1
+                ? '2px'
+                : `${width * meetingPosition - width + 2}px`,
+            marginTop: '2px',
           }}
         >
-          <EventContentComponent
-            width={width}
-            height={height}
-            classes={classes}
-            dateRange={modifiedDateRange}
-            isStart={isStart}
-            isEnd={isEnd}
-            title={cell.title}
-            numberOfConflicts={numberOfConflicts}
-          />
-        </Resizable>
-      </EventRootComponent>
-    </Draggable>
+          <Resizable
+            size={{
+              ...originalRect,
+              width: originalRect.width / numberOfConflicts - 4,
+            }}
+            key={`${rangeIndex}.${cellIndex}.${cellArray.length}.${originalRect.top}.${originalRect.left}`}
+            onResize={handleResize}
+            onResizeStop={handleStop}
+            handleWrapperClass={classes['handle-wrapper']}
+            enable={
+              isResizable && !disabled
+                ? {
+                    top: true,
+                    bottom: true,
+                  }
+                : {}
+            }
+            handleClasses={{
+              bottom: classcat([classes.handle, classes.bottom]),
+              bottomLeft: classes.handle,
+              bottomRight: classes.handle,
+              left: classes.handle,
+              right: classes.handle,
+              top: classcat([classes.handle, classes.top]),
+              topLeft: classes.handle,
+              topRight: classes.handle,
+            }}
+          >
+            <EventContentComponent
+              width={width}
+              height={height}
+              classes={classes}
+              dateRange={modifiedDateRange}
+              isStart={isStart}
+              isEnd={isEnd}
+              title={cell.title}
+              numberOfConflicts={numberOfConflicts}
+            />
+          </Resizable>
+        </EventRootComponent>
+      </Draggable>
+    </>
   );
 });
