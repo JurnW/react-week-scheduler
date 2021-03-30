@@ -232,8 +232,11 @@ React__default.forwardRef(function DefaultEventRootComponent(_ref,
 
 
 
+
+
+
 ref)
-{var isActive = _ref.isActive,handleDelete = _ref.handleDelete,cellIndex = _ref.cellIndex,rangeIndex = _ref.rangeIndex,classes = _ref.classes,disabled = _ref.disabled,props = _objectWithoutProperties(_ref, ["isActive", "handleDelete", "cellIndex", "rangeIndex", "classes", "disabled"]);
+{var isActive = _ref.isActive,handleDelete = _ref.handleDelete,cellIndex = _ref.cellIndex,classes = _ref.classes,disabled = _ref.disabled,ranges = _ref.ranges,rangeIndex = _ref.rangeIndex,meetingDuration = _ref.meetingDuration,onChange = _ref.onChange,props = _objectWithoutProperties(_ref, ["isActive", "handleDelete", "cellIndex", "classes", "disabled", "ranges", "rangeIndex", "meetingDuration", "onChange"]);
   return /*#__PURE__*/React__default.createElement("div", _extends({ ref: ref, "aria-disabled": disabled }, props));
 }));
 
@@ -822,7 +825,12 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
 
 
 
-{var _ref4;var classes = _ref2.classes,grid = _ref2.grid,rangeIndex = _ref2.rangeIndex,cellIndex = _ref2.cellIndex,cellArray = _ref2.cellArray,cell = _ref2.cell,className = _ref2.className,onChange = _ref2.onChange,cellInfoToDateRange = _ref2.cellInfoToDateRange,isResizable = _ref2.isResizable,moveAxis = _ref2.moveAxis,onActiveChange = _ref2.onActiveChange,onClick = _ref2.onClick,getIsActive = _ref2.getIsActive,_ref2$eventContentCom = _ref2.eventContentComponent,EventContentComponent = _ref2$eventContentCom === void 0 ? EventContent : _ref2$eventContentCom,_ref2$eventRootCompon = _ref2.eventRootComponent,EventRootComponent = _ref2$eventRootCompon === void 0 ? DefaultEventRootComponent : _ref2$eventRootCompon,disabled = _ref2.disabled,numberOfConflicts = _ref2.numberOfConflicts,meetingPosition = _ref2.meetingPosition;
+
+
+
+
+
+{var _ref4;var classes = _ref2.classes,grid = _ref2.grid,rangeIndex = _ref2.rangeIndex,cellIndex = _ref2.cellIndex,cellArray = _ref2.cellArray,cell = _ref2.cell,className = _ref2.className,onChange = _ref2.onChange,cellInfoToDateRange = _ref2.cellInfoToDateRange,isResizable = _ref2.isResizable,moveAxis = _ref2.moveAxis,onActiveChange = _ref2.onActiveChange,onClick = _ref2.onClick,getIsActive = _ref2.getIsActive,_ref2$eventContentCom = _ref2.eventContentComponent,EventContentComponent = _ref2$eventContentCom === void 0 ? EventContent : _ref2$eventContentCom,_ref2$eventRootCompon = _ref2.eventRootComponent,EventRootComponent = _ref2$eventRootCompon === void 0 ? DefaultEventRootComponent : _ref2$eventRootCompon,disabled = _ref2.disabled,numberOfConflicts = _ref2.numberOfConflicts,meetingPosition = _ref2.meetingPosition,ranges = _ref2.ranges,meetingDuration = _ref2.meetingDuration;
   var ref = React.useRef(null);var _useState =
   React.useState(cell),_useState2 = _slicedToArray(_useState, 2),modifiedCell = _useState2[0],setModifiedCell = _useState2[1];
   var originalRect = React.useMemo(function () {return grid.getRectFromCell(cell);}, [cell, grid]);
@@ -1115,7 +1123,10 @@ var RangeBox = /*#__PURE__*/React__default.memo(function RangeBox(_ref2)
       onClick: handleOnClick,
       handleDelete: handleDelete,
       cellIndex: cellIndex,
+      ranges: ranges,
       rangeIndex: rangeIndex,
+      meetingDuration: meetingDuration,
+      onChange: onChange,
       isActive: isActive,
       classes: classes,
       className: classcat([
@@ -1203,7 +1214,8 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
 
 
 
-{var classes = _ref.classes,ranges = _ref.ranges,grid = _ref.grid,className = _ref.className,onChange = _ref.onChange,isResizable = _ref.isResizable,isDeletable = _ref.isDeletable,moveAxis = _ref.moveAxis,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,onActiveChange = _ref.onActiveChange,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,onClick = _ref.onClick,getIsActive = _ref.getIsActive;
+
+{var classes = _ref.classes,ranges = _ref.ranges,grid = _ref.grid,className = _ref.className,onChange = _ref.onChange,isResizable = _ref.isResizable,isDeletable = _ref.isDeletable,moveAxis = _ref.moveAxis,cellInfoToDateRange = _ref.cellInfoToDateRange,dateRangeToCells = _ref.dateRangeToCells,onActiveChange = _ref.onActiveChange,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,onClick = _ref.onClick,getIsActive = _ref.getIsActive,meetingDuration = _ref.meetingDuration;
   var overlappingMeetings = [];
 
   ranges.map(function (currentMeeting, currentMeetingIndex) {
@@ -1309,6 +1321,8 @@ var Schedule = /*#__PURE__*/React__default.memo(function Schedule(_ref)
               cellArray: cellArray,
               cellIndex: cellIndex,
               rangeIndex: rangeIndex,
+              ranges: ranges,
+              meetingDuration: meetingDuration,
               className: classcat([
               className, (_ref2 = {}, _defineProperty(_ref2,
 
@@ -1485,7 +1499,9 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 
 
-{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization,isMobile = _ref.isMobile,currentTime = _ref.currentTime;
+
+
+{var _ref$verticalPrecisio = _ref.verticalPrecision,verticalPrecision = _ref$verticalPrecisio === void 0 ? 15 : _ref$verticalPrecisio,_ref$visualGridVertic = _ref.visualGridVerticalPrecision,visualGridVerticalPrecision = _ref$visualGridVertic === void 0 ? 30 : _ref$visualGridVertic,_ref$cellClickPrecisi = _ref.cellClickPrecision,cellClickPrecision = _ref$cellClickPrecisi === void 0 ? visualGridVerticalPrecision : _ref$cellClickPrecisi,style = _ref.style,schedule = _ref.schedule,_ref$originDate = _ref.originDate,_originDate = _ref$originDate === void 0 ? new Date() : _ref$originDate,_ref$defaultHours = _ref.defaultHours,defaultHours = _ref$defaultHours === void 0 ? [9, 18] : _ref$defaultHours,classes = _ref.classes,className = _ref.className,onChange = _ref.onChange,onEventClick = _ref.onEventClick,eventContentComponent = _ref.eventContentComponent,eventRootComponent = _ref.eventRootComponent,disabled = _ref.disabled,localization = _ref.localization,isMobile = _ref.isMobile,currentTime = _ref.currentTime,meetingDuration = _ref.meetingDuration;
   var locale = localization === 'ja' ? ja : en;
   var numberOfDays = isMobile ? 1 : 7;
   var originDate = React.useMemo(function () {return startOfDay(_originDate);}, [_originDate]);
@@ -1743,6 +1759,10 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
     '']);
 
 
+
+    if (range[0] === undefined) {
+      return;
+    }
     var rect = grid.getRectFromCell(range[0]);var
     top = rect.top,bottom = rect.bottom;
 
@@ -1840,16 +1860,12 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
           key: timeIndex,
           timeIndex: timeIndex },
 
-        function (_ref4) {var start = _ref4.start,isHourStart = _ref4.isHourStart;
-          if (isHourStart) {
-            return /*#__PURE__*/(
-              React__default.createElement("div", { className: classes.time },
-              format(start, 'hh:mm', { locale: locale })));
+        function (_ref4) {var start = _ref4.start;
+          return /*#__PURE__*/(
+            React__default.createElement("div", { className: classes.time },
+            format(start, 'hh:mm', { locale: locale })));
 
 
-          }
-
-          return null;
         }));
 
 
@@ -1911,6 +1927,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
       cellInfoToDateRange: cellInfoToSingleDateRange,
       className: classes['is-pending-creation'],
       ranges: [].concat(_toConsumableArray(schedule), _toConsumableArray(pendingCreation)),
+      meetingDuration: meetingDuration,
       grid: grid,
       moveAxis: "none",
       eventContentComponent: eventContentComponent,
@@ -1929,6 +1946,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
       onChange: handleEventChange,
       onClick: onEventClick,
       ranges: schedule,
+      meetingDuration: meetingDuration,
       grid: grid,
       eventContentComponent: eventContentComponent,
       eventRootComponent: eventRootComponent,
@@ -1996,7 +2014,7 @@ var TimeGridScheduler = /*#__PURE__*/React__default.memo(function TimeGridSchedu
 
 }, isEqual);
 
-var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","indicator":"styles-module_indicator__37i_p","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","hide-separator":"styles-module_hide-separator__3lgW-","start":"styles-module_start__3CzHL","external-meeting":"styles-module_external-meeting__UUOM9","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT","layout":"styles-module_layout__32BdV","react-cool-portal":"styles-module_react-cool-portal__1iUEc","modal":"styles-module_modal__2N8Vl","slideIn":"styles-module_slideIn__34P6y","modal-wrapper":"styles-module_modal-wrapper__3CXDG","fadeIn":"styles-module_fadeIn__2rVIy","modal-wrapper-fadeout":"styles-module_modal-wrapper-fadeout__vulbs","fadeOut":"styles-module_fadeOut__2044B","slideOut":"styles-module_slideOut__38r8O","is-opened":"styles-module_is-opened__1MCV_","modal-overlay":"styles-module_modal-overlay__1pfHX","modal-window":"styles-module_modal-window__39aHP","modal-window-focus":"styles-module_modal-window-focus__1Dssv","modal-window-tight":"styles-module_modal-window-tight__3tJ00","modal-window-small":"styles-module_modal-window-small__cvPRC","remove-btn":"styles-module_remove-btn__3Q93c","modal-body":"styles-module_modal-body__1sGvV","modal-body-noscroll":"styles-module_modal-body-noscroll__2plsq","save-btn":"styles-module_save-btn__24-8V","time-row":"styles-module_time-row__3nibL","dropdown-label":"styles-module_dropdown-label__16g2W","input-container":"styles-module_input-container__2c1BO","time-input":"styles-module_time-input__2Xc2G","dropdown":"styles-module_dropdown__1W5Os","dropdown-select":"styles-module_dropdown-select__3Mukm","close":"styles-module_close__pJeAC","edit-meeting-popup":"styles-module_edit-meeting-popup__2qVce","edit-meeting-popup-header":"styles-module_edit-meeting-popup-header__28VQJ","edit-meeting-popup-close":"styles-module_edit-meeting-popup-close__2JWGS","edit-meeting-popup-body":"styles-module_edit-meeting-popup-body__1DkXc","show":"styles-module_show__22b6d","show-up-to-desktops":"styles-module_show-up-to-desktops__344s0","show-up-to-laptops":"styles-module_show-up-to-laptops__3-bhY","show-up-to-tablets":"styles-module_show-up-to-tablets__2hfuV","show-up-to-phones":"styles-module_show-up-to-phones__1I7h-"};
+var styles_module = {"no-scroll":"styles-module_no-scroll__3IUv5","theme":"styles-module_theme__1FIRA","root":"styles-module_root__2iNXQ","grid-root":"styles-module_grid-root__2ktzS","debug":"styles-module_debug__2eCNx","debug-active":"styles-module_debug-active__QqNIZ","calendar":"styles-module_calendar__tGgRK","react-draggable":"styles-module_react-draggable__3LVqd","handle-wrapper":"styles-module_handle-wrapper__26Eew","handle":"styles-module_handle__LTyBN","top":"styles-module_top__3D7og","bottom":"styles-module_bottom__daw_j","layer-container":"styles-module_layer-container__1wxVL","day-hours":"styles-module_day-hours__1E9lT","is-past":"styles-module_is-past__uYDtP","cell":"styles-module_cell__sVJZY","event":"styles-module_event__1PixZ","drag-box":"styles-module_drag-box__3w784","draggable":"styles-module_draggable__1Z1sE","button-reset":"styles-module_button-reset__1EwGq","is-draggable":"styles-module_is-draggable__176XM","tooltip":"styles-module_tooltip__255C3","icon":"styles-module_icon__28xum","is-pending-creation":"styles-module_is-pending-creation__3Qr4x","is-disabled":"styles-module_is-disabled__2JPDR","is-google":"styles-module_is-google__1c54q","indicator":"styles-module_indicator__37i_p","hours-container":"styles-module_hours-container__2srEU","day-column":"styles-module_day-column__30McI","time":"styles-module_time__LJQW4","title":"styles-module_title__2VBFp","header":"styles-module_header__10uIZ","is-current":"styles-module_is-current__19oIX","date":"styles-module_date__a2LvS","day-header-row":"styles-module_day-header-row__27lss","sticky-top":"styles-module_sticky-top__2dSgb","sticky-left":"styles-module_sticky-left__3tNLK","first":"styles-module_first__IeNvS","popup":"styles-module_popup__2iu0Y","range-boxes":"styles-module_range-boxes__ib1Nb","event-content":"styles-module_event-content__3sakH","hide-separator":"styles-module_hide-separator__3lgW-","start":"styles-module_start__3CzHL","external-meeting":"styles-module_external-meeting__UUOM9","end":"styles-module_end__2L7Oy","status":"styles-module_status__3TugN","timeline":"styles-module_timeline__1hCLT","layout":"styles-module_layout__32BdV","modal":"styles-module_modal__2N8Vl","slideIn":"styles-module_slideIn__34P6y","modal-wrapper":"styles-module_modal-wrapper__3CXDG","fadeIn":"styles-module_fadeIn__2rVIy","is-opened":"styles-module_is-opened__1MCV_","remove-btn":"styles-module_remove-btn__3Q93c","modal-body":"styles-module_modal-body__1sGvV","time-row":"styles-module_time-row__3nibL","dropdown-label":"styles-module_dropdown-label__16g2W","input-error":"styles-module_input-error__1gEsN","input-container":"styles-module_input-container__2c1BO","time-input":"styles-module_time-input__2Xc2G","dropdown":"styles-module_dropdown__1W5Os","dropdown-select":"styles-module_dropdown-select__3Mukm","notice":"styles-module_notice__1ZpBi","notice-warning":"styles-module_notice-warning__S_Wp3","save-btn":"styles-module_save-btn__24-8V","close":"styles-module_close__pJeAC","show":"styles-module_show__22b6d","show-up-to-desktops":"styles-module_show-up-to-desktops__344s0","show-up-to-laptops":"styles-module_show-up-to-laptops__3-bhY","show-up-to-tablets":"styles-module_show-up-to-tablets__2hfuV","show-up-to-phones":"styles-module_show-up-to-phones__1I7h-","hide":"styles-module_hide__36pml","fadeOut":"styles-module_fadeOut__2044B","slideOut":"styles-module_slideOut__38r8O"};
 
 exports.DefaultEventRootComponent = DefaultEventRootComponent;
 exports.SchedulerContext = SchedulerContext;
