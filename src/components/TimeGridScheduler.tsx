@@ -477,16 +477,12 @@ export const TimeGridScheduler = React.memo(function TimeGridScheduler({
                       key={timeIndex}
                       timeIndex={timeIndex}
                     >
-                      {({ start, isHourStart }) => {
-                        if (isHourStart) {
-                          return (
-                            <div className={classes.time}>
-                              {format(start, 'hh:mm', { locale })}
-                            </div>
-                          );
-                        }
-
-                        return null;
+                      {({ start }) => {
+                        return (
+                          <div className={classes.time}>
+                            {format(start, 'hh:mm', { locale })}
+                          </div>
+                        );
                       }}
                     </Cell>
                   );
