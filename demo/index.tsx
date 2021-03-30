@@ -67,22 +67,22 @@ const rangeStrings: { timerange: string[]; source: string; title: string }[] = [
   //   title: 'Meeting title',
   // },
   {
-    timerange: ['2021-03-29 03:30', '2021-03-29 05:30'],
+    timerange: ['2021-03-30 03:30', '2021-03-30 05:30'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-29 04:45', '2021-03-29 05:30'],
+    timerange: ['2021-03-30 04:45', '2021-03-30 05:30'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-29 07:00', '2021-03-29 08:00'],
+    timerange: ['2021-03-30 07:00', '2021-03-30 08:00'],
     source: 'local',
     title: '',
   },
   {
-    timerange: ['2021-03-29 18:00', '2021-03-29 19:30'],
+    timerange: ['2021-03-30 18:00', '2021-03-30 19:30'],
     source: 'local',
     title: '',
   },
@@ -425,7 +425,7 @@ function App() {
             localization={'en'}
             currentTime={currentTime}
             isMobile={isMobile}
-            meetingDuration={90}
+            meetingDuration={30}
           />
         </Fragment>
       </CustomProperties>

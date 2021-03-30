@@ -69,6 +69,8 @@ export const Modal: React.FC<Props> = (props: Props) => {
     var mins = minutes % 60;
     return `(${hrs > 0 ? `${hrs}h ` : ''}${mins}m)`;
   };
+  const durationTooShort =
+    nameError?.filter(o => o.field === 'duration').length === 1;
 
   const clickRef = useRef(null);
 
@@ -100,11 +102,6 @@ export const Modal: React.FC<Props> = (props: Props) => {
       ['endHours', endHours],
     ];
 
-    const currentDuration = differenceInMilliseconds(
-      new Date(endTime),
-      new Date(startTime),
-    );
-
     for (const field of hourFields) {
       if (field[1] === '') {
         errors.push({
@@ -131,13 +128,6 @@ export const Modal: React.FC<Props> = (props: Props) => {
       });
     }
 
-    if (currentDuration < meetingDuration * 60000) {
-      errors.push({
-        field: 'duration',
-        error: 'Availability can not be shorter than the meeting duration',
-      });
-    }
-
     if (errors.length !== 0) {
       setNameError(errors);
     } else {
@@ -150,6 +140,26 @@ export const Modal: React.FC<Props> = (props: Props) => {
     if (!isOpen || startHours.length !== 2 || endHours.length !== 2) {
       return;
     }
+
+    const errors = [];
+    const currentDuration = differenceInMilliseconds(
+      new Date(endTime),
+      new Date(startTime),
+    );
+
+    if (currentDuration < meetingDuration * 60000) {
+      errors.push({
+        field: 'duration',
+        error: 'Availability can not be shorter than the meeting duration',
+      });
+    }
+
+    if (errors.length !== 0) {
+      setNameError(errors);
+    } else {
+      setNameError([]);
+    }
+
     // TODO:Check if it overlaps any other range
   }, [startHours, startMinutes, endHours, endMinutes]);
 
@@ -264,17 +274,15 @@ export const Modal: React.FC<Props> = (props: Props) => {
             <div className={classcat([classes['error-notice']])}>
               <Alert />
               <span>{`${nameError[0].error} ${
-                nameError[0].field === 'duration'
-                  ? durationInWords(meetingDuration)
-                  : null
+                durationTooShort ? durationInWords(meetingDuration) : null
               }`}</span>
             </div>
           )}
           <button
             className={classcat([classes['save-btn']])}
-            // disabled={error.length > 0}
-            onClick={() => {
-              validateTimes(rangeIndex);
+            disabled={durationTooShort}
+            onClick={e => {
+              durationTooShort ? e.preventDefault : validateTimes(rangeIndex);
             }}
           >
             Save changes
